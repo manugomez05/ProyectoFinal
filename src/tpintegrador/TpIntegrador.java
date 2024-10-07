@@ -22,6 +22,7 @@ public class TpIntegrador {
         for(int i=0;i<5;i++){
             System.out.println("hola");
             System.out.println("chau");
+        System.out.println("prueva");
         }
     }
     
