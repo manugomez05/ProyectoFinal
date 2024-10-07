@@ -19,7 +19,9 @@ public class TpIntegrador {
         hoiaslkdfjadlfksajfda
         */
         System.out.println("TOMI ROMPEHUEVOS");
-        
+        for(int i=0;i<5;i++){
+            System.out.println("hola");
+        }
     }
     
 }
