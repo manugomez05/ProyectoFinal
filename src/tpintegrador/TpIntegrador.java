@@ -16,8 +16,14 @@ public class TpIntegrador {
     public static void main(String[] args) {
         
         /*
-        hoiaslkdfjadlfksajfda
+        
+        usar camelCase
+        nombres de variables descriptivos
+        describir con un comentario arriba de cada funcion que es lo que hace la funcion 
+        
+        
         */
+        
         System.out.println("TOMI ROMPEHUEVOS");
         for(int i=0;i<5;i++){
             System.out.println("hola");
