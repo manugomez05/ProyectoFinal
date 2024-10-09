@@ -17,7 +17,13 @@ public class TpIntegrador {
         
         
         */
-
+        
+        //Conecto a la base de datos 
+        ConexionDB conDB = new ConexionDB();
+        conDB.conectarDB();
+        
+        
+        //-------------
         
     }
     
