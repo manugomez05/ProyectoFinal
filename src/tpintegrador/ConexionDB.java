@@ -5,6 +5,8 @@
 package tpintegrador;
 import java.sql.*;
 import java.util.Scanner;
+import java.lang.*;
+import java.util.InputMismatchException;
 /**
  *
  * @author USER
@@ -13,6 +15,8 @@ public class ConexionDB {
     
     Scanner input = new Scanner(System.in);
     Connection db = null;
+    
+    
     /*
             TABLA PACIENTES
             CREATE TABLE IF NOT EXISTS tb_Pacientes(idPaciente INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, PRIMARY KEY(idPaciente AUTOINCREMENT) ) 
@@ -25,6 +29,7 @@ public class ConexionDB {
             
     */
     
+    //conecta a la base de datos
     public void conectarDB() {
     
         try {
@@ -49,6 +54,7 @@ public class ConexionDB {
         }
     }
     
+    //desconecta de la base de datos
     public void desconectarDB() {
         
         try {
@@ -59,53 +65,134 @@ public class ConexionDB {
         
     }
     
+    
+    //agrega un registro a alguna tabla
     public void agregarRegistro(String tablaIn) {
         PreparedStatement ps = null;
         
         String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", limpiarBuffer;
         int dniIn = 0, diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0;
-        
+        boolean fechaInvalida = true, dniInvalido = true, stringInvalido = true;
         
         //pedi los campos que se repiten
         if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
             
-            //pide nombre y apellido
+            //Pido nombre y apellido
             //  necesita validacion
-            System.out.println("Ingrese el nombre:");
-            nombreIn = input.nextLine();
-            System.out.println("Ingrese el apellido:");
-            apellidoIn = input.nextLine();
+            while (stringInvalido) {
+                try {
+                
+                    do  {
+                        System.out.println("Ingrese el nombre:");
+                        nombreIn = input.nextLine();    
+
+                        System.out.println("Ingrese el apellido:");
+                        apellidoIn = input.nextLine(); 
+
+                        if (nombreIn.matches("\\d+") || apellidoIn.matches("\\d+")) {
+                            throw new Exception();
+                        }
+
+                    //comprueba si los campos contienen solo numeros
+                    } while(nombreIn.matches("\\d+") || apellidoIn.matches("\\d+"));
+
+                    stringInvalido = false;
+
+                }  catch(Exception e) {
+                    System.out.println("-Exception: " + e);
+                    System.out.println("--El nombre y apellido debe contener SOLO letras");
+                }
+            }
             
-            
-            
-            
-            //  necesita validacion
-            System.out.println("Ingrese el DNI:");
-            dniIn = input.nextInt();
-            
-            limpiarBuffer = input.nextLine();
-            
-            //  necesita validacion
-            System.out.println("Ingrese el dia de nacimiento:");
-            diaNacimientoIn = input.nextInt();
-            System.out.println("Ingrese el mes de nacimiento:");
-            mesNacimientoIn = input.nextInt();
-            System.out.println("Ingrese el anio de nacimiento:");
-            anioNacimientoIn = input.nextInt();
-            
-            fechaNacimientoIn = diaNacimientoIn + "/" + mesNacimientoIn + "/" + anioNacimientoIn;
+            //Pido el DNI y lo valido
+            while (dniInvalido) {
+                
+                try {
+                    
+                    limpiarBuffer = input.nextLine();
+                    
+                    System.out.println("Ingrese el DNI:");
+                    dniIn = input.nextInt();
+                    
+                    //String.valueOf(dniIn).length() es la longitud del DNI ingresado
+                    if (String.valueOf(dniIn).length() != 8) {
+                        throw new Exception();
+                    }
+                    
+                    dniInvalido = false;
+                    
+                } catch(InputMismatchException ime) {
+                    System.out.println("-InputMismatchException: " + ime);
+                    System.out.println("--Error: Ingrese un DNI valido");
+                } catch(Exception e) {
+                    System.out.println("-Exception: " + e);
+                    System.out.println("--El DNI ingresado NO tiene 8 digitos");
+                }
+                
+            }
+
+            //Pido la fecha de Nacimiento y la valido
+            while (fechaInvalida) {
+                try {
+                    
+                    limpiarBuffer = input.nextLine();
+                    
+                    while (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
+                        System.out.println("Ingrese el dia de nacimiento:");
+                        diaNacimientoIn = input.nextInt();
+                        
+                        //si el numero ingresado esta fuera de rango, se emite una exception
+                        if (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
+                            throw new Exception();
+                        }
+                    }
+
+                    while (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
+                        System.out.println("Ingrese el mes de nacimiento:");
+                        mesNacimientoIn = input.nextInt();
+                        
+                        //si el numero ingresado esta fuera de rango, se emite una exception
+                        if (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
+                            throw new Exception();
+                        }
+                    }
+
+                    while (anioNacimientoIn < 1) {
+                        System.out.println("Ingrese el anio de nacimiento:");
+                        anioNacimientoIn = input.nextInt();
+                        
+                        //si el numero ingresado esta fuera de rango, se emite una exception
+                        if (anioNacimientoIn < 1) {
+                            throw new Exception();
+                        }
+                    }
+                                    
+                    fechaInvalida = false;
+                    fechaNacimientoIn = diaNacimientoIn + "/" + mesNacimientoIn + "/" + anioNacimientoIn;
+                    
+                } catch(InputMismatchException ime) {
+                    System.out.println("-InputMismatchException: " + ime);
+                    System.out.println("--Error: Ingrese un numero");
+                } catch(Exception e) {
+                    System.out.println("-Exception: " + e);
+                    System.out.println("--Rango invalido");
+                }
+                
+            }
+
         }
-        
+
+
+        //Agrego el registro a la tabla
         try {
-            
-            ps.setString(1, nombreIn);
-            ps.setString(2, apellidoIn);
-            ps.setInt(3, dniIn);
-            ps.setString(4, fechaNacimientoIn);
-            
+
             switch(tablaIn) {
                 case "tb_Pacientes":
                     ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
+                    ps.setString(1, nombreIn);
+                    ps.setString(2, apellidoIn);
+                    ps.setInt(3, dniIn);
+                    ps.setString(4, fechaNacimientoIn);
                     break;
                 case "tb_Medicos":
                     ps = db.prepareStatement("INSERT INTO tb_Medicos(Nombre,Apellido,DNI,fechaNacimiento,cuentaBancaria,salario,diasDeTrabajo,especialidad) VALUES (?,?,?,?,?,?,?,?)");
@@ -120,9 +207,7 @@ public class ConexionDB {
             System.out.println("SQLException: " +ex);
         }
         
-        
-        
-        
+
     }
     
     
