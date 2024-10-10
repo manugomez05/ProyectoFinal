@@ -47,10 +47,11 @@ public abstract class Persona {
     }
     
     
-    
-    public void mostrarInformacion(){
-        System.out.println("Nombre: "+getNombre()+", Apellido: "+getApellido()+", DNI: "+getDni()+", Fecha de Nacimiento: "+getFechaDeNacimiento());
+    /*
+    //public void mostrarInformacion(){
+        //System.out.println("Nombre: "+getNombre()+", Apellido: "+getApellido()+", DNI: "+getDni()+", Fecha de Nacimiento: "+getFechaDeNacimiento());
         
-}
+}*/
+    
    
 }
