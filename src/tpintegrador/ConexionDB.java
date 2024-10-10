@@ -75,7 +75,40 @@ public class ConexionDB {
         boolean fechaInvalida = true, dniInvalido = true, stringInvalido = true;
         
         //pedi los campos que se repiten
-        if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
+        if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos") {
+            
+            //Pido el DNI y lo valido
+            while (dniInvalido) {
+                
+                try {
+                    
+                    limpiarBuffer = input.nextLine();
+                    
+                    System.out.println("Ingrese el DNI:");
+                    dniIn = input.nextInt();
+                    
+                    //String.valueOf(dniIn).length() es la longitud del DNI ingresado
+                    if (String.valueOf(dniIn).length() != 8) {
+                        throw new Exception();
+                    }
+                    
+                    dniInvalido = false;
+                    
+                } catch(InputMismatchException ime) {
+                    System.out.println("-InputMismatchException: " + ime);
+                    System.out.println("--Error: Ingrese un DNI valido");
+                } catch(Exception e) {
+                    System.out.println("-Exception: " + e);
+                    System.out.println("--El DNI ingresado NO tiene 8 digitos");
+                }
+                
+            }
+            
+        } else if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos") {
+            //Pido especialidad y la valido
+            
+            
+        } else if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
             
             //Pido nombre y apellido
             //  necesita validacion
@@ -104,32 +137,7 @@ public class ConexionDB {
                 }
             }
             
-            //Pido el DNI y lo valido
-            while (dniInvalido) {
-                
-                try {
-                    
-                    limpiarBuffer = input.nextLine();
-                    
-                    System.out.println("Ingrese el DNI:");
-                    dniIn = input.nextInt();
-                    
-                    //String.valueOf(dniIn).length() es la longitud del DNI ingresado
-                    if (String.valueOf(dniIn).length() != 8) {
-                        throw new Exception();
-                    }
-                    
-                    dniInvalido = false;
-                    
-                } catch(InputMismatchException ime) {
-                    System.out.println("-InputMismatchException: " + ime);
-                    System.out.println("--Error: Ingrese un DNI valido");
-                } catch(Exception e) {
-                    System.out.println("-Exception: " + e);
-                    System.out.println("--El DNI ingresado NO tiene 8 digitos");
-                }
-                
-            }
+            
 
             //Pido la fecha de Nacimiento y la valido
             while (fechaInvalida) {
@@ -196,9 +204,15 @@ public class ConexionDB {
                     break;
                 case "tb_Medicos":
                     ps = db.prepareStatement("INSERT INTO tb_Medicos(Nombre,Apellido,DNI,fechaNacimiento,cuentaBancaria,salario,diasDeTrabajo,especialidad) VALUES (?,?,?,?,?,?,?,?)");
+                    ps.setString(1, nombreIn);
+                    ps.setString(2, apellidoIn);
+                    ps.setInt(3, dniIn);
+                    ps.setString(4, fechaNacimientoIn);
                     
                     break;
                 case "tb_Turnos":
+                    ps = db.prepareStatement("INSERT INTO tb_Medicos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
+                    
                     break;
             }
             ps.execute();
