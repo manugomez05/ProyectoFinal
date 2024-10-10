@@ -209,9 +209,17 @@ public class ConexionDB {
                     ps.setInt(3, dniIn);
                     ps.setString(4, fechaNacimientoIn);
                     
+                    //pedir cuenta bancaria
+                    //pedir salario
+                    //pedir dias de trabajo, se meten en un arreglo y se transforma a json con libreria Gson
+                    
                     break;
                 case "tb_Turnos":
                     ps = db.prepareStatement("INSERT INTO tb_Medicos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
+                    //pedir dia del turno
+                    //pedir forma de pago 
+                    //pedir obra social
+                    //inicializo la asistencia en 0(false)
                     
                     break;
             }
