@@ -25,6 +25,10 @@ public class TpIntegrador {
         
         //-------------
         
+        //Llamo a la interfaz inicial
+        Interfaz inter=new Interfaz();
+        inter.setVisible(true);//Muestra la interfaz en la pnatalla
+        inter.setLocationRelativeTo(null);//Hace que su ubicación no sea relativa a nada, es decir, que la pone en el medio de la pantalla
     }
     
 }
