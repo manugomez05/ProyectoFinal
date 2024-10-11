@@ -4,7 +4,6 @@
  */
 package tpintegrador;
 
-
 public class TpIntegrador {
 
     public static void main(String[] args) {
@@ -21,14 +20,9 @@ public class TpIntegrador {
         //Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
         conDB.conectarDB();
-        
-        
+        conDB.agregarRegistro("tb_Medicos");
         //-------------
         
-        //Llamo a la interfaz inicial
-        Interfaz inter=new Interfaz();
-        inter.setVisible(true);//Muestra la interfaz en la pnatalla
-        inter.setLocationRelativeTo(null);//Hace que su ubicación no sea relativa a nada, es decir, que la pone en el medio de la pantalla
     }
     
 }
