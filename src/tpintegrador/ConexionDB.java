@@ -179,18 +179,22 @@ public class ConexionDB {
                         }
 
                         dniInvalido = false;
+                        
 
                     } catch(InputMismatchException ime) {
                         System.out.println("-InputMismatchException: " + ime);
                         System.out.println("--Error: Ingrese un DNI valido");
+                         limpiarBuffer = input.nextLine();
                     } catch(Exception e) {
                         System.out.println("-Exception: " + e);
                         System.out.println("--El DNI ingresado NO tiene 8 digitos");
                     }
-
+                   
                 }
             
         } 
+            
+
         
         if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos") {
             //Pido especialidad y la valido
@@ -342,7 +346,7 @@ public class ConexionDB {
                     }
                     
                     Gson gson = new Gson();
-                    // Convierte el arreglo a JSON
+                    //Convierte el arreglo a JSON
                     String jsondiasDeTrabajoIn = gson.toJson(diasDeTrabajoIn);
                     
                     ps.setString(7, jsondiasDeTrabajoIn);
