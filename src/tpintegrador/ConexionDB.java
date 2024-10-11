@@ -6,6 +6,7 @@ package tpintegrador;
 import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 /**
  *
@@ -15,6 +16,7 @@ public class ConexionDB {
     
     Scanner input = new Scanner(System.in);
     Connection db = null;
+    
     
     
     /*
@@ -70,45 +72,14 @@ public class ConexionDB {
     public void agregarRegistro(String tablaIn) {
         PreparedStatement ps = null;
         
-        String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", limpiarBuffer;
-        int dniIn = 0, diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0;
-        boolean fechaInvalida = true, dniInvalido = true, stringInvalido = true;
+        String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", limpiarBuffer;
+        int dniIn = 0, cbuIn = 0 , diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0, indiceIn;
+        float salarioIn;
+        boolean fechaInvalida = true, dniInvalido = true, stringInvalido = true, especialidadInvalida = true, indiceInvalido = true, cbuInvalido = true, salarioInvalido = true;
         
         //pedi los campos que se repiten
-        if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos") {
-            
-            //Pido el DNI y lo valido
-            while (dniInvalido) {
-                
-                try {
-                    
-                    limpiarBuffer = input.nextLine();
-                    
-                    System.out.println("Ingrese el DNI:");
-                    dniIn = input.nextInt();
-                    
-                    //String.valueOf(dniIn).length() es la longitud del DNI ingresado
-                    if (String.valueOf(dniIn).length() != 8) {
-                        throw new Exception();
-                    }
-                    
-                    dniInvalido = false;
-                    
-                } catch(InputMismatchException ime) {
-                    System.out.println("-InputMismatchException: " + ime);
-                    System.out.println("--Error: Ingrese un DNI valido");
-                } catch(Exception e) {
-                    System.out.println("-Exception: " + e);
-                    System.out.println("--El DNI ingresado NO tiene 8 digitos");
-                }
-                
-            }
-            
-        } else if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos") {
-            //Pido especialidad y la valido
-            
-            
-        } else if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
+        
+        if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
             
             //Pido nombre y apellido
             //  necesita validacion
@@ -138,7 +109,6 @@ public class ConexionDB {
             }
             
             
-
             //Pido la fecha de Nacimiento y la valido
             while (fechaInvalida) {
                 try {
@@ -187,9 +157,71 @@ public class ConexionDB {
                 }
                 
             }
+            
 
+        }  
+        if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos") {
+            
+                //Pido el DNI y lo valido
+                while (dniInvalido) {
+
+                    try {
+
+                        limpiarBuffer = input.nextLine();
+
+                        System.out.println("Ingrese el DNI:");
+                        dniIn = input.nextInt();
+
+                        //String.valueOf(dniIn).length() es la longitud del DNI ingresado
+                        if (String.valueOf(dniIn).length() != 8) {
+                            throw new Exception();
+                        }
+
+                        dniInvalido = false;
+
+                    } catch(InputMismatchException ime) {
+                        System.out.println("-InputMismatchException: " + ime);
+                        System.out.println("--Error: Ingrese un DNI valido");
+                    } catch(Exception e) {
+                        System.out.println("-Exception: " + e);
+                        System.out.println("--El DNI ingresado NO tiene 8 digitos");
+                    }
+
+                }
+            
+        } 
+        
+        if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos") {
+            //Pido especialidad y la valido
+            String[] especialidades = {"Pediatria", "Dermatologia", "Odontologia"};
+            
+            while (indiceInvalido) {
+            
+                try {
+                
+                    limpiarBuffer = input.nextLine();
+                    
+                    System.out.println("Elija una especialidad");
+                    for (String i: especialidades) {
+                        System.out.println( (Arrays.asList(especialidades).indexOf(i)) + 1 +"- " + i);
+                    }
+                    indiceIn = input.nextInt() - 1;
+                    especialidadIn = especialidades[indiceIn];
+                    
+                    indiceInvalido = false;
+                    
+                    
+                } catch(InputMismatchException ime) {
+                    System.out.println("-InputMismatchException: " + ime);
+                    System.out.println("--Error: Ingrese un numero valido");
+                } catch(Exception e) {
+                    System.out.println("-Exception: " + e);
+                    System.out.println("--El indice ingresado esta fuera de rango");
+                }
+                
+            }
+            
         }
-
 
         //Agrego el registro a la tabla
         try {
@@ -209,13 +241,77 @@ public class ConexionDB {
                     ps.setInt(3, dniIn);
                     ps.setString(4, fechaNacimientoIn);
                     
-                    //pedir cuenta bancaria
-                    //pedir salario
+                    //Pido CBU y lo valido
+                    while (cbuInvalido) {
+
+                        try {
+
+                            limpiarBuffer = input.nextLine();
+
+                            System.out.println("Ingrese su cuenta Bancaria (CBU):");
+                            cbuIn = input.nextInt();
+
+                            //String.valueOf(dniIn).length() es la longitud del CBU ingresado
+                            if (String.valueOf(cbuIn).length() != 10) {
+                                throw new Exception();
+                            }
+
+                            cbuInvalido = false;
+
+                        } catch(InputMismatchException ime) {
+                            System.out.println("-InputMismatchException: " + ime);
+                            System.out.println("--Error: Ingrese un CBU valido");
+                        } catch(Exception e) {
+                            System.out.println("-Exception: " + e);
+                            System.out.println("--El CBU ingresado NO tiene 10 digitos");
+                        }
+
+                    }
+                    ps.setInt(5, cbuIn);
+                    //Pido salario y lo valido
+                    while (salarioInvalido) {
+                        
+                        try {
+                            
+                            limpiarBuffer = input.nextLine();
+                        
+                            System.out.println("Ingrese el salario");
+                            salarioIn = input.nextFloat();
+                            
+                            if (salarioIn < 0) {
+                                throw new Exception();
+                            }
+                            
+                            salarioInvalido = false;
+                            
+                        } catch(InputMismatchException ime) {
+                            System.out.println("-InputMismatchException: " + ime);
+                            System.out.println("--Error: Ingrese un salario valido");
+                        } catch(Exception e) {
+                            System.out.println("-Exception: " + e);
+                            System.out.println("--El salario NO puede ser negativo");
+                        }
+                    }
+                    
+                    ps.setFloat(6, salarioIn);
+                    
                     //pedir dias de trabajo, se meten en un arreglo y se transforma a json con libreria Gson
+                    
+                    String[] diasDeTrabajoIn = {};
+                    
+                    //ps.setArray();
+                    
+                    
+                    ps.setString(8, especialidadIn);
+                    
+                    
+                    
+                    
                     
                     break;
                 case "tb_Turnos":
                     ps = db.prepareStatement("INSERT INTO tb_Medicos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
+                    
                     //pedir dia del turno
                     //pedir forma de pago 
                     //pedir obra social
@@ -231,6 +327,9 @@ public class ConexionDB {
         
 
     }
+    
+    
+    
     
     
 }
