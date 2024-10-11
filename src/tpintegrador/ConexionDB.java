@@ -6,8 +6,10 @@ package tpintegrador;
 import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import com.google.gson.Gson;
 /**
  *
  * @author USER
@@ -72,17 +74,16 @@ public class ConexionDB {
     public void agregarRegistro(String tablaIn) {
         PreparedStatement ps = null;
         
-        String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", limpiarBuffer;
-        int dniIn = 0, cbuIn = 0 , diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0, indiceIn;
-        float salarioIn;
-        boolean fechaInvalida = true, dniInvalido = true, stringInvalido = true, especialidadInvalida = true, indiceInvalido = true, cbuInvalido = true, salarioInvalido = true;
+        String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", diaIn = "", limpiarBuffer;
+        int dniIn = 0, cbuIn = 0 , diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0, indiceIn = 0;
+        float salarioIn = 0;
+        boolean fechaInvalida = true, dniInvalido = true, stringInvalido = true, especialidadInvalida = true, indiceInvalido = true, cbuInvalido = true, salarioInvalido = true, diaInvalido = true;
         
         //pedi los campos que se repiten
         
         if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
             
             //Pido nombre y apellido
-            //  necesita validacion
             while (stringInvalido) {
                 try {
                 
@@ -296,12 +297,56 @@ public class ConexionDB {
                     ps.setFloat(6, salarioIn);
                     
                     //pedir dias de trabajo, se meten en un arreglo y se transforma a json con libreria Gson
+                    ArrayList<String> diasDeSemana = new ArrayList<>(5);
+                    diasDeSemana.add("Lunes");
+                    diasDeSemana.add("Martes");
+                    diasDeSemana.add("Miercoles");
+                    diasDeSemana.add("Jueves");
+                    diasDeSemana.add("Viernes");
+                    ArrayList<String> diasDeTrabajoIn = new ArrayList<>();
                     
-                    String[] diasDeTrabajoIn = {};
                     
-                    //ps.setArray();
+                    while (diaInvalido) {
+                        
+                        try {
+                            
+                            limpiarBuffer = input.nextLine();
+                        
+                            while (indiceIn != 6) {
+                                System.out.println("Ingrese los dias de trabajo");
+                                for (String i: diasDeSemana) {
+                                    System.out.println( (diasDeSemana.indexOf(i)) + 1 +"- " + i);
+                                }
+                                System.out.println("6- Salir");
+                                
+                                indiceIn = input.nextInt();
+                                diaIn = diasDeSemana.get(indiceIn-1);
+                                diasDeTrabajoIn.add(diaIn);
+                                diasDeSemana.remove(indiceIn-1);
+                                
+                            }
+                            
+                            if (indiceIn < 0 || indiceIn > 6 && indiceIn != 6) {
+                                throw new Exception();
+                            }
+                            
+                            diaInvalido = false;
+                            
+                        } catch(InputMismatchException ime) {
+                            System.out.println("-InputMismatchException: " + ime);
+                            System.out.println("--Error: Ingrese un indice valido");
+                        } catch(Exception e) {
+                            System.out.println("-Exception: " + e);
+                            System.out.println("--Indice fuera de rango");
+                        }
+                    }
                     
+                    Gson gson = new Gson();
+                    // Convierte el arreglo a JSON
+                    String jsondiasDeTrabajoIn = gson.toJson(diasDeTrabajoIn);
                     
+                    ps.setString(7, jsondiasDeTrabajoIn);
+
                     ps.setString(8, especialidadIn);
                     
                     
