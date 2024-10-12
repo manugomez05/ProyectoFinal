@@ -23,7 +23,7 @@ public class TpIntegrador {
         //Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
         conDB.conectarDB();
-        conDB.agregarRegistro("tb_Medicos");
+        conDB.agregarRegistro("tb_Turnos");
         //-------------
         
           // variables que se utilizaran en el menu de opciones utilizando scanner:
