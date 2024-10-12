@@ -6,10 +6,6 @@ package tpintegrador;
 import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import com.google.gson.Gson;
 /**
  *
  * @author USER
@@ -20,18 +16,6 @@ public class ConexionDB {
     Connection db = null;
     String limpiarBuffer;
     
-    
-    /*
-            TABLA PACIENTES
-            CREATE TABLE IF NOT EXISTS tb_Pacientes(idPaciente INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, PRIMARY KEY(idPaciente AUTOINCREMENT) ) 
-    
-            TABLA MEDICOS
-            CREATE TABLE IF NOT EXISTS tb_Medicos(idMedico INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, cuentaBancaria INTEGER(10), salario DOUBLE, diasDeTrabajo TEXT, especialidad TEXT, PRIMARY KEY(idMedico AUTOINCREMENT) ) 
-    
-            TABLA TURNOS 
-            CREATE TABLE IF NOT EXISTS tb_Turnos(dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asisten) 
-            
-    */
     
     //conecta a la base de datos
     public void conectarDB() {
@@ -70,366 +54,34 @@ public class ConexionDB {
     }
     
     
-    public String pidoStringYValida(String campo) {
-        
-        String stringIn = "";
-        boolean stringInvalido = true;
-        
-        //Pido nombre y apellido
-        while (stringInvalido) {
-            try {
-
-                do  {
-                    System.out.println("Ingrese el" + campo +":");
-                    stringIn = input.nextLine();    
-
-                    if (stringIn.matches("\\d+")) {
-                        throw new Exception();
-                    }
-
-                //comprueba si los campos contienen solo numeros
-                } while(stringIn.matches("\\d+"));
-
-                stringInvalido = false;
-
-            }  catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--El string debe contener SOLO letras");
-            }
-        }
-        
-        return stringIn;
-    }
-    
-    public String pidoFechaNacimientoYValido() {
-        
-        String fecha = "";
-        boolean fechaInvalida = true;
-        int diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0;
-        
-        //Pido la fecha de Nacimiento y la valido
-        while (fechaInvalida) {
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                while (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
-                    System.out.println("Ingrese el dia de nacimiento:");
-                    diaNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
-                        throw new Exception();
-                    }
-                }
-
-                while (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
-                    System.out.println("Ingrese el mes de nacimiento:");
-                    mesNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
-                        throw new Exception();
-                    }
-                }
-
-                while (anioNacimientoIn < 1) {
-                    System.out.println("Ingrese el anio de nacimiento:");
-                    anioNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (anioNacimientoIn < 1) {
-                        throw new Exception();
-                    }
-                }
-
-                fechaInvalida = false;
-                fecha = diaNacimientoIn + "/" + mesNacimientoIn + "/" + anioNacimientoIn;
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un numero");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--Rango invalido");
-            }
-
-        }
-        
-        return fecha;
-    }
-    
-    public int pidoDniYValido() {
-        
-        int dni = 0;
-        boolean dniInvalido = true;
-        
-        while (dniInvalido) {
-
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                System.out.println("Ingrese el DNI:");
-                dni = input.nextInt();
-
-                //String.valueOf(dniIn).length() es la longitud del DNI ingresado
-                if (String.valueOf(dni).length() != 8) {
-                    throw new Exception();
-                }
-
-                dniInvalido = false;
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un DNI valido");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--El DNI ingresado NO tiene 8 digitos");
-            }
-
-        }
-        
-        return dni;
-    }
-    
-    public String pidoEspecialidadYValido() {
-        
-        int indiceIn = 0;
-        String especialidad = "";
-        boolean indiceInvalido = true;
-        
-        ArrayList<String> especialidades = new ArrayList<>(3);
-        especialidades.add("Pediatria");
-        especialidades.add("Dermatologia");
-        especialidades.add("Odontologia");
-
-        while (indiceInvalido) {
-
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                System.out.println("Elija una especialidad");
-                for (String i: especialidades) {
-                    System.out.println( (especialidades.indexOf(i)) + 1 +"- " + i);
-                }
-                indiceIn = input.nextInt() - 1;
-                especialidad = especialidades.get(indiceIn);
-
-                indiceInvalido = false;
-
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un numero valido");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--El indice ingresado esta fuera de rango");
-            }
-
-        }
-        
-        return especialidad;
-    }
-    
-    public int pidoCbuYValido() {
-        
-        int cbu = 0;
-        boolean cbuInvalido = true;
-        
-        while (cbuInvalido) {
-
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                System.out.println("Ingrese su cuenta Bancaria (CBU):");
-                cbu = input.nextInt();
-
-                //String.valueOf(dniIn).length() es la longitud del CBU ingresado
-                if (String.valueOf(cbu).length() != 10) {
-                    throw new Exception();
-                }
-
-                cbuInvalido = false;
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un CBU valido");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--El CBU ingresado NO tiene 10 digitos");
-            }
-
-        }
-        
-        return cbu;
-    }
-    
-    public float pidoSalarioYValido() {
-        
-        float salario = 0;
-        boolean salarioInvalido = true;
-        
-        while (salarioInvalido) {
-                        
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                System.out.println("Ingrese el salario");
-                salario = input.nextFloat();
-
-                if (salario < 0) {
-                    throw new Exception();
-                }
-
-                salarioInvalido = false;
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un salario valido");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--El salario NO puede ser negativo");
-            }
-        }
-        
-        return salario;
-    }
-    
-    public String pidoDiasDeTrabajoYValido() {
-        ArrayList<String> diasDeSemana = new ArrayList<>(5);
-        diasDeSemana.add("Lunes");
-        diasDeSemana.add("Martes");
-        diasDeSemana.add("Miercoles");
-        diasDeSemana.add("Jueves");
-        diasDeSemana.add("Viernes");
-        ArrayList<String> diasDeTrabajoIn = new ArrayList<>();
-        
-        boolean diaInvalido = true;
-        int indiceIn = 0;
-        String diaIn = "";
-
-        while (diaInvalido) {
-
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                while (indiceIn != 6) {
-                    System.out.println("Ingrese los dias de trabajo");
-                    for (String i: diasDeSemana) {
-                        System.out.println( (diasDeSemana.indexOf(i)) + 1 +"- " + i);
-                    }
-                    System.out.println("6- Salir");
-
-                    indiceIn = input.nextInt();
-                    diaIn = diasDeSemana.get(indiceIn-1);
-                    diasDeTrabajoIn.add(diaIn);
-                    diasDeSemana.remove(indiceIn-1);
-
-                }
-
-                if (indiceIn < 0 || indiceIn > 6 && indiceIn != 6) {
-                    throw new Exception();
-                }
-
-                diaInvalido = false;
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un indice valido");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--Indice fuera de rango");
-            }
-        }
-
-        Gson gson = new Gson();
-        // Convierte el arreglo a JSON
-        String jsondiasDeTrabajoIn = gson.toJson(diasDeTrabajoIn);
-        
-        return jsondiasDeTrabajoIn;
-    }
-    
-    public String pidoObraSocialYValido() {
-        
-        boolean indiceInvalido = true;
-        int indiceIn = 0;
-        String obraSocial = "";
-        
-        ArrayList<String> obrasSocialesCubiertas = new ArrayList<>(4);
-        obrasSocialesCubiertas.add("OSEP");
-        obrasSocialesCubiertas.add("OSDE");
-        obrasSocialesCubiertas.add("DAMSU");
-        obrasSocialesCubiertas.add("Medife");
-        while (indiceInvalido) {
-
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                System.out.println("Elija su obra social");
-                for (String i: obrasSocialesCubiertas) {
-                    System.out.println( (obrasSocialesCubiertas.indexOf(i)) + 1 +"- " + i);
-                }
-                System.out.println("5- No tengo obra social");
-
-                indiceIn = input.nextInt() - 1;
-                if (indiceIn == 5) {
-                    obraSocial = "Ninguna";
-                } else if (indiceIn < 1 || indiceIn > 5) {
-                    throw new Exception();
-                } else {
-                    obraSocial = obrasSocialesCubiertas.get(indiceIn);
-                }
-
-                indiceInvalido = false;
-
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese una obra social valida");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--El indice ingresado esta fuera de rango");
-            }
-
-        }
-        
-        return obraSocial;
-    }
-    
-    
     //agrega un registro a alguna tabla
     public void agregarRegistro(String tablaIn) {
         PreparedStatement ps = null;
         
-        String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", diasDeTrabajoIn = "", obraSocialIn = "", limpiarBuffer;
+        String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", diasDeTrabajoIn = "", obraSocialIn = "", formaDePagoIn = "", limpiarBuffer;
         int dniIn = 0, cbuIn = 0, indiceIn = 0;
         float salarioIn = 0;
         boolean especialidadInvalida = true, indiceInvalido = true, cbuInvalido = true, salarioInvalido = true, diaInvalido = true;
         
+        Validador pideYValida = new Validador();
         
         //pedi los campos que se repiten
         if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
             //Pido nombre y apellido y los valido
-            nombreIn = pidoStringYValida("nombre");
-            apellidoIn = pidoStringYValida("apellido");
+            nombreIn = pideYValida.pidoStringYValida("nombre");
+            apellidoIn = pideYValida.pidoStringYValida("apellido");
             //Pido fecha de nacimiento y la valido
-            fechaNacimientoIn = pidoFechaNacimientoYValido();
+            fechaNacimientoIn = pideYValida.pidoFechaNacimientoYValido();
         }  
         if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos") {
             //Pido el DNI y lo valido
-            dniIn = pidoDniYValido();
+            dniIn = pideYValida.pidoDniYValido();
         } 
         if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos") {
             //Pido especialidad y la valido
-            especialidadIn = pidoEspecialidadYValido();
+            especialidadIn = pideYValida.pidoEspecialidadYValido();
         }
-
+        
         //Agrego el registro a la tabla
         try {
 
@@ -449,33 +101,35 @@ public class ConexionDB {
                     ps.setString(4, fechaNacimientoIn);
                     
                     //Pido CBU y lo valido
-                    cbuIn = pidoCbuYValido();
+                    cbuIn = pideYValida.pidoCbuYValido();
                     ps.setInt(5, cbuIn);
                     
                     //Pido salario y lo valido
-                    salarioIn = pidoSalarioYValido();
+                    salarioIn = pideYValida.pidoSalarioYValido();
                     ps.setFloat(6, salarioIn);
                     
                     //Pido los dias de trabajo y lo valido, se meten en un arreglo y se transforma a json con libreria Gson
-                    diasDeTrabajoIn = pidoDiasDeTrabajoYValido();
+                    diasDeTrabajoIn = pideYValida.pidoDiasDeTrabajoYValido();
                     ps.setString(7, diasDeTrabajoIn);
 
                     ps.setString(8, especialidadIn);
 
                     break;
                 case "tb_Turnos":
-                    ps = db.prepareStatement("INSERT INTO tb_Medicos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
+                    ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
                     ps.setInt(1, dniIn);
                     
                     //pedir dia del turno, depende de la especialidad y de los dias de trabajo de los medicos de esa especialidad
                     
                     
                     //pedir forma de pago 
-                    
-
+                    formaDePagoIn = pideYValida.pidoFormaDePagoYValido();
+                    ps.setString(3, formaDePagoIn);
                     //pedir obra social
-                    obraSocialIn = pidoObraSocialYValido();
-                    ps.setString(5, obraSocialIn);
+                    obraSocialIn = pideYValida.pidoObraSocialYValido();
+                    ps.setString(4, obraSocialIn);
+                    
+                    ps.setString(5, especialidadIn);
                     
                     //inicializo la asistencia en 0(false)
                     ps.setInt(6, 0);
@@ -486,12 +140,9 @@ public class ConexionDB {
         }catch(SQLException ex) {
             System.out.println("SQLException: " +ex);
         }
-        
-
+       
     }
     
-    
-    
-    
-    
 }
+
+
