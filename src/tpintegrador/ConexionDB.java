@@ -6,6 +6,8 @@ package tpintegrador;
 import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 /**
  *
  * @author USER
@@ -143,6 +145,90 @@ public class ConexionDB {
        
     }
     
+    
+    public void modificarRegistro(String tablaIn) {
+        //dependiendo de la tabla 
+        //  pregunto que campos va a querer modificar
+        //      pregunto por los nuevos valores
+        
+        /*
+        Para obtener solo los nombres de las columnas 
+        
+        PRAGMA table_info(tb_Medicos);
+        SELECT name FROM pragma_table_info('tb_Medicos');
+        */
+        int indiceIn = 0, indiceSalir = 0;
+        
+        try {
+            Statement stmt = db.createStatement();
+            ResultSet rs = stmt.executeQuery("PRAGMA table_info(" + tablaIn + ");"); 
+            ArrayList<String> columnasDeTabla = new ArrayList<>();
+            ArrayList<String> columnasACambiar = new ArrayList<>();
+            
+            while (rs.next()) {
+                columnasDeTabla.add(rs.getString("name"));
+            }
+            
+            do {
+                limpiarBuffer = input.nextLine();
+                
+                indiceSalir = columnasDeTabla.size() + 1;
+                
+                System.out.println("Elija la columna/s a modificar");
+                for (String i: columnasDeTabla) {
+                    System.out.println((columnasDeTabla.indexOf(i) + 1) + "- " + i);
+                }
+                System.out.println(indiceSalir + "- Salir");
+                
+                try {
+                    indiceIn = input.nextInt();
+                    
+                    if (indiceIn != indiceSalir) {
+                        columnasACambiar.add(columnasDeTabla.get(indiceIn-1));
+                        columnasDeTabla.remove(indiceIn-1);
+                    }
+                    
+                } catch(IndexOutOfBoundsException iob) {
+                    System.out.println("-IndexOutOfBoundsException: " + iob);
+                    System.out.println("--Indice ingresado fuera de rango");
+                } catch (InputMismatchException ime) {
+                    System.out.println("-InputMismatchException: " + ime);
+                    System.out.println("--Ingrese un numero");
+                }
+                                
+            } while (indiceIn != indiceSalir);
+            
+                       
+            /*
+            
+            switch(tablaIn) {
+                case "tb_Pacientes":
+                    break;
+                case "tb_Medicos":
+                    
+                    break;
+                case "tb_Turnos":
+                    
+                    break;
+            }
+            */
+        } catch(SQLException ex) {
+            System.out.println("SQLException: " +ex);
+        } catch(Exception e) {
+            System.out.println("-Exception: " + e);
+            System.out.println("--Indice fuera de rango");
+        }
+        
+    }
+    
+    
+    public void eliminarRegistro(String tablaIn) {
+        
+    }
+    
+    public void mostrarTabla(String tablaIn) {
+        
+    }
 }
 
 
