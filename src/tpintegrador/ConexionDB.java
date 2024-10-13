@@ -17,7 +17,9 @@ public class ConexionDB {
     Scanner input = new Scanner(System.in);
     Connection db = null;
     String limpiarBuffer;
-    
+    Statement stmt;
+    ResultSet rs;
+    String sql;
     
     //conecta a la base de datos
     public void conectarDB() {
@@ -156,12 +158,23 @@ public class ConexionDB {
         
         PRAGMA table_info(tb_Medicos);
         SELECT name FROM pragma_table_info('tb_Medicos');
+        
+        
+        UPDATE nombre_tabla
+        SET columna1 = valor1, columna2 = valor2, ...
+        WHERE condición;
+        
         */
         int indiceIn = 0, indiceSalir = 0;
         
+        //Muestro la tabla
+        mostrarTabla(tablaIn);
+        
+        
+        
         try {
-            Statement stmt = db.createStatement();
-            ResultSet rs = stmt.executeQuery("PRAGMA table_info(" + tablaIn + ");"); 
+            stmt = db.createStatement();
+            rs = stmt.executeQuery("PRAGMA table_info(" + tablaIn + ");"); 
             ArrayList<String> columnasDeTabla = new ArrayList<>();
             ArrayList<String> columnasACambiar = new ArrayList<>();
             
@@ -227,6 +240,55 @@ public class ConexionDB {
     }
     
     public void mostrarTabla(String tablaIn) {
+        sql = "SELECT * FROM " + tablaIn;
+        
+        try {
+            stmt = db.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+            System.out.println("-------------- " + tablaIn + " --------------");
+            while (rs.next()) {
+                
+                switch (tablaIn) {
+                    case "tb_Medicos":
+                        
+                        System.out.println("- ID: " + rs.getString(1) + 
+                                            "\n\t -- Nombre: " + rs.getString(2) + 
+                                            "\n\t -- Apellido: " + rs.getString(3) +
+                                            "\n\t -- DNI: " + rs.getString(4) +
+                                            "\n\t -- Fecha de Nacimiento: " + rs.getString(5) + 
+                                            "\n\t -- Cuenta Bancaria: " + rs.getString(6) + 
+                                            "\n\t -- Salario: " + rs.getString(7) + 
+                                            "\n\t -- Dias de trabajo: " + rs.getString(8) + 
+                                            "\n\t -- Especialidad: " + rs.getString(9));
+                        break;
+                    case "tb_Pacientes":
+                        
+                        System.out.println("- ID: " + rs.getString(1) + 
+                                            "\n\t -- Nombre: " + rs.getString(2) + 
+                                            "\n\t -- Apellido: " + rs.getString(3) +
+                                            "\n\t -- DNI: " + rs.getString(4) +
+                                            "\n\t -- Fecha de Nacimiento: " + rs.getString(5));
+                        break;
+                    case "tb_Turnos":
+                        
+                        System.out.println("- DNI de Paciente: " + rs.getString(1) + 
+                                            "\n\t -- Dia del turno: " + rs.getString(2) + 
+                                            "\n\t -- Forma de pago: " + rs.getString(3) +
+                                            "\n\t -- Obra social: " + rs.getString(4) +
+                                            "\n\t -- Especialidad: " + rs.getString(5) +
+                                            "\n\t -- Asistencia del paciente: " + rs.getString(6));
+                        break;
+                }
+                
+            }
+            System.out.println("---------------------------------------");
+            
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " +ex);
+        }
+        
+        
         
     }
 }
