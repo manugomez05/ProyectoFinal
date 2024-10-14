@@ -365,10 +365,10 @@ class Validador {
                 }
                 System.out.println("5- No tengo obra social");
 
-                indiceIn = input.nextInt() - 1;
-                if (indiceIn == 5) {
+                indiceIn = input.nextInt() - 1 ;
+                if (indiceIn == 4) {
                     obraSocial = "Ninguna";
-                } else if (indiceIn < 0 || indiceIn > 5) {
+                } else if (indiceIn < 0 || indiceIn > 4) {
                     throw new Exception();
                 } else {
                     obraSocial = obrasSocialesCubiertas.get(indiceIn);
