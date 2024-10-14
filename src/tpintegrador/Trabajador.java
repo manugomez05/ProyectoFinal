@@ -6,8 +6,7 @@ public class Trabajador extends Persona {
     float salario;
     String diasDeTrabajo;
 
-    public Trabajador() {
-    }
+ 
 
     public int getCuentaBancaria() {
         return cuentaBancaria;
@@ -33,11 +32,14 @@ public class Trabajador extends Persona {
         this.diasDeTrabajo = diasDeTrabajo;
     }
 
-    public Trabajador(int cuentaBancaria, float salario, String diasDeTrabajo) {
+    public Trabajador(int cuentaBancaria, float salario, String diasDeTrabajo, String nombre, String apellido, int dni, String fechaDeNacimiento) {
+        super(nombre, apellido, dni, fechaDeNacimiento);
         this.cuentaBancaria = cuentaBancaria;
         this.salario = salario;
         this.diasDeTrabajo = diasDeTrabajo;
     }
+
+ 
 
     
     
