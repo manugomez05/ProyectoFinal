@@ -33,8 +33,8 @@ public class TpIntegrador {
         boolean opcionValida = true;
         String limpiarBuffer;
         
-        int opcionUsuario;
-        int opcionAdmin;
+        int opcionUsuario=0;
+        int opcionAdmin=0;
         boolean opcionValidaUsuar = true;
         boolean opcionValidaAdmin=true;
         
@@ -104,10 +104,15 @@ public class TpIntegrador {
                         System.out.println("ERROR: " + e);
                         System.out.println("Ingrese un indice valido");
                     }
-                        
-                  }while(opcionValidaUsuar);
-                  
+                       
+                          switch(opcionUsuario){
+                        case 1: 
+                            conDB.agregarRegistro("tb_Turnos");
                             break;
+                    }
+                            break;
+                  }while(opcionValidaUsuar || opcionUsuario!=5);
+                  
               case 2: 
                   
                   do{
