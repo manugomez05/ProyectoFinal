@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package tpintegrador;
 
 import java.util.InputMismatchException;
@@ -10,153 +6,138 @@ import java.util.Scanner;
 public class TpIntegrador {
 
     public static void main(String[] args) {
-        
-        /*
-        
-        usar camelCase
-        nombres de variables descriptivos
-        describir con un comentario arriba de cada funcion que es lo que hace la funcion 
-        
-        
-        */
-        
-        //Conecto a la base de datos 
+
+        // Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
         conDB.conectarDB();
         conDB.mostrarTabla("tb_dfsurnos");
-        //conDB.modificarRegistro("tb_Turnos");
-        //conDB.agregarRegistro("tb_Turnos");
-        //-------------
-       
-          // variables que se utilizaran en el menu de opciones utilizando scanner:
+        // conDB.modificarRegistro("tb_Turnos");
+        // conDB.agregarRegistro("tb_Turnos");
+        
+        // Variables del menú
         int opcion = 0;
         boolean opcionValida = true;
         String limpiarBuffer;
-        
-        int opcionUsuario=0;
-        int opcionAdmin=0;
-        boolean opcionValidaUsuar = true;
-        boolean opcionValidaAdmin=true;
+
+        int opcionUsuario = 0;
+        int opcionAdmin = 0;
+        boolean opcionValidaUsuar;
+        boolean opcionValidaAdmin;
         
         Scanner input = new Scanner(System.in);
 
-        System.out.println("---------------------------------------");
-
-        //Eleccion con un menu de opciones utilizando scanner
+        // Menú principal
         do {
+            System.out.println("---------------------------------------");
             System.out.println("1. PACIENTE");
             System.out.println("2. ADMINISTRADOR");
             System.out.println("3. SALIR");
-            System.out.println("");
-            System.out.print("Elija una opcion: ");
+            System.out.print("Elija una opción: ");
 
-            // validaciones de las entradas con try -> catch
+            // Validaciones de las entradas
             try {
                 opcion = input.nextInt();
                 if (opcion < 1 || opcion > 3) {
                     throw new Exception();
-                }else{
+                } else {
                     opcionValida = false;
                 }
                 
             } catch (InputMismatchException exc) {
                 System.out.println("ERROR: " + exc);
-                System.out.println("Ingrese numeros unicamente");
-                limpiarBuffer = input.nextLine();
+                System.out.println("Ingrese números únicamente");
+                limpiarBuffer = input.nextLine(); // Limpiar el buffer
                 
             } catch (Exception e) {
                 System.out.println("ERROR: " + e);
-                System.out.println("Ingrese un indice valido");
+                System.out.println("Ingrese un índice válido");
             }
 
         } while (opcionValida);
-        
+
         System.out.println(" ");
         
-        //switch donde se encuentra el modo usuario, modo admin o la salida del programa 
-        
-          switch (opcion){
-              
-              case 1: 
-                  do{
-                  System.out.println("----------Usted esta en modo paciente-----------");
-                  System.out.println("1. Agregar turno");
-                  System.out.println("2. Modificar turno");
-                  System.out.println("3. Cancelar turno");
-                  System.out.println("4. Pagar ");
-                  System.out.println("5. Salir");
-                  System.out.println("");
-                  System.out.print("Elija una opcion: ");
-                  
-                  // validaciones de las entradas con try -> catch
-                    try{
+        // Switch para el modo Paciente, Administrador o salida
+        switch (opcion) {
+            case 1: 
+                do {
+                    System.out.println("----------Usted está en modo paciente-----------");
+                    System.out.println("1. Agregar turno");
+                    System.out.println("2. Modificar turno");
+                    System.out.println("3. Cancelar turno");
+                    System.out.println("4. Pagar ");
+                    System.out.println("5. Volver al menú principal");
+                    System.out.print("Elija una opción: ");
+
+                    opcionValidaUsuar = true;
+
+                    // Validaciones de las entradas
+                    try {
                         opcionUsuario = input.nextInt();
-                        if (opcionUsuario<1 || opcionUsuario>5){
+                        input.nextLine(); // Limpiar el buffer
+                        if (opcionUsuario < 1 || opcionUsuario > 5) {
                             throw new Exception();
-                        }else{
+                        } else {
                             opcionValidaUsuar = false;
                         }
-                    }catch(InputMismatchException exc){
-                        System.out.println("ERROR:" + exc);
-                        System.out.println("Ingrese unicamente numeros");
-                        limpiarBuffer = input.nextLine();
-                    }catch (Exception e){
+                    } catch (InputMismatchException exc) {
+                        System.out.println("ERROR: " + exc);
+                        System.out.println("Ingrese únicamente números");
+                        limpiarBuffer = input.nextLine(); // Limpiar el buffer
+                    } catch (Exception e) {
                         System.out.println("ERROR: " + e);
-                        System.out.println("Ingrese un indice valido");
+                        System.out.println("Ingrese un índice válido");
                     }
-                       
-                          switch(opcionUsuario){
+
+                    // Acciones según la opción elegida
+                    switch (opcionUsuario) {
                         case 1: 
                             conDB.agregarRegistro("tb_Turnos");
                             break;
+                        // Aquí puedes agregar más acciones para las otras opciones si es necesario.
                     }
-                            break;
-                  }while(opcionValidaUsuar || opcionUsuario!=5);
-                  
-              case 2: 
-                  
-                  do{
-                      
-                      System.out.println("------Usted esta en modo admin-------");
-                       System.out.println("1. Confirmar asistencia");
-                       System.out.println("2. Realizar pago");
-                       System.out.println("3. Salir");
-                      
-                        // validaciones de las entradas con try -> catch
-                      try{
+
+                } while (opcionUsuario != 5); // Salir del menú de paciente cuando se elija la opción 5
+
+                opcionValida = true; // Reiniciar para volver al menú principal
+                main(args); // Llamar nuevamente a `main` para mostrar el menú principal
+                break;
+
+            case 2:
+                do {
+                    System.out.println("------Usted está en modo administrador-------");
+                    System.out.println("1. Confirmar asistencia");
+                    System.out.println("2. Realizar pago");
+                    System.out.println("3. Volver al menú principal");
+                    System.out.print("Elija una opción: ");
+
+                    opcionValidaAdmin = true;
+
+                    // Validaciones de las entradas
+                    try {
                         opcionAdmin = input.nextInt();
-                        if (opcionAdmin<1 || opcionAdmin>3){
+                        if (opcionAdmin < 1 || opcionAdmin > 3) {
                             throw new Exception();
-                        }else{
+                        } else {
                             opcionValidaAdmin = false;
                         }
-                    }catch(InputMismatchException exc){
+                    } catch (InputMismatchException exc) {
                         System.out.println("ERROR:" + exc);
-                        System.out.println("Ingrese unicamente numeros");
-                        limpiarBuffer = input.nextLine();
-                    }catch (Exception e){
+                        System.out.println("Ingrese únicamente números");
+                        limpiarBuffer = input.nextLine(); // Limpiar el buffer
+                    } catch (Exception e) {
                         System.out.println("ERROR: " + e);
-                        System.out.println("Ingrese un indice valido");
+                        System.out.println("Ingrese un índice válido");
                     }
-                        
-                  }while(opcionValidaAdmin);
-                            break;
-                            
-              case 3: 
-                  System.out.println("¡Gracias por visitar clinica Vitality!");
-                            break;
-           }
-       
-        
-        //-------------¡¡¡¡¡¡¡¡¡¡¡¡¡Eleccion con una interfaz!!!!!!!!!!!!!!!!!!----------------------
-      
-        //Llamo a la interfaz inicial
-        /*Interfaz inter=new Interfaz();
-        inter.setVisible(true);//Muestra la interfaz en la pnatalla
-        inter.setLocationRelativeTo(null);//Hace que su ubicación no sea relativa a nada, es decir, que la pone en el medio de la pantalla
-      */   
-    }
 
+                } while (opcionValidaAdmin || opcionAdmin != 3); // Salir cuando se elija la opción 3
+                opcionValida = true; // Reiniciar para volver al menú principal
+                main(args); // Llamar nuevamente a `main` para mostrar el menú principal
+                break;
+
+            case 3: 
+                System.out.println("¡Gracias por visitar clínica Vitality!");
+                break;
+        }
+    }
 }
-        
- 
