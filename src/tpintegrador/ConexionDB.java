@@ -78,9 +78,21 @@ public class ConexionDB {
         
         Validador pideYValida = new Validador();
         
+        
+        /*
+        if (tablaIn == "tb_Medicos") {
+            Medico m1 = new Medico();
+        } else if (tablaIn == "tb_Pacientes") {
+            Paciente p1 = new Paciente();
+        } else if (tablaIn == "tb_Turnos") {
+            Turno p1 = new Turno();   
+        }
+        */
+        
         //pedi los campos que se repiten
         if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
             //Pido nombre y apellido y los valido
+            //p1.setNombre(pideYValida.pidoStringYValida("nombre"));
             nombreIn = pideYValida.pidoStringYValida("nombre");
             apellidoIn = pideYValida.pidoStringYValida("apellido");
             //Pido fecha de nacimiento y la valido
@@ -101,12 +113,18 @@ public class ConexionDB {
             switch(tablaIn) {
                 case "tb_Pacientes":
                     ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
+                    //ps.setString(1, p1.getNombre());
                     ps.setString(1, nombreIn);
                     ps.setString(2, apellidoIn);
                     ps.setInt(3, dniIn);
                     ps.setString(4, fechaNacimientoIn);
+                    
+                    Paciente paciente1 = new Paciente(nombreIn, apellidoIn, dniIn, fechaNacimientoIn);
+                    
                     break;
                 case "tb_Medicos":
+                    
+                    
                     ps = db.prepareStatement("INSERT INTO tb_Medicos(Nombre,Apellido,DNI,fechaNacimiento,cuentaBancaria,salario,diasDeTrabajo,especialidad) VALUES (?,?,?,?,?,?,?,?)");
                     ps.setString(1, nombreIn);
                     ps.setString(2, apellidoIn);
@@ -126,6 +144,9 @@ public class ConexionDB {
                     ps.setString(7, diasDeTrabajoIn);
 
                     ps.setString(8, especialidadIn);
+                    
+                    //Medico medico1 = new Medico(nombreIn, apellidoIn, dniIn, fechaNacimiento, cuentaBancaria, salario, diasDeTrabajo);
+                    
 
                     break;
                 case "tb_Turnos":
@@ -146,6 +167,7 @@ public class ConexionDB {
                     
                     //inicializo la asistencia en 0(false)
                     ps.setInt(6, 0);
+                    System.out.println("Agregado");
                     break;
             }
             ps.execute();

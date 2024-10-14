@@ -147,6 +147,8 @@ class Validador {
     public String pidoEspecialidadYValido() {
         
         String especialidad = "";
+        indiceInvalido = true;
+        System.out.println("hola");
         
         ArrayList<String> especialidades = new ArrayList<>(3);
         especialidades.add("Pediatria");
@@ -304,6 +306,8 @@ class Validador {
     
     public String pidoFormaDePagoYValido() {
         String formaDePago = "";
+        indiceInvalido = true;
+        
         
         ArrayList<String> formasDePago = new ArrayList<>(2);
         formasDePago.add("Efectivo");
@@ -341,6 +345,8 @@ class Validador {
     public String pidoObraSocialYValido() {
         
         String obraSocial = "";
+        
+        indiceInvalido = true;
         
         ArrayList<String> obrasSocialesCubiertas = new ArrayList<>(4);
         obrasSocialesCubiertas.add("OSEP");

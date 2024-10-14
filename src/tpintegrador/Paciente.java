@@ -10,37 +10,15 @@ package tpintegrador;
  */
 public class Paciente extends Persona{
     
-    private int idPaciente; 
-    private String sintomas;
+    private static int idPaciente; 
     //ArrayList<Turno> historialMedico;
 
-    public Paciente(int idPaciente, String sintomas, String nombre, String apellido, int dni, String fechaDeNacimiento) {
-        super(nombre, apellido, dni, fechaDeNacimiento);
-        this.idPaciente = idPaciente;
-        this.sintomas = sintomas;
-    }
-
-
-  
     
     
     public int getIdPaciente() {
         return idPaciente;
     }
-
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
-    }
-
-    public String getSintomas() {
-        return sintomas;
-    }
-
-    public void setSintomas(String sintomas) {
-        this.sintomas = sintomas;
-    }
-    
-    
+        
     public void consultarTurnos() {
         
     }
@@ -48,4 +26,18 @@ public class Paciente extends Persona{
     public void verificarObraSocial(){
         
     }
+    
+    public Paciente( String nombre, String apellido, int dni, String fechaDeNacimiento) {
+        super(nombre, apellido, dni, fechaDeNacimiento);
+    }
+    
+    public void Paciente() {
+        
+    }
+    
+
+
+  
+    
+    
 }
