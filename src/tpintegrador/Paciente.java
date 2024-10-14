@@ -14,11 +14,12 @@ public class Paciente extends Persona{
     private String sintomas;
     //ArrayList<Turno> historialMedico;
 
-    public Paciente(int idPaciente, String sintomas) {
-        setIdPaciente(idPaciente);
-        setSintomas(sintomas);
-        //this.historialMedico = historialMedico; 
+    public Paciente(int idPaciente, String sintomas, String nombre, String apellido, int dni, String fechaDeNacimiento) {
+        super(nombre, apellido, dni, fechaDeNacimiento);
+        this.idPaciente = idPaciente;
+        this.sintomas = sintomas;
     }
+
 
   
     
