@@ -22,4 +22,26 @@ public class Factura {
     public void calcularMonto(){
         
     }
+
+    public String getTipoFactura() {
+        return tipoFactura;
+    }
+
+    public double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setTipoFactura(String tipoFactura) {
+        this.tipoFactura = tipoFactura;
+    }
+
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
+    }
+
+    public Factura(String tipoFactura, double montoTotal) {
+        this.tipoFactura = tipoFactura;
+        this.montoTotal = montoTotal;
+    }
+    
 }

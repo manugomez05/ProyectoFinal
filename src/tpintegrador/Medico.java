@@ -4,16 +4,18 @@
  */
 package tpintegrador;
 
-public class Medico extends Persona {
+public class Medico extends Trabajador {
 
     int IdMedico;
     String expecialidad;
 
-    public Medico(int IdMedico, String expecialidad, String nombre, String apellido, int dni, String fechaDeNacimiento) {
-        super(nombre, apellido, dni, fechaDeNacimiento);
+    public Medico(int IdMedico, String expecialidad, int cuentaBancaria, float salario, String diasDeTrabajo, String nombre, String apellido, int dni, String fechaDeNacimiento) {
+        super(cuentaBancaria, salario, diasDeTrabajo, nombre, apellido, dni, fechaDeNacimiento);
         this.IdMedico = IdMedico;
         this.expecialidad = expecialidad;
     }
+
+    
 
     public int getIdMedico() {
         return IdMedico;
@@ -29,4 +31,5 @@ public class Medico extends Persona {
     public void setExpecialidad(String expecialidad) {
         this.expecialidad = expecialidad;
     }
+    
 }
