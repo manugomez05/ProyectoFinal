@@ -43,6 +43,13 @@ public class Receta {
     public void setVencimiento(String vencimiento) {
         this.vencimiento = vencimiento;
     }
+
+    public Receta(String medicamentos, String firma, String fecha, String vencimiento) {
+        this.medicamentos = medicamentos;
+        this.firma = firma;
+        this.fecha = fecha;
+        this.vencimiento = vencimiento;
+    }
     
     
 }

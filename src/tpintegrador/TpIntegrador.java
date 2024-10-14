@@ -27,7 +27,7 @@ public class TpIntegrador {
         //conDB.modificarRegistro("tb_Turnos");
         //conDB.agregarRegistro("tb_Turnos");
         //-------------
-        
+       
           // variables que se utilizaran en el menu de opciones utilizando scanner:
         int opcion = 0;
         boolean opcionValida = true;
@@ -141,15 +141,15 @@ public class TpIntegrador {
                   System.out.println("¡Gracias por visitar clinica Vitality!");
                             break;
            }
-        
+       
         
         //-------------¡¡¡¡¡¡¡¡¡¡¡¡¡Eleccion con una interfaz!!!!!!!!!!!!!!!!!!----------------------
-        /*
+      
         //Llamo a la interfaz inicial
-        Interfaz inter=new Interfaz();
+        /*Interfaz inter=new Interfaz();
         inter.setVisible(true);//Muestra la interfaz en la pnatalla
         inter.setLocationRelativeTo(null);//Hace que su ubicación no sea relativa a nada, es decir, que la pone en el medio de la pantalla
-         */
+      */   
     }
 
 }

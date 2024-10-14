@@ -39,6 +39,11 @@ public class InterfazPaciente extends javax.swing.JFrame {
         jLabel1.setText("Usted está en modo Paciente");
 
         botonAgregarTurno.setText("Agregar Turno");
+        botonAgregarTurno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAgregarTurnoActionPerformed(evt);
+            }
+        });
 
         botonModificarTurno.setText("Modificar Turno");
         botonModificarTurno.addActionListener(new java.awt.event.ActionListener() {
@@ -103,6 +108,12 @@ public class InterfazPaciente extends javax.swing.JFrame {
     private void botonModificarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarTurnoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonModificarTurnoActionPerformed
+
+    private void botonAgregarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarTurnoActionPerformed
+       interfazAgregarTurno interTurno=new interfazAgregarTurno() ;
+       interTurno.setVisible(true);
+       interTurno.setLocationRelativeTo(null);
+    }//GEN-LAST:event_botonAgregarTurnoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

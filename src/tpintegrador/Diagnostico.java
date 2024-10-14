@@ -45,6 +45,13 @@ public class Diagnostico {
     public void setReceta(Receta receta) {
         this.receta = receta;
     }
+
+    public Diagnostico(String enfermedad, String medicacion, String recomendaciones, Receta receta) {
+        this.enfermedad = enfermedad;
+        this.medicacion = medicacion;
+        this.recomendaciones = recomendaciones;
+        this.receta = receta;
+    }
     
     
 }
