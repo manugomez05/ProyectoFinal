@@ -33,6 +33,12 @@ public class Trabajador extends Persona {
         this.diasDeTrabajo = diasDeTrabajo;
     }
 
+    public Trabajador(int cuentaBancaria, float salario, String diasDeTrabajo) {
+        this.cuentaBancaria = cuentaBancaria;
+        this.salario = salario;
+        this.diasDeTrabajo = diasDeTrabajo;
+    }
+
     
     
     public void consultarSaldo(){
