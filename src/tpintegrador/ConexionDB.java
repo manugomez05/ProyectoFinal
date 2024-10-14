@@ -11,8 +11,17 @@ import java.util.InputMismatchException;
 /**
  *
  * @author USER
+ * 
+ * 
  */
 public class ConexionDB {
+    
+    /*
+    dudas
+        se instancian objetos o el constructor solo llama a la funcion de agregar registro a la tabla
+        definir muchas variables con la misma funcion esta bien 
+    
+    */
     
     Scanner input = new Scanner(System.in);
     Connection db = null;
@@ -165,23 +174,41 @@ public class ConexionDB {
         WHERE condición;
         
         */
-        int indiceIn = 0, indiceSalir = 0;
-        
-        //Muestro la tabla
-        mostrarTabla(tablaIn);
+        int indiceIn = 0, indiceSalir = 0, enteroIn = 0;
         
         
+        //Muestro la tabla, si se ingresa una tabla incorrecta, no pasa de aca
+        mostrarTabla(tablaIn); 
+
         
         try {
+            
+            //pido Id
+            
+            //puedo crear la funcion pidoEnteroYValido() con varios argumentos y un if que 
+            //verifica si se muestran dos mensajes o uno
+            
+            if (tablaIn == "tb_Turnos") {
+                System.out.println("Ingrese el DNI del paciente a modificar");
+            } else {
+                System.out.println("Ingrese el ID a modificar");
+            }
+            
+            enteroIn = input.nextInt();
+            
+            
+            //consulta las columnas de la tabla 
             stmt = db.createStatement();
             rs = stmt.executeQuery("PRAGMA table_info(" + tablaIn + ");"); 
             ArrayList<String> columnasDeTabla = new ArrayList<>();
             ArrayList<String> columnasACambiar = new ArrayList<>();
             
+            //muestro las columnas de la tabla
             while (rs.next()) {
                 columnasDeTabla.add(rs.getString("name"));
             }
             
+            //pido las columnas a modificar y las agrego a un array
             do {
                 limpiarBuffer = input.nextLine();
                 
@@ -210,6 +237,26 @@ public class ConexionDB {
                 }
                                 
             } while (indiceIn != indiceSalir);
+            
+            
+            if (!columnasACambiar.isEmpty()) {
+                String columnasACambiarString = "";
+                for (String i: columnasACambiar) {
+                    if (columnasACambiar.indexOf(i) == 0) {
+                        columnasACambiarString = columnasACambiarString + "(" + i + ", ";
+                        
+                    } else if (columnasACambiar.indexOf(i) == columnasACambiar.size()-1) {
+                        columnasACambiarString = columnasACambiarString +  i + ")";
+                        
+                    } else {
+                        columnasACambiarString = columnasACambiarString +  i + ", ";
+                        
+                    }
+                }
+                System.out.println(columnasACambiarString);
+            }
+            
+            
             
                        
             /*
