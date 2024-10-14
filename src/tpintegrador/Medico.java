@@ -4,20 +4,29 @@
  */
 package tpintegrador;
 
-/**
- *
- * @author Fernanda
- */
-public class Medico {
-    private int idMedico;
-    private String especialidad;
-    
-    
-    
-    public void generarDiagnostico(){
-        
+public class Medico extends Persona {
+
+    int IdMedico;
+    String expecialidad;
+
+    public Medico(int IdMedico, String expecialidad, String nombre, String apellido, int dni, String fechaDeNacimiento) {
+        super(nombre, apellido, dni, fechaDeNacimiento);
+        this.IdMedico = IdMedico;
+        this.expecialidad = expecialidad;
     }
-    public void operar(){
-        
+
+    public int getIdMedico() {
+        return IdMedico;
+    }
+
+    public void setIdMedico(int IdMedico) {
+        this.IdMedico = IdMedico;
+    }
+    public String getExpecialidad() {
+        return expecialidad;
+    }
+
+    public void setExpecialidad(String expecialidad) {
+        this.expecialidad = expecialidad;
     }
 }
