@@ -67,6 +67,7 @@ public class ConexionDB {
     }
     
     
+        
     //agrega un registro a alguna tabla
     public void agregarRegistro(String tablaIn) {
         PreparedStatement ps = null;
@@ -74,10 +75,9 @@ public class ConexionDB {
         String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", diasDeTrabajoIn = "", obraSocialIn = "", formaDePagoIn = "", limpiarBuffer;
         int dniIn = 0, cbuIn = 0, indiceIn = 0;
         float salarioIn = 0;
-        boolean especialidadInvalida = true, indiceInvalido = true, cbuInvalido = true, salarioInvalido = true, diaInvalido = true;
+        //boolean especialidadInvalida = true, indiceInvalido = true, cbuInvalido = true, salarioInvalido = true, diaInvalido = true;
         
         Validador pideYValida = new Validador();
-        
         
         /*
         if (tablaIn == "tb_Medicos") {
@@ -85,14 +85,15 @@ public class ConexionDB {
         } else if (tablaIn == "tb_Pacientes") {
             Paciente p1 = new Paciente();
         } else if (tablaIn == "tb_Turnos") {
-            Turno p1 = new Turno();   
+            //tira error xq es abstracta
+            //Turno p1 = new Turno();   
         }
         */
+        
         
         //pedi los campos que se repiten
         if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
             //Pido nombre y apellido y los valido
-            //p1.setNombre(pideYValida.pidoStringYValida("nombre"));
             nombreIn = pideYValida.pidoStringYValida("nombre");
             apellidoIn = pideYValida.pidoStringYValida("apellido");
             //Pido fecha de nacimiento y la valido
@@ -107,19 +108,149 @@ public class ConexionDB {
             especialidadIn = pideYValida.pidoEspecialidadYValido();
         }
         
-        //Agrego el registro a la tabla
+        
+        /*
+        ------------------------------------- OPCION SIN REPETICION DE CODIGO
+        Paciente newPaciente = new Paciente();
+
+        ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
+        ps.setString(1, newPaciente.getNombre());
+        ps.setString(2, newPaciente.getApellido());
+        ps.setInt(3, newPaciente.getDni());
+        ps.setString(4, newPaciente.getFechaDeNacimiento());
+
+
+        System.out.println(newPaciente.getNombre() + " ha sido registrado correctamente");
+        
+        
+        DENTRO DEL CONSTRUCTOR VACIO DE PACIENTE
+        
+            Validador pideYValida = new Validador();
+        
+            public Persona() {
+                this.setNombre(pideYValida.pidoStringYValida("nombre"));
+                this.setApellido(pideYValida.pidoStringYValida("apellido"));
+                this.setDni(pideYValida.pidoDniYValido());
+                this.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+            }
+        
+        HAY QUE CAMBIAR LOS CONSTRUCTORES VACIOS Y SACAR LO ABSTRACTO DE LA CLASE TURNO
+        
+        ------------------------------------- OPCION CON REPETICION DE CODIGO
+         //Agrego el registro a la tabla
         try {
 
             switch(tablaIn) {
                 case "tb_Pacientes":
+                    
+                    
+                    Paciente newPaciente = new Paciente();
+                    
+                    //Estos campos se repiten en medico
+                    newPaciente.setNombre(pideYValida.pidoStringYValida("nombre"));
+                    newPaciente.setApellido(pideYValida.pidoStringYValida("apellido"));
+                    newPaciente.setDni(pideYValida.pidoDniYValido());
+                    newPaciente.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+                    //----------------
+                    
                     ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
-                    //ps.setString(1, p1.getNombre());
+                    ps.setString(1, newPaciente.getNombre());
+                    ps.setString(2, newPaciente.getApellido());
+                    ps.setInt(3, newPaciente.getDni());
+                    ps.setString(4, newPaciente.getFechaDeNacimiento());
+                    
+                    
+                    System.out.println(newPaciente.getNombre() + " ha sido registrado correctamente");
+                    break;
+                case "tb_Medicos":
+                    
+                    Medico newMedico = new Medico();
+                    
+                    //Estos campos se repiten en paciente
+                    newMedico.setNombre(pideYValida.pidoStringYValida("nombre"));
+                    newMedico.setApellido(pideYValida.pidoStringYValida("apellido"));
+                    newMedico.setDni(pideYValida.pidoDniYValido());
+                    newMedico.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+                    //----------------
+                    
+                    
+                    newMedico.setCuentaBancaria(pideYValida.pidoCbuYValido());
+                    newMedico.setSalario(pideYValida.pidoSalarioYValido());
+                    newMedico.setDiasDeTrabajo(pideYValida.pidoDiasDeTrabajoYValido());
+                    newMedico.setExpecialidad(pideYValida.pidoEspecialidadYValido());
+                    
+                    
+                    
+                    ps = db.prepareStatement("INSERT INTO tb_Medicos(Nombre,Apellido,DNI,fechaNacimiento,cuentaBancaria,salario,diasDeTrabajo,especialidad) VALUES (?,?,?,?,?,?,?,?)");
+                    ps.setString(1, newMedico.getNombre());
+                    ps.setString(2, newMedico.getApellido());
+                    ps.setInt(3, newMedico.getDni());
+                    ps.setString(4, newMedico.getFechaDeNacimiento());
+                    
+                    ps.setInt(5, newMedico.getCuentaBancaria());
+                    ps.setFloat(6, newMedico.getSalario());
+                    ps.setString(7, newMedico.getDiasDeTrabajo());
+                    ps.setString(8, newMedico.getExpecialidad());
+                    
+                    System.out.println(newMedico.getNombre() + " ha sido registrado correctamente");
+                    
+                    break;
+                case "tb_Turnos":
+                    ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
+                    ps.setInt(1, dniIn);
+                    
+                    //pedir dia del turno, depende de la especialidad y de los dias de trabajo de los medicos de esa especialidad
+                    
+                    
+                    //pedir forma de pago 
+                    formaDePagoIn = pideYValida.pidoFormaDePagoYValido();
+                    ps.setString(3, formaDePagoIn);
+                    //pedir obra social
+                    obraSocialIn = pideYValida.pidoObraSocialYValido();
+                    ps.setString(4, obraSocialIn);
+                    
+                    ps.setString(5, especialidadIn);
+                    
+                    //inicializo la asistencia en 0(false)
+                    ps.setInt(6, 0);
+                    System.out.println("Agregado");
+                    break;
+            }
+            ps.execute();
+            
+        }catch(SQLException ex) {
+            System.out.println("SQLException: " +ex);
+        }
+        */
+        
+        //Agrego el registro a la tabla
+        
+        /*
+        HACER 
+        Objeto obj = new Objeto();
+        obj.setAtributo(pideYValida.pidoAtributo("nombre"));
+        ps.setString(1, obj.getNombre());
+        */
+        
+        try {
+
+            switch(tablaIn) {
+                case "tb_Pacientes":
+                    
+                    /*
+                    puedo hacer
+                    Paciente paciente = new Paciente();
+                        dentro del constructor se llama a los setter de los atributos y los setters llaman a las funciones del validador
+                    despues uso los getters para enviarlo a la base de datos 
+                    */
+                    
+                    
+                    ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
                     ps.setString(1, nombreIn);
                     ps.setString(2, apellidoIn);
                     ps.setInt(3, dniIn);
                     ps.setString(4, fechaNacimientoIn);
                     
-                    Paciente paciente1 = new Paciente(nombreIn, apellidoIn, dniIn, fechaNacimientoIn);
                     
                     break;
                 case "tb_Medicos":
@@ -145,9 +276,6 @@ public class ConexionDB {
 
                     ps.setString(8, especialidadIn);
                     
-                    //Medico medico1 = new Medico(nombreIn, apellidoIn, dniIn, fechaNacimiento, cuentaBancaria, salario, diasDeTrabajo);
-                    
-
                     break;
                 case "tb_Turnos":
                     ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");

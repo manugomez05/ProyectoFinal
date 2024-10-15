@@ -15,7 +15,9 @@ public class Medico extends Trabajador {
         this.expecialidad = expecialidad;
     }
 
-    
+    public Medico() {
+        
+    }
 
     public int getIdMedico() {
         return IdMedico;

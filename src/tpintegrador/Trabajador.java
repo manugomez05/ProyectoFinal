@@ -40,7 +40,9 @@ public class Trabajador extends Persona {
     }
 
  
-
+    public Trabajador() {
+        
+    }
     
     
     public void consultarSaldo(){

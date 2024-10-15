@@ -31,7 +31,7 @@ public class Paciente extends Persona{
         super(nombre, apellido, dni, fechaDeNacimiento);
     }
     
-    public void Paciente() {
+    public Paciente() {
         
     }
     
