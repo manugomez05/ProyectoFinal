@@ -12,7 +12,7 @@ public class TpIntegrador {
         conDB.conectarDB();
         conDB.mostrarTabla("tb_dfsurnos");
         // conDB.modificarRegistro("tb_Turnos");
-        // conDB.agregarRegistro("tb_Turnos");
+        conDB.agregarRegistro("tb_Turnos");
         
         // Variables del menú
         int opcion = 0;

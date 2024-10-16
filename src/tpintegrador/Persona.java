@@ -13,6 +13,9 @@ public abstract class Persona {
     private String apellido;
     private int dni;
     private String fechaDeNacimiento;
+    
+    Validador pideYValida = new Validador();
+    
 
     public Persona(String nombre, String apellido, int dni, String fechaDeNacimiento) {
         this.nombre = nombre;
@@ -22,7 +25,10 @@ public abstract class Persona {
     }
     
     public Persona() {
-        
+        this.setNombre(pideYValida.pidoStringYValida("nombre"));
+        this.setApellido(pideYValida.pidoStringYValida("apellido"));
+        this.setDni(pideYValida.pidoDniYValido());
+        this.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
     }
     
     public String getNombre() {

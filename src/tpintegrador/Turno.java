@@ -8,29 +8,38 @@ package tpintegrador;
  *
  * @author Estudiante
  */
-abstract public class Turno {
+public class Turno {
     
+    private int dniPaciente;
     private String dia;
     private String formaDePago;
     private ObraSocial obraSocial;
     private String especialidad;
-    private boolean asistenciaPaciente; 
+    private int asistenciaPaciente; 
 
-    public Turno(String dia, String formaDePago, ObraSocial obraSocial, String especialidad, boolean asistenciaPaciente) {
-        this.dia = dia;
-        this.formaDePago = formaDePago;
-        this.obraSocial = obraSocial;
-        this.especialidad = especialidad;
-        this.asistenciaPaciente = asistenciaPaciente;
-    }
-    
+    Validador pideYValida = new Validador();
+        
     public Turno() {
+        
+        this.setDniPaciente(pideYValida.pidoDniYValido());
+        //falta funcion que pide el dia de turno
+        this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
+        this.setObraSocial(pideYValida.pidoObraSocialYValido());
+        this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
+        this.setAsistenciaPaciente(0);
         
     }
 
     
     
-    
+   
+    public int getDniPaciente() {
+        return dniPaciente;
+    }
+
+    public void setDniPaciente(int dniPaciente) {
+        this.dniPaciente = dniPaciente;
+    }
     
     
     public String getDia() {
@@ -65,11 +74,11 @@ abstract public class Turno {
         this.especialidad = especialidad;
     }
 
-    public boolean isAsistenciaPaciente() {
+    public int getAsistenciaPaciente() {
         return asistenciaPaciente;
     }
 
-    public void setAsistenciaPaciente(boolean asistenciaPaciente) {
+    public void setAsistenciaPaciente(int asistenciaPaciente) {
         this.asistenciaPaciente = asistenciaPaciente;
     }
     
@@ -98,6 +107,8 @@ abstract public class Turno {
     public void realizarPago(){
     
     }
+
+    
     
     
     

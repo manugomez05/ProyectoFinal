@@ -31,7 +31,7 @@ class Validador {
             try {
 
                 do  {
-                    System.out.println("Ingrese el" + campo +":");
+                    System.out.println("Ingrese el " + campo +":");
                     stringIn = input.nextLine();    
 
                     if (stringIn.matches("\\d+")) {
@@ -148,7 +148,6 @@ class Validador {
         
         String especialidad = "";
         indiceInvalido = true;
-        System.out.println("hola");
         
         ArrayList<String> especialidades = new ArrayList<>(3);
         especialidades.add("Pediatria");
@@ -275,16 +274,23 @@ class Validador {
                     }
                     System.out.println("6- Salir");
 
+                    
                     indiceIn = input.nextInt();
-                    diaIn = diasDeSemana.get(indiceIn-1);
-                    diasDeTrabajoIn.add(diaIn);
-                    diasDeSemana.remove(indiceIn-1);
+                    
+                    if (indiceIn != 6) {
+                        diaIn = diasDeSemana.get(indiceIn-1);
+                        diasDeTrabajoIn.add(diaIn);
+                        diasDeSemana.remove(indiceIn-1);
+                    }
+                    
+                    
+                    if (indiceIn < 0 || indiceIn > 6 && indiceIn != 6) {
+                        throw new Exception();
+                    }
 
                 }
 
-                if (indiceIn < 0 || indiceIn > 6 && indiceIn != 6) {
-                    throw new Exception();
-                }
+                
 
                 diaInvalido = false;
 
@@ -342,17 +348,25 @@ class Validador {
         return formaDePago;
     }
     
-    public String pidoObraSocialYValido() {
+    public ObraSocial pidoObraSocialYValido() {
         
-        String obraSocial = "";
+        ObraSocial obraSocialPaciente = null;
         
         indiceInvalido = true;
         
-        ArrayList<String> obrasSocialesCubiertas = new ArrayList<>(4);
-        obrasSocialesCubiertas.add("OSEP");
-        obrasSocialesCubiertas.add("OSDE");
-        obrasSocialesCubiertas.add("DAMSU");
-        obrasSocialesCubiertas.add("Medife");
+        ArrayList<ObraSocial> obrasSocialesCubiertas = new ArrayList<>(4);
+        
+        ObraSocial obraSocial1 = new ObraSocial("OSEP", 10);
+        ObraSocial obraSocial2 = new ObraSocial("OSDE", 5);
+        ObraSocial obraSocial3 = new ObraSocial("DAMSU", 5);
+        ObraSocial obraSocial4 = new ObraSocial("Medife", 15);
+        
+        obrasSocialesCubiertas.add(obraSocial1);
+        obrasSocialesCubiertas.add(obraSocial2);
+        obrasSocialesCubiertas.add(obraSocial3);
+        obrasSocialesCubiertas.add(obraSocial4);
+        
+        
         while (indiceInvalido) {
 
             try {
@@ -360,18 +374,18 @@ class Validador {
                 limpiarBuffer = input.nextLine();
 
                 System.out.println("Elija su obra social");
-                for (String i: obrasSocialesCubiertas) {
-                    System.out.println( (obrasSocialesCubiertas.indexOf(i)) + 1 +"- " + i);
+                for (ObraSocial i: obrasSocialesCubiertas) {
+                    System.out.println( (obrasSocialesCubiertas.indexOf(i)) + 1 +"- " + i.getNombre());
                 }
                 System.out.println("5- No tengo obra social");
 
                 indiceIn = input.nextInt() - 1 ;
                 if (indiceIn == 4) {
-                    obraSocial = "Ninguna";
+                    obraSocialPaciente = new ObraSocial("Ninguna", 0);
                 } else if (indiceIn < 0 || indiceIn > 4) {
                     throw new Exception();
                 } else {
-                    obraSocial = obrasSocialesCubiertas.get(indiceIn);
+                    obraSocialPaciente = obrasSocialesCubiertas.get(indiceIn);
                 }
 
                 indiceInvalido = false;
@@ -387,7 +401,9 @@ class Validador {
 
         }
         
-        return obraSocial;
+
+        
+        return obraSocialPaciente;
     }
  
     

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package tpintegrador;
+import com.google.gson.Gson;
 import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
@@ -68,46 +69,15 @@ public class ConexionDB {
     
     
         
-    //agrega un registro a alguna tabla
+    //agrega un registro a alguna tabla     
     public void agregarRegistro(String tablaIn) {
         PreparedStatement ps = null;
         
         String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", diasDeTrabajoIn = "", obraSocialIn = "", formaDePagoIn = "", limpiarBuffer;
         int dniIn = 0, cbuIn = 0, indiceIn = 0;
         float salarioIn = 0;
-        //boolean especialidadInvalida = true, indiceInvalido = true, cbuInvalido = true, salarioInvalido = true, diaInvalido = true;
         
         Validador pideYValida = new Validador();
-        
-        /*
-        if (tablaIn == "tb_Medicos") {
-            Medico m1 = new Medico();
-        } else if (tablaIn == "tb_Pacientes") {
-            Paciente p1 = new Paciente();
-        } else if (tablaIn == "tb_Turnos") {
-            //tira error xq es abstracta
-            //Turno p1 = new Turno();   
-        }
-        */
-        
-        
-        //pedi los campos que se repiten
-        if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos") {
-            //Pido nombre y apellido y los valido
-            nombreIn = pideYValida.pidoStringYValida("nombre");
-            apellidoIn = pideYValida.pidoStringYValida("apellido");
-            //Pido fecha de nacimiento y la valido
-            fechaNacimientoIn = pideYValida.pidoFechaNacimientoYValido();
-        }  
-        if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos") {
-            //Pido el DNI y lo valido
-            dniIn = pideYValida.pidoDniYValido();
-        } 
-        if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos") {
-            //Pido especialidad y la valido
-            especialidadIn = pideYValida.pidoEspecialidadYValido();
-        }
-        
         
         /*
         ------------------------------------- OPCION SIN REPETICION DE CODIGO
@@ -232,70 +202,61 @@ public class ConexionDB {
         ps.setString(1, obj.getNombre());
         */
         
+        
+        //Agrego el registro a la tabla
         try {
 
             switch(tablaIn) {
                 case "tb_Pacientes":
                     
-                    /*
-                    puedo hacer
-                    Paciente paciente = new Paciente();
-                        dentro del constructor se llama a los setter de los atributos y los setters llaman a las funciones del validador
-                    despues uso los getters para enviarlo a la base de datos 
-                    */
-                    
-                    
+                    Paciente newPaciente = new Paciente();
+
                     ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
-                    ps.setString(1, nombreIn);
-                    ps.setString(2, apellidoIn);
-                    ps.setInt(3, dniIn);
-                    ps.setString(4, fechaNacimientoIn);
+                    ps.setString(1, newPaciente.getNombre());
+                    ps.setString(2, newPaciente.getApellido());
+                    ps.setInt(3, newPaciente.getDni());
+                    ps.setString(4, newPaciente.getFechaDeNacimiento());
                     
                     
+                    System.out.println(newPaciente.getNombre() + " ha sido registrado correctamente");
                     break;
                 case "tb_Medicos":
                     
-                    
+                    Medico newMedico = new Medico();
+                                        
                     ps = db.prepareStatement("INSERT INTO tb_Medicos(Nombre,Apellido,DNI,fechaNacimiento,cuentaBancaria,salario,diasDeTrabajo,especialidad) VALUES (?,?,?,?,?,?,?,?)");
-                    ps.setString(1, nombreIn);
-                    ps.setString(2, apellidoIn);
-                    ps.setInt(3, dniIn);
-                    ps.setString(4, fechaNacimientoIn);
+                    ps.setString(1, newMedico.getNombre());
+                    ps.setString(2, newMedico.getApellido());
+                    ps.setInt(3, newMedico.getDni());
+                    ps.setString(4, newMedico.getFechaDeNacimiento());
                     
-                    //Pido CBU y lo valido
-                    cbuIn = pideYValida.pidoCbuYValido();
-                    ps.setInt(5, cbuIn);
+                    ps.setInt(5, newMedico.getCuentaBancaria());
+                    ps.setFloat(6, newMedico.getSalario());
+                    ps.setString(7, newMedico.getDiasDeTrabajo());
+                    ps.setString(8, newMedico.getExpecialidad());
                     
-                    //Pido salario y lo valido
-                    salarioIn = pideYValida.pidoSalarioYValido();
-                    ps.setFloat(6, salarioIn);
-                    
-                    //Pido los dias de trabajo y lo valido, se meten en un arreglo y se transforma a json con libreria Gson
-                    diasDeTrabajoIn = pideYValida.pidoDiasDeTrabajoYValido();
-                    ps.setString(7, diasDeTrabajoIn);
-
-                    ps.setString(8, especialidadIn);
+                    System.out.println(newMedico.getNombre() + " ha sido registrado correctamente");
                     
                     break;
                 case "tb_Turnos":
+                    
+                    Turno newTurno = new Turno();
+                    
                     ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
-                    ps.setInt(1, dniIn);
                     
-                    //pedir dia del turno, depende de la especialidad y de los dias de trabajo de los medicos de esa especialidad
+                    ps.setInt(1, newTurno.getDniPaciente());
+                    //ps.setInt(2, newTurno.getDia());
+                    ps.setString(3, newTurno.getFormaDePago());
                     
+                    Gson gson = new Gson();
+                    // Convierte el arreglo a JSON
+                    String jsonObraSocialPaciente = gson.toJson(newTurno.getObraSocial());
                     
-                    //pedir forma de pago 
-                    formaDePagoIn = pideYValida.pidoFormaDePagoYValido();
-                    ps.setString(3, formaDePagoIn);
-                    //pedir obra social
-                    obraSocialIn = pideYValida.pidoObraSocialYValido();
-                    ps.setString(4, obraSocialIn);
+                    ps.setString(4, jsonObraSocialPaciente);
+                    ps.setString(5, newTurno.getEspecialidad());
+                    ps.setInt(6,0);
                     
-                    ps.setString(5, especialidadIn);
-                    
-                    //inicializo la asistencia en 0(false)
-                    ps.setInt(6, 0);
-                    System.out.println("Agregado");
+                    System.out.println("Se ha registrado correctamente un turno para " + newTurno.getDniPaciente());
                     break;
             }
             ps.execute();
@@ -305,6 +266,11 @@ public class ConexionDB {
         }
        
     }
+        
+        
+        
+        
+        
     
     
     public void modificarRegistro(String tablaIn) {

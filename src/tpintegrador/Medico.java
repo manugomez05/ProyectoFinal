@@ -9,14 +9,21 @@ public class Medico extends Trabajador {
     int IdMedico;
     String expecialidad;
 
+    /*
     public Medico(int IdMedico, String expecialidad, int cuentaBancaria, float salario, String diasDeTrabajo, String nombre, String apellido, int dni, String fechaDeNacimiento) {
         super(cuentaBancaria, salario, diasDeTrabajo, nombre, apellido, dni, fechaDeNacimiento);
         this.IdMedico = IdMedico;
         this.expecialidad = expecialidad;
     }
-
+    */
     public Medico() {
         
+        super();
+        
+        this.setCuentaBancaria(pideYValida.pidoCbuYValido());
+        this.setSalario(pideYValida.pidoSalarioYValido());
+        this.setDiasDeTrabajo(pideYValida.pidoDiasDeTrabajoYValido());
+        this.setExpecialidad(pideYValida.pidoEspecialidadYValido());
     }
 
     public int getIdMedico() {
