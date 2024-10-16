@@ -356,8 +356,10 @@ public class ConexionDB {
             
             
             if (!columnasACambiar.isEmpty()) {
+                
                 String columnasACambiarString = "";
                 for (String i: columnasACambiar) {
+                    
                     if (columnasACambiar.indexOf(i) == 0) {
                         columnasACambiarString = columnasACambiarString + "(" + i + ", ";
                         
@@ -368,13 +370,45 @@ public class ConexionDB {
                         columnasACambiarString = columnasACambiarString +  i + ", ";
                         
                     }
+                    
                 }
                 System.out.println(columnasACambiarString);
+                
             }
             
+            //recorro el array caolumnasACambiar
+            /*
             
+            if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos" && columnasACambiar.contains("DNI") || columnasACambiar.contains("dniPaciente")) {
+                
+            }
             
-                       
+            switch(tablaIn) {
+                case "tb_Pacientes":
+                    
+                    for (String i : columnasACambiar) {
+                        switch (i) {
+                            case "":
+                                break;
+                            case "":
+                                break;
+                            case "":
+                                break;
+                            case "":
+                                break;
+                        }
+                    }
+                    
+                    break;
+                case "tb_Medicos":
+                    
+                    break;
+                case "tb_Turnos":
+                    
+                    break;
+            }
+            */
+            
             /*
             
             switch(tablaIn) {
@@ -399,6 +433,15 @@ public class ConexionDB {
     
     
     public void eliminarRegistro(String tablaIn) {
+        
+        /*
+        Para eliminar todos los registros
+            DELETE * tablaIn;
+        
+        DELETE FROM tablaIn WHERE condicion;
+        
+        
+        */
         
     }
     

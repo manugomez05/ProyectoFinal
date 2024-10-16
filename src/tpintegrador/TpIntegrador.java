@@ -14,6 +14,8 @@ public class TpIntegrador {
         // conDB.modificarRegistro("tb_Turnos");
         conDB.agregarRegistro("tb_Turnos");
         
+        
+        
         // Variables del menú
         int opcion = 0;
         boolean opcionValida = true;
