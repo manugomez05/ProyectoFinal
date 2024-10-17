@@ -10,9 +10,9 @@ public class TpIntegrador {
         // Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
         conDB.conectarDB();
-        conDB.mostrarTabla("tb_dfsurnos");
+        //conDB.mostrarTabla("tb_dfsurnos");
         // conDB.modificarRegistro("tb_Turnos");
-        conDB.agregarRegistro("tb_Medicos");
+       // conDB.agregarRegistro("tb_Medicos");
         
         
         

@@ -40,9 +40,7 @@ public class ConexionDB {
             db = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite");
             db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Pacientes(idPaciente INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, PRIMARY KEY(idPaciente AUTOINCREMENT) ) ").execute();
             db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Medicos(idMedico INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, cuentaBancaria INTEGER(10), salario DOUBLE, diasDeTrabajo TEXT, especialidad TEXT, PRIMARY KEY(idMedico AUTOINCREMENT) ) ").execute();
-            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER) ").execute();
-            
-            //db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
+            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
             
             
             if (db != null) {
