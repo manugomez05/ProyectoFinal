@@ -42,7 +42,9 @@ public class ConexionDB {
             db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Medicos(idMedico INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, cuentaBancaria INTEGER(10), salario DOUBLE, diasDeTrabajo TEXT, especialidad TEXT, PRIMARY KEY(idMedico AUTOINCREMENT) ) ").execute();
             db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER) ").execute();
             
-
+            //db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
+            
+            
             if (db != null) {
                 System.out.println("Conexion Exitosa!");
             } else {
@@ -67,141 +69,10 @@ public class ConexionDB {
         
     }
     
-    
-        
+
     //agrega un registro a alguna tabla     
     public void agregarRegistro(String tablaIn) {
         PreparedStatement ps = null;
-        
-        String nombreIn = "", apellidoIn = "", fechaNacimientoIn = "", especialidadIn = "", diasDeTrabajoIn = "", obraSocialIn = "", formaDePagoIn = "", limpiarBuffer;
-        int dniIn = 0, cbuIn = 0, indiceIn = 0;
-        float salarioIn = 0;
-        
-        Validador pideYValida = new Validador();
-        
-        /*
-        ------------------------------------- OPCION SIN REPETICION DE CODIGO
-        Paciente newPaciente = new Paciente();
-
-        ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
-        ps.setString(1, newPaciente.getNombre());
-        ps.setString(2, newPaciente.getApellido());
-        ps.setInt(3, newPaciente.getDni());
-        ps.setString(4, newPaciente.getFechaDeNacimiento());
-
-
-        System.out.println(newPaciente.getNombre() + " ha sido registrado correctamente");
-        
-        
-        DENTRO DEL CONSTRUCTOR VACIO DE PACIENTE
-        
-            Validador pideYValida = new Validador();
-        
-            public Persona() {
-                this.setNombre(pideYValida.pidoStringYValida("nombre"));
-                this.setApellido(pideYValida.pidoStringYValida("apellido"));
-                this.setDni(pideYValida.pidoDniYValido());
-                this.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
-            }
-        
-        HAY QUE CAMBIAR LOS CONSTRUCTORES VACIOS Y SACAR LO ABSTRACTO DE LA CLASE TURNO
-        
-        ------------------------------------- OPCION CON REPETICION DE CODIGO
-         //Agrego el registro a la tabla
-        try {
-
-            switch(tablaIn) {
-                case "tb_Pacientes":
-                    
-                    
-                    Paciente newPaciente = new Paciente();
-                    
-                    //Estos campos se repiten en medico
-                    newPaciente.setNombre(pideYValida.pidoStringYValida("nombre"));
-                    newPaciente.setApellido(pideYValida.pidoStringYValida("apellido"));
-                    newPaciente.setDni(pideYValida.pidoDniYValido());
-                    newPaciente.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
-                    //----------------
-                    
-                    ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
-                    ps.setString(1, newPaciente.getNombre());
-                    ps.setString(2, newPaciente.getApellido());
-                    ps.setInt(3, newPaciente.getDni());
-                    ps.setString(4, newPaciente.getFechaDeNacimiento());
-                    
-                    
-                    System.out.println(newPaciente.getNombre() + " ha sido registrado correctamente");
-                    break;
-                case "tb_Medicos":
-                    
-                    Medico newMedico = new Medico();
-                    
-                    //Estos campos se repiten en paciente
-                    newMedico.setNombre(pideYValida.pidoStringYValida("nombre"));
-                    newMedico.setApellido(pideYValida.pidoStringYValida("apellido"));
-                    newMedico.setDni(pideYValida.pidoDniYValido());
-                    newMedico.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
-                    //----------------
-                    
-                    
-                    newMedico.setCuentaBancaria(pideYValida.pidoCbuYValido());
-                    newMedico.setSalario(pideYValida.pidoSalarioYValido());
-                    newMedico.setDiasDeTrabajo(pideYValida.pidoDiasDeTrabajoYValido());
-                    newMedico.setExpecialidad(pideYValida.pidoEspecialidadYValido());
-                    
-                    
-                    
-                    ps = db.prepareStatement("INSERT INTO tb_Medicos(Nombre,Apellido,DNI,fechaNacimiento,cuentaBancaria,salario,diasDeTrabajo,especialidad) VALUES (?,?,?,?,?,?,?,?)");
-                    ps.setString(1, newMedico.getNombre());
-                    ps.setString(2, newMedico.getApellido());
-                    ps.setInt(3, newMedico.getDni());
-                    ps.setString(4, newMedico.getFechaDeNacimiento());
-                    
-                    ps.setInt(5, newMedico.getCuentaBancaria());
-                    ps.setFloat(6, newMedico.getSalario());
-                    ps.setString(7, newMedico.getDiasDeTrabajo());
-                    ps.setString(8, newMedico.getExpecialidad());
-                    
-                    System.out.println(newMedico.getNombre() + " ha sido registrado correctamente");
-                    
-                    break;
-                case "tb_Turnos":
-                    ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
-                    ps.setInt(1, dniIn);
-                    
-                    //pedir dia del turno, depende de la especialidad y de los dias de trabajo de los medicos de esa especialidad
-                    
-                    
-                    //pedir forma de pago 
-                    formaDePagoIn = pideYValida.pidoFormaDePagoYValido();
-                    ps.setString(3, formaDePagoIn);
-                    //pedir obra social
-                    obraSocialIn = pideYValida.pidoObraSocialYValido();
-                    ps.setString(4, obraSocialIn);
-                    
-                    ps.setString(5, especialidadIn);
-                    
-                    //inicializo la asistencia en 0(false)
-                    ps.setInt(6, 0);
-                    System.out.println("Agregado");
-                    break;
-            }
-            ps.execute();
-            
-        }catch(SQLException ex) {
-            System.out.println("SQLException: " +ex);
-        }
-        */
-        
-        //Agrego el registro a la tabla
-        
-        /*
-        HACER 
-        Objeto obj = new Objeto();
-        obj.setAtributo(pideYValida.pidoAtributo("nombre"));
-        ps.setString(1, obj.getNombre());
-        */
-        
         
         //Agrego el registro a la tabla
         try {
@@ -268,10 +139,6 @@ public class ConexionDB {
     }
         
         
-        
-        
-        
-    
     
     public void modificarRegistro(String tablaIn) {
         //dependiendo de la tabla 
@@ -319,7 +186,7 @@ public class ConexionDB {
             ArrayList<String> columnasDeTabla = new ArrayList<>();
             ArrayList<String> columnasACambiar = new ArrayList<>();
             
-            //muestro las columnas de la tabla
+            //agrego las columnas de la tabla a un array
             while (rs.next()) {
                 columnasDeTabla.add(rs.getString("name"));
             }
@@ -434,14 +301,43 @@ public class ConexionDB {
     
     public void eliminarRegistro(String tablaIn) {
         
-        /*
-        Para eliminar todos los registros
-            DELETE * tablaIn;
         
+        /*
         DELETE FROM tablaIn WHERE condicion;
         
+        el usuario elige entre eliminar x DNI o ID
         
+        //borrar la tabla de turnos y agregarle un id que se autoincremente
         */
+        
+        mostrarTabla(tablaIn);
+        
+        if (tablaIn == "tb_Medicos" || tablaIn == "tb_Pacientes") {
+            
+        }
+        
+        
+    }
+    
+    
+    public void vaciarTabla(String tablaIn) {
+        /*
+        Para eliminar todos los registros
+        DELETE FROM tablaIn;
+        */
+        
+        sql = "DELETE FROM " + tablaIn;
+        
+        try {
+            stmt = db.createStatement();
+            rs = stmt.executeQuery(sql);
+            
+        } catch (SQLException ex) {
+            System.out.println("-SQLException: " +ex);
+            System.out.println("--La tabla " + tablaIn + " no existe");
+        }
+        
+        System.out.println("Se ha vaciado la tabla " + tablaIn);
         
     }
     
@@ -491,7 +387,8 @@ public class ConexionDB {
             System.out.println("---------------------------------------");
             
         } catch (SQLException ex) {
-            System.out.println("SQLException: " +ex);
+            System.out.println("-SQLException: " +ex);
+            System.out.println("--La tabla " + tablaIn + " no existe");
         }
         
         
