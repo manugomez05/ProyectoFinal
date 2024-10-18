@@ -140,6 +140,16 @@ public class TpIntegrador {
                         System.out.println("ERROR: " + e);
                         System.out.println("Ingrese un índice válido");
                     }
+                    
+                    switch (opcionAdmin) {
+                        case 1: 
+                            break;
+                        case 2:
+                            // pedir dni y filtrar facturas asociadas al dni
+                            break;
+                        case 3:
+                            break;
+                    }
 
                 } while (opcionValidaAdmin || opcionAdmin != 3); // Salir cuando se elija la opción 3
                 opcionValida = true; // Reiniciar para volver al menú principal
