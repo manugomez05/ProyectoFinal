@@ -97,6 +97,14 @@ public class TpIntegrador {
                         case 1: 
                             conDB.agregarRegistro("tb_Turnos");
                             break;
+                        case 2:
+                            conDB.modificarRegistro("tb_Turnos");
+                            break;
+                        case 3:
+                            conDB.eliminarRegistro("tb_Turnos");
+                            break;
+                        //case 4:
+                            
                         // Aquí puedes agregar más acciones para las otras opciones si es necesario.
                     }
 
