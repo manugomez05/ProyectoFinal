@@ -17,7 +17,7 @@ public class Factura {
     
     public void mostrarFactura(){
         
-        System.out.println("");
+        System.out.println (this.getTipoFactura());
         System.out.println("Obra social: "  );
         System.out.println("DNI: ");
         System.out.println("Monto a pagar: ");
@@ -45,7 +45,7 @@ public class Factura {
     }
 
     public void setTipoFactura(String tipoFactura) {
-        this.tipoFactura = tipoFactura;
+        this.tipoFactura =  "Factura tipo B";
     }
 
     public void setMontoTotal(double montoTotal) {
