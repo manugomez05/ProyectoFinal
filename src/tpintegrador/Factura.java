@@ -4,22 +4,35 @@
  */
 package tpintegrador;
 
+import java.util.Random;
+
 /**
  *
  * @author Fernanda
  */
 public class Factura {
-    private String tipoFactura;
+    private static String tipoFactura;
     private double montoTotal;
-    
-    
     
     
     public void mostrarFactura(){
         
+        System.out.println("");
+        System.out.println("Obra social: "  );
+        System.out.println("DNI: ");
+        System.out.println("Monto a pagar: ");
+        System.out.println("");
     }
     
-    public void calcularMonto(){
+    public double calcularMonto(){
+        
+         double monto=0;
+        Random rd = new Random();
+        
+        //Monto calculado con un numero random
+       monto = rd.nextDouble(5000, 20000);
+        
+        return monto;
         
     }
 
@@ -42,6 +55,10 @@ public class Factura {
     public Factura(String tipoFactura, double montoTotal) {
         this.tipoFactura = tipoFactura;
         this.montoTotal = montoTotal;
+    }
+    
+    public Factura(){
+        
     }
     
 }

@@ -16,10 +16,13 @@ public class Turno {
     private ObraSocial obraSocial;
     private String especialidad;
     private int asistenciaPaciente; 
-
+    private Factura factura1;
+    
     Validador pideYValida = new Validador();
         
     public Turno() {
+        
+     
         
         this.setDniPaciente(pideYValida.pidoDniYValido());
         //falta funcion que pide el dia de turno
@@ -30,8 +33,6 @@ public class Turno {
         
     }
 
-    
-    
    
     public int getDniPaciente() {
         return dniPaciente;
@@ -105,7 +106,16 @@ public class Turno {
     
     
     public void realizarPago(){
-    
+        
+        
+           factura1 = new Factura();
+           
+           factura1.setTipoFactura("Factura tipo B");
+           
+           double monto = factura1.calcularMonto();
+           
+           factura1.setMontoTotal(monto);
+           
     }
 
     

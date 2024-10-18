@@ -145,7 +145,9 @@ public class TpIntegrador {
                         case 1: 
                             break;
                         case 2:
-                            // pedir dni y filtrar facturas asociadas al dni
+                            // pedir dni y filtrar facturas asociadas al dni        
+                           conDB.mostrarRegistro();
+                           
                             break;
                         case 3:
                             break;
