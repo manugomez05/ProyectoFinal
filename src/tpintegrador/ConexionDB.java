@@ -30,6 +30,7 @@ public class ConexionDB {
     Statement stmt;
     ResultSet rs;
     String sql;
+    Validador pideYValida = new Validador();
     
     //conecta a la base de datos
     public void conectarDB() {
@@ -40,7 +41,8 @@ public class ConexionDB {
             db = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite");
             db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Pacientes(idPaciente INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, PRIMARY KEY(idPaciente AUTOINCREMENT) ) ").execute();
             db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Medicos(idMedico INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, cuentaBancaria INTEGER(10), salario DOUBLE, diasDeTrabajo TEXT, especialidad TEXT, PRIMARY KEY(idMedico AUTOINCREMENT) ) ").execute();
-            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
+            //db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
+            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), fechaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
             
             
             if (db != null) {
@@ -111,10 +113,10 @@ public class ConexionDB {
                     
                     Turno newTurno = new Turno();
                     
-                    ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,diaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
+                    ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,fechaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
                     
                     ps.setInt(1, newTurno.getDniPaciente());
-                    //ps.setInt(2, newTurno.getDia());
+                    ps.setString(2, newTurno.getDia());
                     ps.setString(3, newTurno.getFormaDePago());
                     
                     Gson gson = new Gson();
@@ -124,6 +126,8 @@ public class ConexionDB {
                     ps.setString(4, jsonObraSocialPaciente);
                     ps.setString(5, newTurno.getEspecialidad());
                     ps.setInt(6,0);
+                    
+                    
                     
                     System.out.println("Se ha registrado correctamente un turno para " + newTurno.getDniPaciente());
                     break;
@@ -169,13 +173,57 @@ public class ConexionDB {
             //puedo crear la funcion pidoEnteroYValido() con varios argumentos y un if que 
             //verifica si se muestran dos mensajes o uno
             
-            if (tablaIn == "tb_Turnos") {
-                System.out.println("Ingrese el DNI del paciente a modificar");
-            } else {
-                System.out.println("Ingrese el ID a modificar");
+            
+            //consulto los ids de la tabla
+            //los agrego a un arraylist 
+            //lo paso como argumento 
+            
+            
+            
+            /*
+            if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos" || tablaIn == "tb_Pacientes" ) {
+                enteroIn = pideYValida.pidoEnteroYValido("Ingrese el ID a modificar");
+            
+            
+            }
+            */
+            
+            ArrayList<Integer> idsDeTabla = new ArrayList<>();
+            stmt = db.createStatement();
+            
+            switch (tablaIn) {
+                
+                case "tb_Medicos":
+                        rs = stmt.executeQuery("SELECT idMedico FROM " + tablaIn + ";"); 
+                        break;
+                    case "tb_Pacientes":
+                        rs = stmt.executeQuery("SELECT idPaciente FROM tb_Pacientes;"); 
+                        break;
+                    case "tb_Turnos":
+                        rs = stmt.executeQuery("SELECT idTurno FROM tb_Turnos;"); 
+                        break;
+                        
+                
+                
+            
             }
             
-            enteroIn = input.nextInt();
+            
+            switch (tablaIn) {
+                    case "tb_Medicos":
+                        idsDeTabla.add(rs.getInt("idMedico"));
+                        break;
+                    case "tb_Pacientes":
+                        idsDeTabla.add(rs.getInt("idPaciente"));
+                        break;
+                    case "tb_Turnos":
+                        idsDeTabla.add(rs.getInt("idTurno"));
+                        break;
+                        
+            }
+            
+            
+                    
             
             
             //consulta las columnas de la tabla 
@@ -183,11 +231,17 @@ public class ConexionDB {
             rs = stmt.executeQuery("PRAGMA table_info(" + tablaIn + ");"); 
             ArrayList<String> columnasDeTabla = new ArrayList<>();
             ArrayList<String> columnasACambiar = new ArrayList<>();
+
             
             //agrego las columnas de la tabla a un array
             while (rs.next()) {
-                columnasDeTabla.add(rs.getString("name"));
+                columnasDeTabla.add(rs.getString("name")); 
             }
+            
+            System.out.println(columnasDeTabla);
+            System.out.println(idsDeTabla);
+            
+            
             
             //pido las columnas a modificar y las agrego a un array
             do {
@@ -243,6 +297,10 @@ public class ConexionDB {
             
             //recorro el array caolumnasACambiar
             /*
+            
+            
+            
+            
             
             if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos" && columnasACambiar.contains("DNI") || columnasACambiar.contains("dniPaciente")) {
                 
@@ -303,9 +361,8 @@ public class ConexionDB {
         /*
         DELETE FROM tablaIn WHERE condicion;
         
-        el usuario elige entre eliminar x DNI o ID
+        el usuario elige  eliminar ID
         
-        //borrar la tabla de turnos y agregarle un id que se autoincremente
         */
         
         mostrarTabla(tablaIn);
@@ -372,12 +429,13 @@ public class ConexionDB {
                         break;
                     case "tb_Turnos":
                         
-                        System.out.println("- DNI de Paciente: " + rs.getString(1) + 
-                                            "\n\t -- Dia del turno: " + rs.getString(2) + 
-                                            "\n\t -- Forma de pago: " + rs.getString(3) +
-                                            "\n\t -- Obra social: " + rs.getString(4) +
-                                            "\n\t -- Especialidad: " + rs.getString(5) +
-                                            "\n\t -- Asistencia del paciente: " + rs.getString(6));
+                        System.out.println("- ID: " + rs.getString(1) +
+                                            "\n\t -- DNI de Paciente: " + rs.getString(2) + 
+                                            "\n\t -- Dia del turno: " + rs.getString(3) + 
+                                            "\n\t -- Forma de pago: " + rs.getString(4) +
+                                            "\n\t -- Obra social: " + rs.getString(5) +
+                                            "\n\t -- Especialidad: " + rs.getString(6) +
+                                            "\n\t -- Asistencia del paciente: " + rs.getString(7));
                         break;
                 }
                 
@@ -392,6 +450,18 @@ public class ConexionDB {
         
         
     }
+    
+    
+    /*
+    
+    
+    public Turno mostrarRegistro() {
+    
+        int dniIn = pideYValida.pidoDniYValido();
+    }
+    
+    */
+    
 }
 
 

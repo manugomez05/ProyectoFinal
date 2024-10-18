@@ -1,5 +1,7 @@
 package tpintegrador;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -9,10 +11,39 @@ public class TpIntegrador {
 
         // Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
+        
+        
         conDB.conectarDB();
         //conDB.mostrarTabla("tb_dfsurnos");
-        // conDB.modificarRegistro("tb_Turnos");
-       // conDB.agregarRegistro("tb_Medicos");
+        //conDB.modificarRegistro("tb_Medicos");
+        conDB.agregarRegistro("tb_Turnos");
+        Validador pide = new Validador();
+        
+        //String nu =  pide.pidoFechaYValido();
+        
+        //System.out.println(nu);
+        /*
+        
+            hacer nuestro propio mes en un array
+            trabajar una vez a la semana 
+        
+            todo pasaria en un solo dia
+            
+        
+        
+        */
+               
+        
+        LocalDateTime fechaActual = LocalDateTime.now();
+        
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Aplicar el formato a la fecha actual
+        String fechaFormateada = fechaActual.format(formato);
+        
+        System.out.println(fechaFormateada);
+        
+        
         
         
         
@@ -146,7 +177,7 @@ public class TpIntegrador {
                             break;
                         case 2:
                             // pedir dni y filtrar facturas asociadas al dni        
-                           conDB.mostrarRegistro();
+                           //conDB.mostrarRegistro();
                            
                             break;
                         case 3:

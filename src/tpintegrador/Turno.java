@@ -25,6 +25,8 @@ public class Turno {
      
         
         this.setDniPaciente(pideYValida.pidoDniYValido());
+        
+        this.setDia(pideYValida.pidoFechaYValido());
         //falta funcion que pide el dia de turno
         this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
         this.setObraSocial(pideYValida.pidoObraSocialYValido());

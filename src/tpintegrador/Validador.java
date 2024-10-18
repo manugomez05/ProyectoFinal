@@ -8,11 +8,96 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+import java.time.LocalDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 /**
  *
  * @author Usuario
  */
+
+/*
+    public String pidoFechaYValido() {
+        
+        String fecha = "";
+        boolean fechaInvalida = true;
+        int diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0;
+        LocalDateTime fechaActual = LocalDateTime.now();
+        
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Aplicar el formato a la fecha actual
+        String fechaFormateada = fechaActual.format(formato);        
+        System.out.println(fechaFormateada);
+        
+        LocalDate fechaUsuario;
+        
+        
+        
+        //Pido la fecha de Nacimiento y la valido
+        
+        do {
+        
+            try {
+
+                limpiarBuffer = input.nextLine();
+
+                while (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
+                    System.out.println("Ingrese el dia de nacimiento:");
+                    diaNacimientoIn = input.nextInt();
+
+                    //si el numero ingresado esta fuera de rango, se emite una exception
+                    if (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
+                        throw new Exception();
+                    }
+                }
+
+                while (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
+                    System.out.println("Ingrese el mes de nacimiento:");
+                    mesNacimientoIn = input.nextInt();
+
+                    //si el numero ingresado esta fuera de rango, se emite una exception
+                    if (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
+                        throw new Exception();
+                    }
+                }
+
+                while (anioNacimientoIn < 1930 && anioNacimientoIn > 2005) {
+                    System.out.println("Ingrese el anio de nacimiento:");
+                    anioNacimientoIn = input.nextInt();
+
+                    //si el numero ingresado esta fuera de rango, se emite una exception
+                    if (anioNacimientoIn < 1) {
+                        throw new Exception();
+                    }
+                }
+
+                fechaInvalida = false;
+                fecha = diaNacimientoIn + "-" + mesNacimientoIn + "-" + anioNacimientoIn;
+                
+                fechaUsuario = LocalDate.parse(fecha, formato);
+                
+                
+
+            } catch(InputMismatchException ime) {
+                System.out.println("-InputMismatchException: " + ime);
+                System.out.println("--Error: Ingrese un numero");
+            } catch(Exception e) {
+                System.out.println("-Exception: " + e);
+                System.out.println("--Rango invalido");
+            }
+            
+            return fecha;
+            
+        } while (fechaUsuario.isAfter(fechaActual));
+        
+       
+        
+    }
+    
+    */
+
+
 class Validador {
     
     String limpiarBuffer;
@@ -84,7 +169,7 @@ class Validador {
                     }
                 }
 
-                while (anioNacimientoIn < 1) {
+                while (anioNacimientoIn < 1930 && anioNacimientoIn > 2005) {
                     System.out.println("Ingrese el anio de nacimiento:");
                     anioNacimientoIn = input.nextInt();
 
@@ -109,6 +194,64 @@ class Validador {
         
         return fecha;
     }
+    
+
+
+
+    public String pidoFechaYValido() {
+        Scanner input = new Scanner(System.in);
+        String fecha = "";
+        boolean fechaInvalida = true;
+        int diaIn = 0, mesIn = 0, anioIn = 0;
+        
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        
+        do {
+            try {
+                System.out.println("Ingrese el día:");
+                diaIn = input.nextInt();
+                if (diaIn < 1 || diaIn > 31) {
+                    throw new Exception("Día fuera de rango");
+                }
+
+                System.out.println("Ingrese el mes:");
+                mesIn = input.nextInt();
+                if (mesIn < 1 || mesIn > 12) {
+                    throw new Exception("Mes fuera de rango");
+                }
+
+                System.out.println("Ingrese el año:");
+                anioIn = input.nextInt();
+                if (anioIn < 2005) {
+                    throw new Exception("Año fuera de rango");
+                }
+
+                // Construir la fecha ingresada como un LocalDate
+                LocalDate fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
+                
+                // Verificar si la fecha ingresada es posterior a la fecha actual
+                if (fechaActual.isAfter(fechaUsuario)) {
+                    throw new Exception("La fecha ingresada es posterior a la actual.");
+                }
+
+                fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
+                fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
+
+            } catch (InputMismatchException ime) {
+                System.out.println("Error: Ingrese un número válido.");
+                input.next();  // Limpiar el buffer para evitar el loop
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } while (fechaInvalida);
+
+        return fecha;
+    }
+    
+    
+    
     
     public int pidoDniYValido() {
         
@@ -406,8 +549,21 @@ class Validador {
         return obraSocialPaciente;
     }
  
+    public int pidoEnteroYValido(String mensaje) {
     
-    public void Validador() {
+        boolean enteroInvalido = true;
+        
+        while (enteroInvalido) {
+            System.out.println(mensaje);
+            
+        }
+        
+        
+        return 0;
+        
+    }
+    
+    public Validador() {
         
     }
 }
