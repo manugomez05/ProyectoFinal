@@ -19,30 +19,77 @@ public class TpIntegrador {
         conDB.agregarRegistro("tb_Turnos");
         Validador pide = new Validador();
         
-        //String nu =  pide.pidoFechaYValido();
         
-        //System.out.println(nu);
+        
+               
+        
         /*
         
-            hacer nuestro propio mes en un array
-            trabajar una vez a la semana 
+        Los medicos trabajan todos los dias
         
-            todo pasaria en un solo dia
-            
+        MENU DEL CHAD
+        
+        *******************************
+            GESTIÓN DE CLÍNICA
+        *******************************
+        1. Gestionar Médicos
+        2. Gestionar Pacientes
+        3. Gestionar Citas
+        4. Consultar Historia Clínica
+        5. Salir
+        *******************************
+        Seleccione una opción:
+        
+        
+        *******************************
+            GESTIONAR MÉDICOS
+        *******************************
+        1. Agregar Nuevo Médico
+        2. Modificar Información de Médico
+        3. Eliminar Médico
+        4. Listar Todos los Médicos
+        5. Regresar al Menú Principal
+        *******************************
+        Seleccione una opción:
+
+        
+        
+        *******************************
+            GESTIONAR PACIENTES
+        *******************************
+        1. Agregar Nuevo Paciente
+        2. Modificar Información de Paciente
+        3. Eliminar Paciente
+        4. Listar Todos los Pacientes
+        5. Regresar al Menú Principal
+        *******************************
+        Seleccione una opción:
+
+
+        *******************************
+            GESTIONAR CITAS
+        *******************************
+        1. Agendar Nueva Cita
+        2. Modificar Cita
+        3. Cancelar Cita
+        4. Listar Todas las Citas
+        5. Regresar al Menú Principal
+        *******************************
+        Seleccione una opción:
+
+        
+        *******************************
+        CONSULTAR HISTORIA CLÍNICA
+        *******************************
+        1. Buscar Historia Clínica por Paciente
+        2. Listar Todas las Historias Clínicas
+        3. Regresar al Menú Principal
+        *******************************
+        Seleccione una opción:
+
         
         
         */
-               
-        
-        LocalDateTime fechaActual = LocalDateTime.now();
-        
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Aplicar el formato a la fecha actual
-        String fechaFormateada = fechaActual.format(formato);
-        
-        System.out.println(fechaFormateada);
-        
         
         
         

@@ -26,11 +26,11 @@ public class Factura {
     
     public double calcularMonto(){
         
-         double monto=0;
+        double monto=0;
         Random rd = new Random();
         
         //Monto calculado con un numero random
-       monto = rd.nextDouble(5000, 20000);
+        monto = rd.nextDouble(5000, 20000);
         
         return monto;
         

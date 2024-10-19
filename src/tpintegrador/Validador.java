@@ -206,6 +206,7 @@ class Validador {
         
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaUsuario;
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         
         do {
@@ -222,28 +223,28 @@ class Validador {
                     throw new Exception("Mes fuera de rango");
                 }
 
-                System.out.println("Ingrese el año:");
+                System.out.println("Ingrese el anio:");
                 anioIn = input.nextInt();
                 if (anioIn < 2005) {
-                    throw new Exception("Año fuera de rango");
+                    throw new Exception("Anio fuera de rango");
                 }
 
                 // Construir la fecha ingresada como un LocalDate
-                LocalDate fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
+                fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
                 
-                // Verificar si la fecha ingresada es posterior a la fecha actual
+                // Verificar si la fecha ingresada es anterior a la fecha actual
                 if (fechaActual.isAfter(fechaUsuario)) {
-                    throw new Exception("La fecha ingresada es posterior a la actual.");
+                    throw new Exception("La fecha ingresada es anterior a la actual.");
                 }
 
                 fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
                 fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
 
             } catch (InputMismatchException ime) {
-                System.out.println("Error: Ingrese un número válido.");
+                System.out.println("-Error: Ingrese un número válido.");
                 input.next();  // Limpiar el buffer para evitar el loop
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("-Error: " + e.getMessage());
             }
         } while (fechaInvalida);
 

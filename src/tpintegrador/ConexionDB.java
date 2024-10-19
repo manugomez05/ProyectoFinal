@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -17,12 +17,20 @@ import java.util.InputMismatchException;
  */
 public class ConexionDB {
     
-    /*
-    dudas
-        se instancian objetos o el constructor solo llama a la funcion de agregar registro a la tabla
-        definir muchas variables con la misma funcion esta bien 
     
+    
+    //DUDAS
+    /*
+        (consultar los ids que existen, guardarlos en un array y 
+            seguir pidiendo el id mientras que el ingresado no exista)
+    
+        hacer select de un campo que no existe no tira error
+        tengo que verificar que exista o no
+    
+    
+        
     */
+    
     
     Scanner input = new Scanner(System.in);
     Connection db = null;
@@ -31,6 +39,7 @@ public class ConexionDB {
     ResultSet rs;
     String sql;
     Validador pideYValida = new Validador();
+    int idIn;
     
     //conecta a la base de datos
     public void conectarDB() {
@@ -367,9 +376,9 @@ public class ConexionDB {
         
         mostrarTabla(tablaIn);
         
-        if (tablaIn == "tb_Medicos" || tablaIn == "tb_Pacientes") {
-            
-        }
+        idIn = pideYValida.pidoEnteroYValido(tablaIn);
+        
+        
         
         
     }
@@ -431,7 +440,7 @@ public class ConexionDB {
                         
                         System.out.println("- ID: " + rs.getString(1) +
                                             "\n\t -- DNI de Paciente: " + rs.getString(2) + 
-                                            "\n\t -- Dia del turno: " + rs.getString(3) + 
+                                            "\n\t -- Fecha del turno: " + rs.getString(3) + 
                                             "\n\t -- Forma de pago: " + rs.getString(4) +
                                             "\n\t -- Obra social: " + rs.getString(5) +
                                             "\n\t -- Especialidad: " + rs.getString(6) +
