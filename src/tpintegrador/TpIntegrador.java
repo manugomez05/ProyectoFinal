@@ -14,8 +14,9 @@ public class TpIntegrador {
         conDB.conectarDB();
         //conDB.mostrarTabla("tb_dfsurnos");
         //conDB.modificarRegistro("tb_Turnos");
-        conDB.agregarRegistro("tb_Turnos");
-        conDB.eliminarRegistro("tb_Turnos");
+        //conDB.agregarRegistro("tb_Turnos");
+        //conDB.agregarRegistro("tb_Medicos");
+        conDB.eliminarRegistro("tb_Medicos");
         Validador pide = new Validador();
         
         

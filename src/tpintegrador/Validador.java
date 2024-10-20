@@ -173,7 +173,7 @@ class Validador {
                     }
                 }
 
-                while (anioNacimientoIn < 1930 && anioNacimientoIn > 2005) {
+                while (anioNacimientoIn < 1930 || anioNacimientoIn > 2005) {
                     System.out.println("Ingrese el anio de nacimiento:");
                     anioNacimientoIn = input.nextInt();
 

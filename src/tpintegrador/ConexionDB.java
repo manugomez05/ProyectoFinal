@@ -316,7 +316,41 @@ public class ConexionDB {
                 
             }
             
+            
             //recorro el array caolumnasACambiar
+            switch(tablaIn) {
+                case "tb_Pacientes":
+                    
+                    Paciente pacienteExistente = new Paciente();
+                    
+                    for (String i : columnasACambiar) {
+                        switch (i) {
+                            case "Nombre":
+                                
+                                break;
+                            case "Apellido":
+                                
+                                break;
+                            case "DNI":
+                                
+                                break;
+                            case "fechaNacimiento":
+                                
+                                break;
+                        }
+                    }
+                    
+                    break;
+                case "tb_Medicos":
+                    
+                    break;
+                case "tb_Turnos":
+                    
+                    break;
+            }
+            
+            
+            
             /*            
             if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos" && columnasACambiar.contains("DNI") || columnasACambiar.contains("dniPaciente")) {
                 
