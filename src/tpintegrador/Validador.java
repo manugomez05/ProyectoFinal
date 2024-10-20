@@ -560,6 +560,8 @@ class Validador {
         
         int entero = 0;
         
+        System.out.println(arrayIndice);
+        
         while (enteroInvalido) {
             
             try {

@@ -39,6 +39,8 @@ public class ConexionDB {
     ResultSet rs;
     String sql;
     Validador pideYValida = new Validador();
+    ArrayList<Integer> idsDeTabla = new ArrayList<>();
+    
     int idIn;
     
     //conecta a la base de datos
@@ -359,8 +361,6 @@ public class ConexionDB {
                     break;
             }
             */
-        } catch(SQLException ex) {
-            System.out.println("SQLException: " +ex);
         } catch(Exception e) {
             System.out.println("-Exception: " + e);
             System.out.println("--Indice fuera de rango");
@@ -379,12 +379,39 @@ public class ConexionDB {
         
         */
         
-        mostrarTabla(tablaIn);
         
-        //idIn = pideYValida.pidoEnteroYValido(tablaIn);
+        idsDeTabla = consultaIdsDeTabla(tablaIn);
         
+        if (!idsDeTabla.isEmpty()) {
         
+            mostrarTabla(tablaIn);
+            idIn = pideYValida.pidoEnteroYValido("Ingrese el ID a eliminar", idsDeTabla);
+            
+            try {
         
+                switch (tablaIn) {
+                    case "tb_Pacientes":
+                        db.prepareStatement("DELETE FROM tb_Pacientes WHERE idPaciente=" + idIn ).execute();
+                        break;
+                    case "tb_Medicos":
+                        db.prepareStatement("DELETE FROM tb_Medicos WHERE idMedico=" + idIn ).execute();
+                        break;
+                    case "tb_Turnos":
+                        db.prepareStatement("DELETE FROM tb_Turnos WHERE idTurno=" + idIn ).execute();
+                        break;
+
+                }
+
+            } catch(SQLException ex) {
+                System.out.println("SQLException: " +ex);
+            }
+            
+            System.out.println("Se ha eliminado el registro con Id = " + idIn);
+            
+        } else {
+        
+            System.out.println("La tabla esta vacia");
+        }
         
     }
     
