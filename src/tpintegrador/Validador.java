@@ -5,6 +5,8 @@
 package tpintegrador;
 
 import com.google.gson.Gson;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -104,6 +106,8 @@ class Validador {
     Scanner input = new Scanner(System.in);
     int indiceIn = 0;
     boolean indiceInvalido = true;
+    ResultSet rs;
+    Statement stmt;
     
     
     public String pidoStringYValida(String campo) {
@@ -550,17 +554,37 @@ class Validador {
         return obraSocialPaciente;
     }
  
-    public int pidoEnteroYValido(String mensaje) {
+    public int pidoEnteroYValido(String mensaje, ArrayList arrayIndice) {
     
         boolean enteroInvalido = true;
         
+        int entero = 0;
+        
         while (enteroInvalido) {
-            System.out.println(mensaje);
+            
+            try {
+            
+                limpiarBuffer = input.nextLine();
+                
+                System.out.println(mensaje);
+                entero = input.nextInt();
+                
+                if (arrayIndice.contains(entero)) {
+                    enteroInvalido = false;
+                } else {
+                    throw new Exception();
+                }
+            } catch(InputMismatchException ime) {
+                System.out.println("-InputMismatchException: " + ime);
+                System.out.println("--Error: Ingrese un indice valido");
+            } catch(Exception e) {
+                System.out.println("-Exception: " + e);
+                System.out.println("--El indice ingresado no existe");
+            }
             
         }
         
-        
-        return 0;
+        return entero;
         
     }
     

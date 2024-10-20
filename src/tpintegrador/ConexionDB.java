@@ -151,6 +151,79 @@ public class ConexionDB {
         
         
     
+    public ArrayList consultaIdsDeTabla(String tablaIn) {
+        
+        ArrayList<Integer> arrayDeIds = new ArrayList<>();
+        
+        try {
+        
+            stmt = db.createStatement();
+        
+        
+            switch (tablaIn) {
+                //dependiendo de la tabla consulto el valor de la id
+                case "tb_Medicos":
+                        rs = stmt.executeQuery("SELECT idMedico FROM tb_Medicos;"); 
+                        break;
+                    case "tb_Pacientes":
+                        rs = stmt.executeQuery("SELECT idPaciente FROM tb_Pacientes;"); 
+                        break;
+                    case "tb_Turnos":
+                        rs = stmt.executeQuery("SELECT idTurno FROM tb_Turnos;"); 
+                        break;
+
+            }
+
+            while (rs.next()) {
+                //dependiendo de la tabla tomo el valor de id
+                switch (tablaIn) {
+                    case "tb_Medicos":
+                        arrayDeIds.add(rs.getInt("idMedico"));
+                        break;
+                    case "tb_Pacientes":
+                        arrayDeIds.add(rs.getInt("idPaciente"));
+                        break;
+                    case "tb_Turnos":
+                        arrayDeIds.add(rs.getInt("idTurno"));
+                        break;
+
+                }
+            }
+            
+        } catch(SQLException ex) {
+            System.out.println("SQLException: " +ex);
+        }
+        
+        
+        return arrayDeIds;
+        
+    }
+    
+    public ArrayList consultoColumnasDeTabla (String tablaIn) {
+    
+        ArrayList<String> columnasDeTabla = new ArrayList<>();
+        
+        try {
+        
+            stmt = db.createStatement();
+            rs = stmt.executeQuery("PRAGMA table_info(" + tablaIn + ");"); 
+
+            //agrego las columnas de la tabla a un array
+            while (rs.next()) {
+                columnasDeTabla.add(rs.getString("name")); 
+            }
+            
+        } catch(SQLException ex) {
+            System.out.println("SQLException: " +ex);
+        }
+        
+        
+        
+        return columnasDeTabla;
+        
+    }
+    
+    
     public void modificarRegistro(String tablaIn) {
         //dependiendo de la tabla 
         //  pregunto que campos va a querer modificar
@@ -168,7 +241,8 @@ public class ConexionDB {
         WHERE condición;
         
         */
-        int indiceIn = 0, indiceSalir = 0, enteroIn = 0;
+        int indiceIn = 0, indiceSalir = 0;
+        ArrayList<Integer> idsDeTabla = new ArrayList<>();
         
         
         //Muestro la tabla, si se ingresa una tabla incorrecta, no pasa de aca
@@ -178,76 +252,15 @@ public class ConexionDB {
         try {
             
             //pido Id
-            
-            //puedo crear la funcion pidoEnteroYValido()
-            //consulto los ids de la tabla
-            //los agrego a un arraylist 
-            //lo paso como argumento 
-            
-            
-            
-            /*
-            if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos" || tablaIn == "tb_Pacientes" ) {
-                enteroIn = pideYValida.pidoEnteroYValido("Ingrese el ID a modificar");
-            }
-            */
-            
-            ArrayList<Integer> idsDeTabla = new ArrayList<>();
-            stmt = db.createStatement();
-            
-            switch (tablaIn) {
-                //dependiendo de la tabla consulto el valor de la id
-                case "tb_Medicos":
-                        rs = stmt.executeQuery("SELECT idMedico FROM " + tablaIn + ";"); 
-                        break;
-                    case "tb_Pacientes":
-                        rs = stmt.executeQuery("SELECT idPaciente FROM tb_Pacientes;"); 
-                        break;
-                    case "tb_Turnos":
-                        rs = stmt.executeQuery("SELECT idTurno FROM tb_Turnos;"); 
-                        break;
-
-            }
-            
-            
-            while (rs.next()) {
-                //dependiendo de la tabla tomo el valor de id
-                switch (tablaIn) {
-                    case "tb_Medicos":
-                        idsDeTabla.add(rs.getInt("idMedico"));
-                        break;
-                    case "tb_Pacientes":
-                        idsDeTabla.add(rs.getInt("idPaciente"));
-                        break;
-                    case "tb_Turnos":
-                        idsDeTabla.add(rs.getInt("idTurno"));
-                        break;
-                        
-                }
-            }
-            
-            
-            
-            
-                    
+            idsDeTabla = consultaIdsDeTabla(tablaIn);
+            System.out.println(idsDeTabla);
+            idIn = pideYValida.pidoEnteroYValido("Ingrese el ID a modificar", idsDeTabla);
             
             
             //consulta las columnas de la tabla 
-            stmt = db.createStatement();
-            rs = stmt.executeQuery("PRAGMA table_info(" + tablaIn + ");"); 
-            ArrayList<String> columnasDeTabla = new ArrayList<>();
+            ArrayList<String> columnasDeTabla = consultoColumnasDeTabla(tablaIn);
             ArrayList<String> columnasACambiar = new ArrayList<>();
 
-            
-            //agrego las columnas de la tabla a un array
-            while (rs.next()) {
-                columnasDeTabla.add(rs.getString("name")); 
-            }
-            
-            System.out.println(columnasDeTabla);
-            System.out.println(idsDeTabla);
-            
-            
             
             //pido las columnas a modificar y las agrego a un array
             do {
@@ -302,12 +315,7 @@ public class ConexionDB {
             }
             
             //recorro el array caolumnasACambiar
-            /*
-            
-            
-            
-            
-            
+            /*            
             if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos" && columnasACambiar.contains("DNI") || columnasACambiar.contains("dniPaciente")) {
                 
             }
@@ -373,7 +381,7 @@ public class ConexionDB {
         
         mostrarTabla(tablaIn);
         
-        idIn = pideYValida.pidoEnteroYValido(tablaIn);
+        //idIn = pideYValida.pidoEnteroYValido(tablaIn);
         
         
         
