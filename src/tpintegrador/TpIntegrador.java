@@ -1,7 +1,5 @@
 package tpintegrador;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -15,8 +13,8 @@ public class TpIntegrador {
         
         conDB.conectarDB();
         //conDB.mostrarTabla("tb_dfsurnos");
-        //conDB.modificarRegistro("tb_Medicos");
-        conDB.agregarRegistro("tb_Turnos");
+        conDB.modificarRegistro("tb_Turnos");
+        //conDB.agregarRegistro("tb_Turnos");
         Validador pide = new Validador();
         
         
@@ -26,6 +24,13 @@ public class TpIntegrador {
         /*
         
         Los medicos trabajan todos los dias
+        
+        hacer una clase menu que tenga metodos por cada menu
+        menuGestionClinica()
+        menuGestionMedicos()
+        ...
+        
+        
         
         MENU DEL CHAD
         

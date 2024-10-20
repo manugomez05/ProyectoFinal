@@ -179,10 +179,7 @@ public class ConexionDB {
             
             //pido Id
             
-            //puedo crear la funcion pidoEnteroYValido() con varios argumentos y un if que 
-            //verifica si se muestran dos mensajes o uno
-            
-            
+            //puedo crear la funcion pidoEnteroYValido()
             //consulto los ids de la tabla
             //los agrego a un arraylist 
             //lo paso como argumento 
@@ -192,8 +189,6 @@ public class ConexionDB {
             /*
             if (tablaIn == "tb_Turnos" || tablaIn == "tb_Medicos" || tablaIn == "tb_Pacientes" ) {
                 enteroIn = pideYValida.pidoEnteroYValido("Ingrese el ID a modificar");
-            
-            
             }
             */
             
@@ -201,7 +196,7 @@ public class ConexionDB {
             stmt = db.createStatement();
             
             switch (tablaIn) {
-                
+                //dependiendo de la tabla consulto el valor de la id
                 case "tb_Medicos":
                         rs = stmt.executeQuery("SELECT idMedico FROM " + tablaIn + ";"); 
                         break;
@@ -211,14 +206,13 @@ public class ConexionDB {
                     case "tb_Turnos":
                         rs = stmt.executeQuery("SELECT idTurno FROM tb_Turnos;"); 
                         break;
-                        
-                
-                
-            
+
             }
             
             
-            switch (tablaIn) {
+            while (rs.next()) {
+                //dependiendo de la tabla tomo el valor de id
+                switch (tablaIn) {
                     case "tb_Medicos":
                         idsDeTabla.add(rs.getInt("idMedico"));
                         break;
@@ -229,7 +223,10 @@ public class ConexionDB {
                         idsDeTabla.add(rs.getInt("idTurno"));
                         break;
                         
+                }
             }
+            
+            
             
             
                     
@@ -461,15 +458,6 @@ public class ConexionDB {
     }
     
     
-    /*
-    
-    
-    public Turno mostrarRegistro() {
-    
-        int dniIn = pideYValida.pidoDniYValido();
-    }
-    
-    */
     
 }
 
