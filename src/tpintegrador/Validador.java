@@ -596,10 +596,31 @@ class Validador {
         
     }
     
-    //public int pidoAsistenciaYValido() {
+    public int pidoAsistenciaYValido() {
         
+        indiceInvalido = true;
         
-    //}
+        while (indiceInvalido) {
+
+            try {
+
+                limpiarBuffer = input.nextLine();
+
+                System.out.println("Confirmar asistencia?");
+                entero = input.nextInt();
+
+                
+            } catch(InputMismatchException ime) {
+                System.out.println("-InputMismatchException: " + ime);
+                System.out.println("--Error: Ingrese un indice valido");
+            } catch(Exception e) {
+                System.out.println("-Exception: " + e);
+                System.out.println("--El indice ingresado no existe");
+            }
+
+        }
+        
+    }
     
     
     public Validador() {
