@@ -7,6 +7,15 @@ public class TpIntegrador {
 
     public static void main(String[] args) {
 
+        /*
+        
+                        Dias de turno segun la especialidad
+        arreglar modificar 
+        Pagar
+        
+        
+        */
+        
         // Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
         
@@ -18,11 +27,7 @@ public class TpIntegrador {
         //conDB.agregarRegistro("tb_Turnos");
         //conDB.agregarRegistro("tb_Medicos");
         //conDB.eliminarRegistro("tb_Medicos");
-        Validador pide = new Validador();
         
-        
-        
-               
         
         /*
         

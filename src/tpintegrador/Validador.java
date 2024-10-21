@@ -592,11 +592,15 @@ class Validador {
             return -00;
         }
         
-        
-        
         return entero;
         
     }
+    
+    public int pidoAsistenciaYValido() {
+        
+        
+    }
+    
     
     public Validador() {
         
