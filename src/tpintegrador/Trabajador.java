@@ -40,8 +40,10 @@ public class Trabajador extends Persona {
     }
 
  
-    public Trabajador() {
+    public Trabajador(boolean inicializar) {
         
+        super(inicializar);
+
     }
     
     

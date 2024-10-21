@@ -31,8 +31,12 @@ public class Paciente extends Persona{
         super(nombre, apellido, dni, fechaDeNacimiento);
     }
     
+    public Paciente(boolean inicializar) {
+        super(inicializar);
+    }
+    
     public Paciente() {
-        super();
+        
     }
         
 }

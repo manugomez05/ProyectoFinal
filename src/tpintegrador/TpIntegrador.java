@@ -13,10 +13,11 @@ public class TpIntegrador {
         
         conDB.conectarDB();
         //conDB.mostrarTabla("tb_dfsurnos");
-        //conDB.modificarRegistro("tb_Turnos");
+        conDB.modificarRegistro("tb_Pacientes");
+        //conDB.agregarRegistro("tb_Pacientes");
         //conDB.agregarRegistro("tb_Turnos");
         //conDB.agregarRegistro("tb_Medicos");
-        conDB.eliminarRegistro("tb_Medicos");
+        //conDB.eliminarRegistro("tb_Medicos");
         Validador pide = new Validador();
         
         
@@ -34,7 +35,7 @@ public class TpIntegrador {
         
         
         
-        MENU DEL CHAD
+        MENU 
         
         *******************************
             GESTIÓN DE CLÍNICA

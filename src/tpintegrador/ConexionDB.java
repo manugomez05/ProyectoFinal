@@ -21,11 +21,9 @@ public class ConexionDB {
     
     //DUDAS
     /*
-        (consultar los ids que existen, guardarlos en un array y 
-            seguir pidiendo el id mientras que el ingresado no exista)
+        modificarRegistro esta bien?
     
-        hacer select de un campo que no existe no tira error
-        tengo que verificar que exista o no
+        
     
     
         
@@ -35,6 +33,7 @@ public class ConexionDB {
     Scanner input = new Scanner(System.in);
     Connection db = null;
     String limpiarBuffer;
+    PreparedStatement ps = null;
     Statement stmt;
     ResultSet rs;
     String sql;
@@ -83,7 +82,6 @@ public class ConexionDB {
 
     //agrega un registro a alguna tabla     
     public void agregarRegistro(String tablaIn) {
-        PreparedStatement ps = null;
         
         //Agrego el registro a la tabla
         try {
@@ -91,7 +89,7 @@ public class ConexionDB {
             switch(tablaIn) {
                 case "tb_Pacientes":
                     
-                    Paciente newPaciente = new Paciente();
+                    Paciente newPaciente = new Paciente(true);
 
                     ps = db.prepareStatement("INSERT INTO tb_Pacientes(Nombre,Apellido,DNI,fechaNacimiento) VALUES (?,?,?,?)");
                     ps.setString(1, newPaciente.getNombre());
@@ -104,7 +102,7 @@ public class ConexionDB {
                     break;
                 case "tb_Medicos":
                     
-                    Medico newMedico = new Medico();
+                    Medico newMedico = new Medico(true);
                                         
                     ps = db.prepareStatement("INSERT INTO tb_Medicos(Nombre,Apellido,DNI,fechaNacimiento,cuentaBancaria,salario,diasDeTrabajo,especialidad) VALUES (?,?,?,?,?,?,?,?)");
                     ps.setString(1, newMedico.getNombre());
@@ -122,7 +120,7 @@ public class ConexionDB {
                     break;
                 case "tb_Turnos":
                     
-                    Turno newTurno = new Turno();
+                    Turno newTurno = new Turno(true);
                     
                     ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,fechaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
                     
@@ -226,6 +224,30 @@ public class ConexionDB {
     }
     
     
+    public String armaStringConsultaSql(ArrayList columnasACambiar, String columna, String nuevoValor) {
+        
+        String consultaSql = "";
+        
+        System.out.println(columna);
+        System.out.println(nuevoValor);
+        
+        if (columnasACambiar.indexOf(columna) == 0) {
+            consultaSql = consultaSql + "SET " + columna + "='" + nuevoValor + "', ";
+
+        } else if (columnasACambiar.indexOf(columna) == columnasACambiar.size()-1) {
+            consultaSql = consultaSql + columna + "='" + nuevoValor + "'";
+
+        } else {
+            consultaSql = consultaSql + columna + "='" + nuevoValor + "', ";
+
+        }
+        
+        
+        
+        return consultaSql;
+    }
+    
+    
     public void modificarRegistro(String tablaIn) {
         //dependiendo de la tabla 
         //  pregunto que campos va a querer modificar
@@ -245,160 +267,123 @@ public class ConexionDB {
         */
         int indiceIn = 0, indiceSalir = 0;
         ArrayList<Integer> idsDeTabla = new ArrayList<>();
-        
+        String columnasACambiarString = "";
         
         //Muestro la tabla, si se ingresa una tabla incorrecta, no pasa de aca
         mostrarTabla(tablaIn); 
 
+        idsDeTabla = consultaIdsDeTabla(tablaIn);
+        System.out.println(idsDeTabla);
         
-        try {
+        if (!idsDeTabla.isEmpty()) {
             
-            //pido Id
-            idsDeTabla = consultaIdsDeTabla(tablaIn);
-            System.out.println(idsDeTabla);
-            idIn = pideYValida.pidoEnteroYValido("Ingrese el ID a modificar", idsDeTabla);
+            try {
             
-            
-            //consulta las columnas de la tabla 
-            ArrayList<String> columnasDeTabla = consultoColumnasDeTabla(tablaIn);
-            ArrayList<String> columnasACambiar = new ArrayList<>();
+                //pido Id
+                idIn = pideYValida.pidoEnteroYValido("Ingrese el ID a modificar", idsDeTabla);
 
-            
-            //pido las columnas a modificar y las agrego a un array
-            do {
-                limpiarBuffer = input.nextLine();
-                
-                indiceSalir = columnasDeTabla.size() + 1;
-                
-                System.out.println("Elija la columna/s a modificar");
-                for (String i: columnasDeTabla) {
-                    System.out.println((columnasDeTabla.indexOf(i) + 1) + "- " + i);
-                }
-                System.out.println(indiceSalir + "- Salir");
-                
-                try {
-                    indiceIn = input.nextInt();
-                    
-                    if (indiceIn != indiceSalir) {
-                        columnasACambiar.add(columnasDeTabla.get(indiceIn-1));
-                        columnasDeTabla.remove(indiceIn-1);
-                    }
-                    
-                } catch(IndexOutOfBoundsException iob) {
-                    System.out.println("-IndexOutOfBoundsException: " + iob);
-                    System.out.println("--Indice ingresado fuera de rango");
-                } catch (InputMismatchException ime) {
-                    System.out.println("-InputMismatchException: " + ime);
-                    System.out.println("--Ingrese un numero");
-                }
-                                
-            } while (indiceIn != indiceSalir);
-            
-            
-            if (!columnasACambiar.isEmpty()) {
-                
-                String columnasACambiarString = "";
-                for (String i: columnasACambiar) {
-                    
-                    if (columnasACambiar.indexOf(i) == 0) {
-                        columnasACambiarString = columnasACambiarString + "(" + i + ", ";
+                //consulta las columnas de la tabla 
+                ArrayList<String> columnasDeTabla = consultoColumnasDeTabla(tablaIn);
+                ArrayList<String> columnasACambiar = new ArrayList<>();
+
+
+                //pido las columnas a modificar y las agrego a un array
+                do {
+                    limpiarBuffer = input.nextLine();
+
+                    indiceSalir = columnasDeTabla.size() + 1;
+
+                    System.out.println("Elija la columna/s a modificar");
+                    for (String i: columnasDeTabla) {
                         
-                    } else if (columnasACambiar.indexOf(i) == columnasACambiar.size()-1) {
-                        columnasACambiarString = columnasACambiarString +  i + ")";
-                        
-                    } else {
-                        columnasACambiarString = columnasACambiarString +  i + ", ";
-                        
-                    }
-                    
-                }
-                System.out.println(columnasACambiarString);
-                
-            }
-            
-            
-            //recorro el array caolumnasACambiar
-            switch(tablaIn) {
-                case "tb_Pacientes":
-                    
-                    Paciente pacienteExistente = new Paciente();
-                    
-                    for (String i : columnasACambiar) {
-                        switch (i) {
-                            case "Nombre":
-                                
-                                break;
-                            case "Apellido":
-                                
-                                break;
-                            case "DNI":
-                                
-                                break;
-                            case "fechaNacimiento":
-                                
-                                break;
+                        if (!(columnasDeTabla.indexOf(i) == 0)) {
+                            System.out.println((columnasDeTabla.indexOf(i)) + "- " + i);
                         }
+                        
                     }
-                    
-                    break;
-                case "tb_Medicos":
-                    
-                    break;
-                case "tb_Turnos":
-                    
-                    break;
-            }
-            
-            
-            
-            /*            
-            if (tablaIn == "tb_Pacientes" || tablaIn == "tb_Medicos" || tablaIn == "tb_Turnos" && columnasACambiar.contains("DNI") || columnasACambiar.contains("dniPaciente")) {
-                
-            }
-            
-            switch(tablaIn) {
-                case "tb_Pacientes":
-                    
-                    for (String i : columnasACambiar) {
-                        switch (i) {
-                            case "":
-                                break;
-                            case "":
-                                break;
-                            case "":
-                                break;
-                            case "":
-                                break;
+                    System.out.println(indiceSalir + "- Salir");
+
+                    try {
+                        indiceIn = input.nextInt();
+
+                        if (indiceIn != indiceSalir) {
+                            columnasACambiar.add(columnasDeTabla.get(indiceIn));
+                            columnasDeTabla.remove(indiceIn);
                         }
+
+                    } catch(IndexOutOfBoundsException iob) {
+                        System.out.println("-IndexOutOfBoundsException: " + iob);
+                        System.out.println("--Indice ingresado fuera de rango");
+                    } catch (InputMismatchException ime) {
+                        System.out.println("-InputMismatchException: " + ime);
+                        System.out.println("--Ingrese un numero");
                     }
-                    
-                    break;
-                case "tb_Medicos":
-                    
-                    break;
-                case "tb_Turnos":
-                    
-                    break;
+
+                } while (indiceIn != indiceSalir);
+                
+                //recorro el array columnasACambiar y pido los nuevos valores
+
+
+                switch(tablaIn) {
+                    case "tb_Pacientes":
+
+                        Paciente pacienteExistente = new Paciente(false);
+
+                        for (String i : columnasACambiar) {
+                            
+                            limpiarBuffer = input.nextLine();
+                            
+                            //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
+                            
+                            switch (i) {
+                                case "Nombre":
+                                    pacienteExistente.setNombre(pideYValida.pidoStringYValida("nombre"));
+                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getNombre());
+                                    
+                                    break;
+                                case "Apellido":
+                                    pacienteExistente.setApellido(pideYValida.pidoStringYValida("apellido"));
+                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getApellido());
+                                    
+                                    break;
+                                case "DNI":
+                                    pacienteExistente.setDni(pideYValida.pidoDniYValido());
+                                    String dniString = String.valueOf(pacienteExistente.getDni());
+                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, dniString);
+                                    
+                                    break;
+                                case "fechaNacimiento":
+                                    pacienteExistente.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getApellido());
+                                    
+                                    break;
+                            }
+                        }
+
+                        //System.out.println("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn);
+
+                        ps = db.prepareStatement("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn + ";");
+                        ps.execute();
+
+
+                        break;
+                    case "tb_Medicos":
+
+                        break;
+                    case "tb_Turnos":
+
+                        break;
+                }
+
+            } catch(Exception e) {
+                System.out.println("-Exception: " + e);
+                System.out.println("--Indice fuera de rango");
             }
-            */
-            
-            /*
-            
-            switch(tablaIn) {
-                case "tb_Pacientes":
-                    break;
-                case "tb_Medicos":
-                    
-                    break;
-                case "tb_Turnos":
-                    
-                    break;
-            }
-            */
-        } catch(Exception e) {
-            System.out.println("-Exception: " + e);
-            System.out.println("--Indice fuera de rango");
         }
+        
+        
+        
+        
         
     }
     

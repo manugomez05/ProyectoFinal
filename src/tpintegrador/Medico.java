@@ -16,14 +16,20 @@ public class Medico extends Trabajador {
         this.expecialidad = expecialidad;
     }
     */
-    public Medico() {
+    public Medico(boolean inicializar) {
         
-        super();
+        super(inicializar);
         
-        this.setCuentaBancaria(pideYValida.pidoCbuYValido());
-        this.setSalario(pideYValida.pidoSalarioYValido());
-        this.setDiasDeTrabajo(pideYValida.pidoDiasDeTrabajoYValido());
-        this.setExpecialidad(pideYValida.pidoEspecialidadYValido());
+        if (inicializar) {
+            
+        
+            this.setCuentaBancaria(pideYValida.pidoCbuYValido());
+            this.setSalario(pideYValida.pidoSalarioYValido());
+            this.setDiasDeTrabajo(pideYValida.pidoDiasDeTrabajoYValido());
+            this.setExpecialidad(pideYValida.pidoEspecialidadYValido());
+        }
+        
+        
     }
 
     public int getIdMedico() {

@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.time.LocalDateTime;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 /**
@@ -117,6 +116,9 @@ class Validador {
         
         //Pido nombre y apellido
         while (stringInvalido) {
+            
+            limpiarBuffer = input.nextLine();
+            
             try {
 
                 do  {
@@ -562,29 +564,35 @@ class Validador {
         
         System.out.println(arrayIndice);
         
-        while (enteroInvalido) {
+        if (!arrayIndice.isEmpty()) {
+            while (enteroInvalido) {
             
-            try {
-            
-                limpiarBuffer = input.nextLine();
-                
-                System.out.println(mensaje);
-                entero = input.nextInt();
-                
-                if (arrayIndice.contains(entero)) {
-                    enteroInvalido = false;
-                } else {
-                    throw new Exception();
+                try {
+
+                    limpiarBuffer = input.nextLine();
+
+                    System.out.println(mensaje);
+                    entero = input.nextInt();
+
+                    if (arrayIndice.contains(entero)) {
+                        enteroInvalido = false;
+                    } else {
+                        throw new Exception();
+                    }
+                } catch(InputMismatchException ime) {
+                    System.out.println("-InputMismatchException: " + ime);
+                    System.out.println("--Error: Ingrese un indice valido");
+                } catch(Exception e) {
+                    System.out.println("-Exception: " + e);
+                    System.out.println("--El indice ingresado no existe");
                 }
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un indice valido");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--El indice ingresado no existe");
-            }
             
+            }
+        } else {
+            return -00;
         }
+        
+        
         
         return entero;
         

@@ -20,18 +20,18 @@ public class Turno {
     
     Validador pideYValida = new Validador();
         
-    public Turno() {
+    public Turno(boolean inicializar) {
         
-     
+        if (inicializar) {
+            this.setDniPaciente(pideYValida.pidoDniYValido());
+            this.setDia(pideYValida.pidoFechaYValido());
+            this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
+            this.setObraSocial(pideYValida.pidoObraSocialYValido());
+            this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
+            this.setAsistenciaPaciente(0);
+        }
         
-        this.setDniPaciente(pideYValida.pidoDniYValido());
         
-        this.setDia(pideYValida.pidoFechaYValido());
-        //falta funcion que pide el dia de turno
-        this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
-        this.setObraSocial(pideYValida.pidoObraSocialYValido());
-        this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
-        this.setAsistenciaPaciente(0);
         
     }
 

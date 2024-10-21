@@ -24,11 +24,21 @@ public abstract class Persona {
         this.fechaDeNacimiento = fechaDeNacimiento;
     }
     
+    public Persona(boolean inicializar) {
+        
+        if (inicializar) {
+            
+            this.setNombre(pideYValida.pidoStringYValida("nombre"));
+            this.setApellido(pideYValida.pidoStringYValida("apellido"));
+            this.setDni(pideYValida.pidoDniYValido());
+            this.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+        }
+        
+        
+    }
+    
     public Persona() {
-        this.setNombre(pideYValida.pidoStringYValida("nombre"));
-        this.setApellido(pideYValida.pidoStringYValida("apellido"));
-        this.setDni(pideYValida.pidoDniYValido());
-        this.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+        
     }
     
     public String getNombre() {
