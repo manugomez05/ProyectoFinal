@@ -472,7 +472,7 @@ public class ConexionDB {
                                     break;
                                 case "asistenciaPaciente":
                                     //turnoExistente.setAsistenciaPaciente(pideYValida.p());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getAsistenciaPaciente());
+                                    //columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getAsistenciaPaciente());
                                     
                                     break;    
                                 
@@ -617,6 +617,33 @@ public class ConexionDB {
         
         
     }
+    
+    public void mostrarHistoriaClinicaPorPaciente(){
+        Validador validDni = new Validador();
+        int dniIn=validDni.pidoDniYValido();
+        boolean entro=false;
+        sql = "SELECT * FROM tb_turnos WHERE dniPaciente="+dniIn;
+        try{
+        stmt = db.createStatement();
+        rs = stmt.executeQuery(sql);
+         while (rs.next()) {
+         entro=true;
+        System.out.println("- ID: " + rs.getString(1) +
+                                            "\n\t -- DNI de Paciente: " + rs.getString(2) +
+                                            "\n\t -- Fecha del turno: " + rs.getString(3) +
+                                            "\n\t -- Forma de pago: " + rs.getString(4) +
+                                            "\n\t -- Obra social: " + rs.getString(5) +
+                                            "\n\t -- Especialidad: " + rs.getString(6) +
+                                            "\n\t -- Asistencia del paciente: " + rs.getString(7));
+         }  
+    }catch (SQLException ex) {
+            System.out.println("-SQLException: " +ex);
+            System.out.println("--La tabla tb_turnos no existe");
+    }
+        if (entro==false){
+            System.out.println("El dni que ingresó no posee Historia Clinica");
+        }
+}
     
     
     

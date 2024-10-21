@@ -596,10 +596,10 @@ class Validador {
         
     }
     
-    public int pidoAsistenciaYValido() {
+    //public int pidoAsistenciaYValido() {
         
         
-    }
+    //}
     
     
     public Validador() {
