@@ -1,8 +1,5 @@
 package tpintegrador;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 public class TpIntegrador {
 
     public static void main(String[] args) {
@@ -13,6 +10,7 @@ public class TpIntegrador {
         arreglar modificar 
         Pagar
         
+        Bucleo infinito cuando se entra al menu de historial, vuelve al menu principal y se sale
         
         
         */
@@ -35,12 +33,7 @@ public class TpIntegrador {
         
         /*
         
-        Los medicos trabajan todos los dias
         
-        hacer una clase menu que tenga metodos por cada menu
-        menuGestionClinica()
-        menuGestionMedicos()
-        ...
         */
         
         Menu menus = new Menu();

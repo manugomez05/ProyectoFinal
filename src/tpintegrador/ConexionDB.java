@@ -232,7 +232,14 @@ public class ConexionDB {
         System.out.println(nuevoValor);
         
         if (columnasACambiar.indexOf(columna) == 0) {
-            consultaSql = consultaSql + "SET " + columna + "='" + nuevoValor + "', ";
+            
+            if (columnasACambiar.size() == 1) {
+                consultaSql = consultaSql + "SET " + columna + "='" + nuevoValor + "'";
+            } else {
+                consultaSql = consultaSql + "SET " + columna + "='" + nuevoValor + "', ";
+            }
+            
+            
 
         } else if (columnasACambiar.indexOf(columna) == columnasACambiar.size()-1) {
             consultaSql = consultaSql + columna + "='" + nuevoValor + "'";
@@ -268,7 +275,7 @@ public class ConexionDB {
         int indiceIn = 0, indiceSalir = 0;
         ArrayList<Integer> idsDeTabla = new ArrayList<>();
         String columnasACambiarString = "";
-        String dniString = "", cbuString = "", salarioString = "";
+        String dniString = "", cbuString = "", salarioString = "", enteroString = "";
         
         
         //Muestro la tabla, si se ingresa una tabla incorrecta, no pasa de aca
@@ -324,163 +331,180 @@ public class ConexionDB {
                 } while (indiceIn != indiceSalir);
                 
                 //recorro el array columnasACambiar y pido los nuevos valores
+                
+                if (!(columnasACambiar.isEmpty())) {
+                    
+                    switch(tablaIn) {
+                        case "tb_Pacientes":
 
+                            Paciente pacienteExistente = new Paciente(false);
 
-                switch(tablaIn) {
-                    case "tb_Pacientes":
+                            for (String i : columnasACambiar) {
 
-                        Paciente pacienteExistente = new Paciente(false);
+                                limpiarBuffer = input.nextLine();
 
-                        for (String i : columnasACambiar) {
-                            
-                            limpiarBuffer = input.nextLine();
-                            
-                            //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
-                            
-                            switch (i) {
-                                case "Nombre":
-                                    pacienteExistente.setNombre(pideYValida.pidoStringYValida("nombre"));
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getNombre());
-                                    
-                                    break;
-                                case "Apellido":
-                                    pacienteExistente.setApellido(pideYValida.pidoStringYValida("apellido"));
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getApellido());
-                                    
-                                    break;
-                                case "DNI":
-                                    pacienteExistente.setDni(pideYValida.pidoDniYValido());
-                                    dniString = String.valueOf(pacienteExistente.getDni());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, dniString);
-                                    
-                                    break;
-                                case "fechaNacimiento":
-                                    pacienteExistente.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getFechaDeNacimiento());
-                                    
-                                    break;
+                                //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
+
+                                switch (i) {
+                                    case "Nombre":
+                                        pacienteExistente.setNombre(pideYValida.pidoStringYValida("nombre"));
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getNombre());
+
+                                        break;
+                                    case "Apellido":
+                                        pacienteExistente.setApellido(pideYValida.pidoStringYValida("apellido"));
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getApellido());
+
+                                        break;
+                                    case "DNI":
+                                        pacienteExistente.setDni(pideYValida.pidoDniYValido());
+                                        dniString = String.valueOf(pacienteExistente.getDni());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, dniString);
+
+                                        break;
+                                    case "fechaNacimiento":
+                                        pacienteExistente.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, pacienteExistente.getFechaDeNacimiento());
+
+                                        break;
+                                }
                             }
-                        }
 
-                        //System.out.println("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn);
-
-                        ps = db.prepareStatement("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn + ";");
-                        ps.execute();
+                            System.out.println("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn);
+                            ps = db.prepareStatement("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn + ";");
+                            ps.execute();
 
 
-                        break;
-                    case "tb_Medicos":
 
-                        Medico medicoExistente = new Medico(false);
-                        
-                        for (String i : columnasACambiar) {
-                            
-                            limpiarBuffer = input.nextLine();
-                            
-                            //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
-                            
-                            switch (i) {
-                                case "Nombre":
-                                    medicoExistente.setNombre(pideYValida.pidoStringYValida("nombre"));
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getNombre());
-                                    
-                                    break;
-                                case "Apellido":
-                                    medicoExistente.setApellido(pideYValida.pidoStringYValida("apellido"));
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getApellido());
-                                    
-                                    break;
-                                case "DNI":
-                                    medicoExistente.setDni(pideYValida.pidoDniYValido());
-                                    dniString = String.valueOf(medicoExistente.getDni());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, dniString);
-                                    
-                                    break;
-                                case "fechaNacimiento":
-                                    medicoExistente.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getApellido());
-                                    
-                                    break;
-                                case "cuentaBancaria":
-                                    medicoExistente.setCuentaBancaria(pideYValida.pidoCbuYValido());
-                                    cbuString = String.valueOf(medicoExistente.getCuentaBancaria());
-                                    
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, cbuString);
-                                    
-                                    break;
-                                case "salario":
-                                    medicoExistente.setSalario(pideYValida.pidoSalarioYValido());
-                                    salarioString = String.valueOf(medicoExistente.getCuentaBancaria());
-                                    
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, salarioString);
-                                    
-                                    break;
-                                case "diasDeTrabajo":
-                                    medicoExistente.setDiasDeTrabajo(pideYValida.pidoDiasDeTrabajoYValido());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getDiasDeTrabajo());
-                                    
-                                    break;
-                                case "especialidad":
-                                    medicoExistente.setExpecialidad(pideYValida.pidoEspecialidadYValido());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getExpecialidad());
-                                    
-                                    break;
+                            break;
+                        case "tb_Medicos":
+
+                            Medico medicoExistente = new Medico(false);
+
+                            for (String i : columnasACambiar) {
+
+                                limpiarBuffer = input.nextLine();
+
+                                //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
+
+                                switch (i) {
+                                    case "Nombre":
+                                        medicoExistente.setNombre(pideYValida.pidoStringYValida("nombre"));
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getNombre());
+
+                                        break;
+                                    case "Apellido":
+                                        medicoExistente.setApellido(pideYValida.pidoStringYValida("apellido"));
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getApellido());
+
+                                        break;
+                                    case "DNI":
+                                        medicoExistente.setDni(pideYValida.pidoDniYValido());
+                                        dniString = String.valueOf(medicoExistente.getDni());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, dniString);
+
+                                        break;
+                                    case "fechaNacimiento":
+                                        medicoExistente.setFechaDeNacimiento(pideYValida.pidoFechaNacimientoYValido());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getFechaDeNacimiento());
+
+                                        break;
+                                    case "cuentaBancaria":
+                                        medicoExistente.setCuentaBancaria(pideYValida.pidoCbuYValido());
+                                        cbuString = String.valueOf(medicoExistente.getCuentaBancaria());
+
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, cbuString);
+
+                                        break;
+                                    case "salario":
+                                        medicoExistente.setSalario(pideYValida.pidoSalarioYValido());
+                                        salarioString = String.valueOf(medicoExistente.getCuentaBancaria());
+
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, salarioString);
+
+                                        break;
+                                    case "diasDeTrabajo":
+                                        medicoExistente.setDiasDeTrabajo(pideYValida.pidoDiasDeTrabajoYValido());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getDiasDeTrabajo());
+
+                                        break;
+                                    case "especialidad":
+                                        medicoExistente.setExpecialidad(pideYValida.pidoEspecialidadYValido());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, medicoExistente.getExpecialidad());
+
+                                        break;
+                                }
                             }
-                        }
-                        
-                        break;
-                    case "tb_Turnos":
 
-                        Turno turnoExistente = new Turno(false);
-                        
-                        for (String i : columnasACambiar) {
-                            
-                            limpiarBuffer = input.nextLine();
-                            
-                            //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
-                            
-                            switch (i) {
-                                case "dniPaciente":
-                                    turnoExistente.setDniPaciente(pideYValida.pidoDniYValido());
-                                    dniString = String.valueOf(turnoExistente.getDniPaciente());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, dniString);
-                                    
-                                    break;
-                                case "fechaTurno":
-                                    turnoExistente.setDia(pideYValida.pidoFechaYValido());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getDia());
-                                    
-                                    break;
-                                case "formaDePago":
-                                    turnoExistente.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getFormaDePago());
-                                    break;
-                                case "obraSocial":
-                                    turnoExistente.setObraSocial(pideYValida.pidoObraSocialYValido());
-                                    
-                                    
-                                    // Convierte el objeto a JSON
-                                    String jsonObraSocial = gson.toJson(turnoExistente.getObraSocial());
-                                    
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, jsonObraSocial);
-                                    
-                                    break;
-                                case "especialidad":
-                                    turnoExistente.setEspecialidad(pideYValida.pidoEspecialidadYValido());
-                                    columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getEspecialidad());
-                                    
-                                    break;
-                                case "asistenciaPaciente":
-                                    //turnoExistente.setAsistenciaPaciente(pideYValida.p());
-                                    //columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getAsistenciaPaciente());
-                                    
-                                    break;    
-                                
+                            System.out.println("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn);
+                            ps = db.prepareStatement("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idMedico=" + idIn + ";");
+                            ps.execute();
+
+                            break;
+                        case "tb_Turnos":
+
+                            Turno turnoExistente = new Turno(false);
+
+                            for (String i : columnasACambiar) {
+
+                                limpiarBuffer = input.nextLine();
+
+                                //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
+
+                                switch (i) {
+                                    case "dniPaciente":
+                                        turnoExistente.setDniPaciente(pideYValida.pidoDniYValido());
+                                        dniString = String.valueOf(turnoExistente.getDniPaciente());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, dniString);
+
+                                        break;
+                                    case "fechaTurno":
+                                        turnoExistente.setDia(pideYValida.pidoFechaYValido());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getDia());
+
+                                        break;
+                                    case "formaDePago":
+                                        turnoExistente.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getFormaDePago());
+                                        break;
+                                    case "obraSocial":
+                                        turnoExistente.setObraSocial(pideYValida.pidoObraSocialYValido());
+
+
+                                        // Convierte el objeto a JSON
+                                        String jsonObraSocial = gson.toJson(turnoExistente.getObraSocial());
+
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, jsonObraSocial);
+
+                                        break;
+                                    case "especialidad":
+                                        turnoExistente.setEspecialidad(pideYValida.pidoEspecialidadYValido());
+                                        columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getEspecialidad());
+
+                                        break;
+                                    case "asistenciaPaciente":
+
+                                        if (turnoExistente.getAsistenciaPaciente() == 0) {
+                                            turnoExistente.setAsistenciaPaciente(1);
+                                            enteroString = String.valueOf(turnoExistente.getAsistenciaPaciente());
+                                            columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, enteroString);
+                                        } else {
+                                            System.out.println("La asistencia ya esta confirmada");
+                                        }
+
+                                        break;    
+
+                                }
                             }
-                        }
-                        
-                        break;
+
+                            System.out.println("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idPaciente=" + idIn);
+                            ps = db.prepareStatement("UPDATE " + tablaIn + " " + columnasACambiarString + " WHERE idTurno=" + idIn + ";");
+                            ps.execute();
+
+                            break;
+                    }
                 }
+                
 
             } catch(Exception e) {
                 System.out.println("-Exception: " + e);
