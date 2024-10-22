@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 
-public class ConexionDB {
+public class ConexionDB implements AtencionMedica {
     
    
     
@@ -569,7 +569,6 @@ public class ConexionDB {
         System.out.println("Se ha vaciado la tabla " + tablaIn);
         
     }
-    
     public void mostrarTabla(String tablaIn) {
         
         /*

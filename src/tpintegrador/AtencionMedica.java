@@ -8,18 +8,11 @@ package tpintegrador;
  *
  * @author Fernanda
  */
-public abstract class AtencionMedica extends Paciente {
+public interface AtencionMedica {
 
-    /*
-    public AtencionMedica(int idPaciente, String sintomas, String nombre, String apellido, int dni, String fechaDeNacimiento) {
-        super(idPaciente, sintomas, nombre, apellido, dni, fechaDeNacimiento);
-    }
-    */
-    public void cancelarTurno(){
-        
-    }
-    public void agregarTurno(){
-        
-    }
+    public void agregarRegistro(String tablaIn);
+    public void modificarRegistro(String tablaIn);
+    public void eliminarRegistro(String tablaIn);
+    public void mostrarTabla(String tablaIn);
     
 }
