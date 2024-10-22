@@ -1,12 +1,15 @@
 package tpintegrador;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-                
+import java.nio.charset.StandardCharsets;                
 public class TpIntegrador {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
 
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         /*
         
         Dias de turno segun la especialidad
@@ -35,8 +38,8 @@ public class TpIntegrador {
         
         */
         
-       // Validador val = new Validador();
-        //val.pidoFechaYValido();
+       Validador val = new Validador();
+       val.pidoFechaYValido();
         
         
         /*
