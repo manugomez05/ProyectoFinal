@@ -12,7 +12,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-
+import java.nio.charset.StandardCharsets;
 
 /*
     public String pidoFechaYValido() {
@@ -232,7 +232,7 @@ class Validador {
                     throw new Exception("Anio fuera de rango");
                 }
 
-                // Construir la fecha ingresada como un LocalDate
+                // Construir la fecha ingresada como un LocalDate }ççç´çççç}}}ÇÇÇçççççççççç}}}}}ççç-çççÇÇç}}}}çç´´´çç´´´´ç
                 fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
                 
                 // Verificar si la fecha ingresada es anterior a la fecha actual
@@ -405,7 +405,7 @@ class Validador {
         ArrayList<String> diasDeSemana = new ArrayList<>(5);
         diasDeSemana.add("Lunes");
         diasDeSemana.add("Martes");
-        diasDeSemana.add("Miercoles");
+        diasDeSemana.add("Miércoles");
         diasDeSemana.add("Jueves");
         diasDeSemana.add("Viernes");
         ArrayList<String> diasDeTrabajoIn = new ArrayList<>();
