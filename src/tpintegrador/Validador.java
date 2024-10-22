@@ -590,8 +590,6 @@ class Validador {
                 }
             
             }
-        } else {
-            return -00;
         }
         
         return entero;

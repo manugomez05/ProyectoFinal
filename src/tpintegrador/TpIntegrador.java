@@ -38,8 +38,8 @@ public class TpIntegrador {
         
         */
         
-        Validador val = new Validador();
-        val.pidoFechaYValido();
+       // Validador val = new Validador();
+        //val.pidoFechaYValido();
         
         
         /*
@@ -49,5 +49,6 @@ public class TpIntegrador {
         
         Menu menus = new Menu();
         menus.menuGestionClinica();
+        System.out.println("awdfasfafGAGAHEJAHFA");
     }
 }
