@@ -1,17 +1,22 @@
 package tpintegrador;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
 public class TpIntegrador {
 
     public static void main(String[] args) {
 
         /*
         
-                        Dias de turno segun la especialidad
-        arreglar modificar 
+        Dias de turno segun la especialidad
         Pagar
         
         Bucleo infinito cuando se entra al menu de historial, vuelve al menu principal y se sale
         
+        USAR LA CLASE ATENCION MEDICA COMO IMPLEMENTACION DE LA CLASE MENU
+        
+        Creo que hay que conectar y desconectar la base de datos  en cada funcion
         
         */
         
@@ -19,16 +24,22 @@ public class TpIntegrador {
         ConexionDB conDB = new ConexionDB();
         
         conDB.conectarDB();
-        //conDB.mostrarTabla("tb_dfsurnos");
-        //conDB.modificarRegistro("tb_Pacientes");
-        //conDB.agregarRegistro("tb_Pacientes");
-        //conDB.agregarRegistro("tb_Turnos");
-        //conDB.agregarRegistro("tb_Turnos");
-        //conDB.mostrarHistoriaClinicaPorPaciente();
-        //conDB.agregarRegistro("tb_Medicos");
-        //conDB.eliminarRegistro("tb_Medicos");
         
         
+        
+        /*
+        Get day of week devuelve el dia (Lunes, Martes, miercoles) de una fecha
+        se puede usar para lo del turno
+        
+        
+        LocalDate hora = LocalDate.now();
+        DayOfWeek dia = hora.getDayOfWeek();
+        System.out.println(dia);
+        
+        */
+        
+        Validador val = new Validador();
+        val.pidoFechaYValido();
         
         
         /*

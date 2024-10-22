@@ -12,10 +12,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-/**
- *
- * @author Usuario
- */
+
 
 /*
     public String pidoFechaYValido() {
@@ -212,7 +209,7 @@ class Validador {
         
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
-        LocalDate fechaUsuario;
+        LocalDate fechaUsuario = null;
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         
         do {
@@ -253,6 +250,11 @@ class Validador {
                 System.out.println("-Error: " + e.getMessage());
             }
         } while (fechaInvalida);
+        
+        
+        DayOfWeek dia = fechaUsuario.getDayOfWeek();
+        
+        System.out.println(dia);
 
         return fecha;
     }

@@ -1,7 +1,4 @@
-    /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package tpintegrador;
 import com.google.gson.Gson;
 import java.sql.*;
@@ -9,25 +6,11 @@ import java.util.Scanner;
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-/**
- *
- * @author USER
- * 
- * 
- */
+
+
 public class ConexionDB {
     
-    
-    
-    //DUDAS
-    /*
-        modificarRegistro esta bien?
-    
-        
-    
-    
-        
-    */
+   
     
     
     Scanner input = new Scanner(System.in);
@@ -40,7 +23,7 @@ public class ConexionDB {
     Validador pideYValida = new Validador();
     ArrayList<Integer> idsDeTabla = new ArrayList<>();
     Gson gson = new Gson();
-    int idIn;
+    int idIn, dniIn;
     
     //conecta a la base de datos
     public void conectarDB() {
@@ -228,8 +211,8 @@ public class ConexionDB {
         
         String consultaSql = "";
         
-        System.out.println(columna);
-        System.out.println(nuevoValor);
+        //System.out.println(columna);
+        //System.out.println(nuevoValor);
         
         if (columnasACambiar.indexOf(columna) == 0) {
             
@@ -341,7 +324,7 @@ public class ConexionDB {
 
                             for (String i : columnasACambiar) {
 
-                                limpiarBuffer = input.nextLine();
+                                //limpiarBuffer = input.nextLine();
 
                                 //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
 
@@ -383,7 +366,7 @@ public class ConexionDB {
 
                             for (String i : columnasACambiar) {
 
-                                limpiarBuffer = input.nextLine();
+                                //limpiarBuffer = input.nextLine();
 
                                 //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
 
@@ -447,7 +430,7 @@ public class ConexionDB {
 
                             for (String i : columnasACambiar) {
 
-                                limpiarBuffer = input.nextLine();
+                                //limpiarBuffer = input.nextLine();
 
                                 //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
 
@@ -521,14 +504,13 @@ public class ConexionDB {
     
     public void eliminarRegistro(String tablaIn) {
         
-        
         /*
         DELETE FROM tablaIn WHERE condicion;
         
-        el usuario elige  eliminar ID
+        el usuario elige que ID eliminar de la lista
+            dependiendo de la tabla se ejecuta una linea Sql
         
         */
-        
         
         idsDeTabla = consultaIdsDeTabla(tablaIn);
         
@@ -568,8 +550,9 @@ public class ConexionDB {
     
     public void vaciarTabla(String tablaIn) {
         /*
-        Para eliminar todos los registros
         DELETE FROM tablaIn;
+        
+        Se vacia la tabla 
         */
         
         sql = "DELETE FROM " + tablaIn;
@@ -588,6 +571,11 @@ public class ConexionDB {
     }
     
     public void mostrarTabla(String tablaIn) {
+        
+        /*
+        Muestra la tabla 
+        */
+        
         sql = "SELECT * FROM " + tablaIn;
         
         try {
@@ -642,35 +630,33 @@ public class ConexionDB {
         
     }
     
-    public void mostrarHistoriaClinicaPorPaciente(){
-        Validador validDni = new Validador();
-        int dniIn=validDni.pidoDniYValido();
-        boolean entro=false;
-        sql = "SELECT * FROM tb_turnos WHERE dniPaciente="+dniIn;
-        try{
-        stmt = db.createStatement();
-        rs = stmt.executeQuery(sql);
-         while (rs.next()) {
-         entro=true;
-        System.out.println("- ID: " + rs.getString(1) +
-                                            "\n\t -- DNI de Paciente: " + rs.getString(2) +
-                                            "\n\t -- Fecha del turno: " + rs.getString(3) +
-                                            "\n\t -- Forma de pago: " + rs.getString(4) +
-                                            "\n\t -- Obra social: " + rs.getString(5) +
-                                            "\n\t -- Especialidad: " + rs.getString(6) +
-                                            "\n\t -- Asistencia del paciente: " + rs.getString(7));
-         }  
-    }catch (SQLException ex) {
-            System.out.println("-SQLException: " +ex);
+    public void mostrarHistoriaClinicaPorPaciente() {
+        dniIn = pideYValida.pidoDniYValido();
+        boolean entro = false;
+        sql = "SELECT * FROM tb_turnos WHERE dniPaciente=" + dniIn;
+
+        try {
+            stmt = db.createStatement();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                entro = true;
+                System.out.println("- ID: " + rs.getString(1)
+                        + "\n\t -- DNI de Paciente: " + rs.getString(2)
+                        + "\n\t -- Fecha del turno: " + rs.getString(3)
+                        + "\n\t -- Forma de pago: " + rs.getString(4)
+                        + "\n\t -- Obra social: " + rs.getString(5)
+                        + "\n\t -- Especialidad: " + rs.getString(6)
+                        + "\n\t -- Asistencia del paciente: " + rs.getString(7));
+            }
+        } catch (SQLException ex) {
+            System.out.println("-SQLException: " + ex);
             System.out.println("--La tabla tb_turnos no existe");
-    }
-        if (entro==false){
+        }
+        if (entro == false) {
             System.out.println("El dni que ingresó no posee Historia Clinica");
         }
-}
-    
-    
-    
+    }
+
 }
 
 
