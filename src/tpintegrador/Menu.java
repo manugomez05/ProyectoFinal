@@ -4,13 +4,14 @@ import java.util.*;
 
 public class Menu {
 
-    Scanner input = new Scanner(System.in);
     int opcionElegida;
     String menu;
     Validador validador1 = new Validador();
     ArrayList<Integer> indices = new ArrayList<>();
     ConexionDB conDB = new ConexionDB();
     boolean salir = false;
+    
+    
     public void menuGestionClinica() {
 
         conDB.conectarDB();
@@ -21,17 +22,18 @@ public class Menu {
         //System.out.println(indices);
         
         
-        menu = "\n"
-                + "*******************************\n"
-                + "     GESTION DE CLINICA\n"
-                + "*******************************\n"
-                + "1. Gestionar Medicos\n"
-                + "2. Gestionar Pacientes\n"
-                + "3. Gestionar Citas\n"
-                + "4. Consultar Historia Clinica\n"
-                + "5. Salir\n"
-                + "*******************************\n"
-                + "Seleccione una opcion:";
+        menu = """
+               
+               *******************************
+                    GESTION DE CLINICA
+               *******************************
+               1. Gestionar Medicos
+               2. Gestionar Pacientes
+               3. Gestionar Citas
+               4. Consultar Historia Clinica
+               5. Salir
+               *******************************
+               Seleccione una opcion:""";
         opcionElegida = validador1.pidoEnteroYValido(menu, indices);
         indices.clear();
        
@@ -65,16 +67,17 @@ public class Menu {
         }
 
         menu
-                = "*******************************\n"
-                + "     GESTIONAR MEDICOS\n"
-                + "*******************************\n"
-                + "1. Agregar Nuevo Medico\n"
-                + "2. Modificar Informacion de Medico\n"
-                + "3. Eliminar Medico\n"
-                + "4. Listar Todos los Medicos\n"
-                + "5. Regresar al Menu Principal\n"
-                + "*******************************\n"
-                + " Seleccione una opcion:";
+                = """
+                  *******************************
+                       GESTIONAR MEDICOS
+                  *******************************
+                  1. Agregar Nuevo Medico
+                  2. Modificar Informacion de Medico
+                  3. Eliminar Medico
+                  4. Listar Todos los Medicos
+                  5. Regresar al Menu Principal
+                  *******************************
+                   Seleccione una opcion:""";
 
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
@@ -106,16 +109,17 @@ public class Menu {
         }
 
         menu
-                = "*******************************\n"
-                + "     GESTIONAR PACIENTES\n"
-                + "*******************************\n"
-                + "1. Agregar Nuevo Paciente\n"
-                + "2. Modificar Informacion de Paciente\n"
-                + "3. Eliminar Paciente\n"
-                + "4. Listar Todos los Pacientes\n"
-                + "5. Regresar al Menu Principal\n"
-                + "*******************************\n"
-                + "Seleccione una opcion:";
+                = """
+                  *******************************
+                       GESTIONAR PACIENTES
+                  *******************************
+                  1. Agregar Nuevo Paciente
+                  2. Modificar Informacion de Paciente
+                  3. Eliminar Paciente
+                  4. Listar Todos los Pacientes
+                  5. Regresar al Menu Principal
+                  *******************************
+                  Seleccione una opcion:""";
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
@@ -146,16 +150,17 @@ public class Menu {
         }
 
         menu
-                = "*******************************\n"
-                + "     GESTIONAR CITAS\n"
-                + "*******************************\n"
-                + "1. Agendar Nueva Cita\n"
-                + "2. Modificar Cita\n"
-                + "3. Cancelar Cita\n"
-                + "4. Listar Todas las Citas\n"
-                + "5. Regresar al Menu Principal\n"
-                + "*******************************\n"
-                + "Seleccione una opcion:";
+                = """
+                  *******************************
+                       GESTIONAR CITAS
+                  *******************************
+                  1. Agendar Nueva Cita
+                  2. Modificar Cita
+                  3. Cancelar Cita
+                  4. Listar Todas las Citas
+                  5. Regresar al Menu Principal
+                  *******************************
+                  Seleccione una opcion:""";
 
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
@@ -187,14 +192,15 @@ public class Menu {
         for (int i = 1; i < 4; i++) {
             indices.add(i);}
          menu
-                = "************************************\n"
-                + "     CONSULTAR HISTORIA CLINICA\n"
-                + "************************************\n"
-                + "1. Buscar Historia Clinica por Paciente\n"
-                + "2. Listar Todas las Historias Clinicas\n"
-                + "3. Regresar al Menu Principal\n"
-                + "*******************************\n"
-                + "Seleccione una opcion:";
+                = """
+                  ************************************
+                       CONSULTAR HISTORIA CLINICA
+                  ************************************
+                  1. Buscar Historia Clinica por Paciente
+                  2. Listar Todas las Historias Clinicas
+                  3. Regresar al Menu Principal
+                  *******************************
+                  Seleccione una opcion:""";
          
          opcionElegida = validador1.pidoEnteroYValido(menu, indices);
          switch (opcionElegida){
