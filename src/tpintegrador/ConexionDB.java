@@ -442,7 +442,7 @@ public class ConexionDB implements AtencionMedica {
 
                                         break;
                                     case "fechaTurno":
-                                        turnoExistente.setDia(pideYValida.pidoFechaYValido());
+                                        turnoExistente.setDia(pideYValida.pidoFechaYValido(turnoExistente.getEspecialidad()));
                                         columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getDia());
 
                                         break;

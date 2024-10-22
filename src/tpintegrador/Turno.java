@@ -24,7 +24,7 @@ public class Turno {
         
         if (inicializar) {
             this.setDniPaciente(pideYValida.pidoDniYValido());
-            this.setDia(pideYValida.pidoFechaYValido());
+            this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
             this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
             this.setObraSocial(pideYValida.pidoObraSocialYValido());
             this.setEspecialidad(pideYValida.pidoEspecialidadYValido());

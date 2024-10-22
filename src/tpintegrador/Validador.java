@@ -201,7 +201,7 @@ class Validador {
 
 
 
-    public String pidoFechaYValido() {
+    public String pidoFechaYValido(String especialidadIn) {
         Scanner input = new Scanner(System.in);
         String fecha = "";
         boolean fechaInvalida = true;
