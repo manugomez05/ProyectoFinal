@@ -38,8 +38,8 @@ public class TpIntegrador {
         
         */
         
-       Validador val = new Validador();
-       val.pidoFechaYValido("Pediatria");
+       //Validador val = new Validador();
+       //val.pidoFechaYValido("Pediatria");
         
         
         /*
