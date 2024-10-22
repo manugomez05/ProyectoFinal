@@ -10,15 +10,17 @@ public class Menu {
     Validador validador1 = new Validador();
     ArrayList<Integer> indices = new ArrayList<>();
     ConexionDB conDB = new ConexionDB();
-
+    boolean salir = false;
     public void menuGestionClinica() {
 
         conDB.conectarDB();
-
+      if (salir == false) {  
         for (int i = 1; i < 6; i++) {
             indices.add(i);
         }
-
+        //System.out.println(indices);
+        
+        
         menu = "\n"
                 + "*******************************\n"
                 + "     GESTIÓN DE CLÍNICA\n"
@@ -32,6 +34,7 @@ public class Menu {
                 + "Seleccione una opción:";
         opcionElegida = validador1.pidoEnteroYValido(menu, indices);
         indices.clear();
+       
         switch (opcionElegida) {
             case 1:
                 menuGestionMedico();
@@ -46,9 +49,14 @@ public class Menu {
                 menuHistoriaClinica();
                 break;
             case 5:
+                salir = true;
+                System.out.println("Sesion Cerrada"); 
                 break;
+            
         }
-
+        
+      }else {
+          System.out.println("adios");}
     }
 
     public void menuGestionMedico() {
@@ -173,12 +181,12 @@ public class Menu {
 
     }
 
+    
     public void menuHistoriaClinica() {
+        opcionElegida = 0;
         for (int i = 1; i < 4; i++) {
-            indices.add(i);
-        }
-
-        menu
+            indices.add(i);}
+         menu
                 = "************************************\n"
                 + "     CONSULTAR HISTORIA CLÍNICA\n"
                 + "************************************\n"
@@ -187,23 +195,21 @@ public class Menu {
                 + "3. Regresar al Menú Principal\n"
                 + "*******************************\n"
                 + "Seleccione una opción:";
-        
-        while (opcionElegida != 3) {
-            opcionElegida = validador1.pidoEnteroYValido(menu, indices);
-            switch (opcionElegida) {
-                case 1:
+         
+         opcionElegida = validador1.pidoEnteroYValido(menu, indices);
+         switch (opcionElegida){
+             case 1:
                     conDB.mostrarHistoriaClinicaPorPaciente();
-                    break;
-                case 2:
+                 break;
+                 
+             case 2:
                     conDB.mostrarTabla("tb_Turnos");
                     break;
-                case 3:
+             case 3:
                     indices.clear();
                     menuGestionClinica();
-                    break;
-            }
+                
+                
         }
-
     }
-
 }
