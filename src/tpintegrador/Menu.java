@@ -23,15 +23,15 @@ public class Menu {
         
         menu = "\n"
                 + "*******************************\n"
-                + "     GESTIÓN DE CLÍNICA\n"
+                + "     GESTION DE CLINICA\n"
                 + "*******************************\n"
-                + "1. Gestionar Médicos\n"
+                + "1. Gestionar Medicos\n"
                 + "2. Gestionar Pacientes\n"
                 + "3. Gestionar Citas\n"
-                + "4. Consultar Historia Clínica\n"
+                + "4. Consultar Historia Clinica\n"
                 + "5. Salir\n"
                 + "*******************************\n"
-                + "Seleccione una opción:";
+                + "Seleccione una opcion:";
         opcionElegida = validador1.pidoEnteroYValido(menu, indices);
         indices.clear();
        
@@ -66,15 +66,15 @@ public class Menu {
 
         menu
                 = "*******************************\n"
-                + "     GESTIONAR MÉDICOS\n"
+                + "     GESTIONAR MEDICOS\n"
                 + "*******************************\n"
-                + "1. Agregar Nuevo Médico\n"
-                + "2. Modificar Información de Médico\n"
-                + "3. Eliminar Médico\n"
-                + "4. Listar Todos los Médicos\n"
-                + "5. Regresar al Menú Principal\n"
+                + "1. Agregar Nuevo Medico\n"
+                + "2. Modificar Informacion de Medico\n"
+                + "3. Eliminar Medico\n"
+                + "4. Listar Todos los Medicos\n"
+                + "5. Regresar al Menu Principal\n"
                 + "*******************************\n"
-                + " Seleccione una opción:";
+                + " Seleccione una opcion:";
 
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
@@ -110,12 +110,12 @@ public class Menu {
                 + "     GESTIONAR PACIENTES\n"
                 + "*******************************\n"
                 + "1. Agregar Nuevo Paciente\n"
-                + "2. Modificar Información de Paciente\n"
+                + "2. Modificar Informacion de Paciente\n"
                 + "3. Eliminar Paciente\n"
                 + "4. Listar Todos los Pacientes\n"
-                + "5. Regresar al Menú Principal\n"
+                + "5. Regresar al Menu Principal\n"
                 + "*******************************\n"
-                + "Seleccione una opción:";
+                + "Seleccione una opcion:";
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
@@ -153,9 +153,9 @@ public class Menu {
                 + "2. Modificar Cita\n"
                 + "3. Cancelar Cita\n"
                 + "4. Listar Todas las Citas\n"
-                + "5. Regresar al Menú Principal\n"
+                + "5. Regresar al Menu Principal\n"
                 + "*******************************\n"
-                + "Seleccione una opción:";
+                + "Seleccione una opcion:";
 
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
@@ -188,13 +188,13 @@ public class Menu {
             indices.add(i);}
          menu
                 = "************************************\n"
-                + "     CONSULTAR HISTORIA CLÍNICA\n"
+                + "     CONSULTAR HISTORIA CLINICA\n"
                 + "************************************\n"
-                + "1. Buscar Historia Clínica por Paciente\n"
-                + "2. Listar Todas las Historias Clínicas\n"
-                + "3. Regresar al Menú Principal\n"
+                + "1. Buscar Historia Clinica por Paciente\n"
+                + "2. Listar Todas las Historias Clinicas\n"
+                + "3. Regresar al Menu Principal\n"
                 + "*******************************\n"
-                + "Seleccione una opción:";
+                + "Seleccione una opcion:";
          
          opcionElegida = validador1.pidoEnteroYValido(menu, indices);
          switch (opcionElegida){
