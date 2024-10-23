@@ -157,8 +157,9 @@ public class Menu {
                   1. Agendar Nueva Cita
                   2. Modificar Cita
                   3. Cancelar Cita
-                  4. Listar Todas las Citas
-                  5. Regresar al Menu Principal
+                  4. Pagar Cita
+                  5. Listar Todas las Citas
+                  6. Regresar al Menu Principal
                   *******************************
                   Seleccione una opcion:""";
 
@@ -175,10 +176,16 @@ public class Menu {
                     conDB.eliminarRegistro("tb_Turnos");
                     break;
                 case 4:
-                    conDB.mostrarTabla("tb_Turnos");
+                    //Mostrar citas que tiene disponible para pagar
+                    
+                    //Mostrar factura con los datos
+                    
                     break;
                 case 5:
-                    indices.clear();
+                     conDB.mostrarTabla("tb_Turnos");
+                    break;
+                case 6: 
+                     indices.clear();
                     menuGestionClinica();
                     break;
             }
