@@ -177,7 +177,9 @@ public class Menu {
                     break;
                 case 4:
                     //Mostrar citas que tiene disponible para pagar
+                    
                     //Mostrar factura con los datos
+                    
                     break;
                 case 5:
                      conDB.mostrarTabla("tb_Turnos");
