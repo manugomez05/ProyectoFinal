@@ -157,8 +157,9 @@ public class Menu {
                   1. Agendar Nueva Cita
                   2. Modificar Cita
                   3. Cancelar Cita
-                  4. Listar Todas las Citas
-                  5. Regresar al Menu Principal
+                  4. Pagar Cita
+                  5. Listar Todas las Citas
+                  6. Regresar al Menu Principal
                   *******************************
                   Seleccione una opcion:""";
 
