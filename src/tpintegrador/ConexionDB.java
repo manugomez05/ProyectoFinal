@@ -5,7 +5,6 @@ import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 
 public class ConexionDB implements AtencionMedica {
@@ -238,6 +237,22 @@ public class ConexionDB implements AtencionMedica {
     }
     
     
+    public ResultSet realizaConsulta(String consulta) {
+        
+        try {
+                
+            stmt = db.createStatement();
+            rs = stmt.executeQuery(consulta);
+            
+            //System.out.println(rs);
+
+        } catch(SQLException ex) {
+            System.out.println("SQLException: " +ex);
+        }
+        
+        return rs;
+    }
+    
     public void modificarRegistro(String tablaIn) {
         //dependiendo de la tabla 
         //  pregunto que campos va a querer modificar
@@ -276,45 +291,12 @@ public class ConexionDB implements AtencionMedica {
 
                 //consulta las columnas de la tabla 
                 ArrayList<String> columnasDeTabla = consultoColumnasDeTabla(tablaIn);
-                ArrayList<String> columnasACambiar = new ArrayList<>();
-
-
+                
                 //pido las columnas a modificar y las agrego a un array
-                do {
-                    limpiarBuffer = input.nextLine();
+                ArrayList<String> columnasACambiar = new ArrayList<>();
+                columnasACambiar = pideYValida.pidoColumnasAModificarYValido(columnasDeTabla);
 
-                    indiceSalir = columnasDeTabla.size() + 1;
-
-                    System.out.println("Elija la columna/s a modificar");
-                    for (String i: columnasDeTabla) {
-                        
-                        if (!(columnasDeTabla.indexOf(i) == 0)) {
-                            System.out.println((columnasDeTabla.indexOf(i)) + "- " + i);
-                        }
-                        
-                    }
-                    System.out.println(indiceSalir + "- Salir");
-
-                    try {
-                        indiceIn = input.nextInt();
-
-                        if (indiceIn != indiceSalir) {
-                            columnasACambiar.add(columnasDeTabla.get(indiceIn));
-                            columnasDeTabla.remove(indiceIn);
-                        }
-
-                    } catch(IndexOutOfBoundsException iob) {
-                        System.out.println("-IndexOutOfBoundsException: " + iob);
-                        System.out.println("--Indice ingresado fuera de rango");
-                    } catch (InputMismatchException ime) {
-                        System.out.println("-InputMismatchException: " + ime);
-                        System.out.println("--Ingrese un numero");
-                    }
-
-                } while (indiceIn != indiceSalir);
-                
                 //recorro el array columnasACambiar y pido los nuevos valores
-                
                 if (!(columnasACambiar.isEmpty())) {
                     
                     switch(tablaIn) {

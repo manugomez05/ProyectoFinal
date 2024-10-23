@@ -12,7 +12,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.nio.charset.StandardCharsets;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 /*
     public String pidoFechaYValido() {
@@ -102,8 +103,6 @@ class Validador {
     Scanner input = new Scanner(System.in);
     int indiceIn = 0;
     boolean indiceInvalido = true;
-    ResultSet rs;
-    Statement stmt;
     
     
     public String pidoStringYValida(String campo) {
@@ -203,14 +202,14 @@ class Validador {
 
     public String pidoFechaYValido(String especialidadIn) {
         Scanner input = new Scanner(System.in);
-        String fecha = "";
+        String fecha = "", sql = "";
         boolean fechaInvalida = true;
         int diaIn = 0, mesIn = 0, anioIn = 0;
         
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaUsuario = null;
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
         
         do {
             try {
@@ -232,13 +231,30 @@ class Validador {
                     throw new Exception("Anio fuera de rango");
                 }
 
-                // Construir la fecha ingresada como un LocalDate }ççç´çççç}}}ÇÇÇçççççççççç}}}}}ççç-çççÇÇç}}}}çç´´´çç´´´´ç
+                // Construir la fecha ingresada como un LocalDate 
                 fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
                 
                 // Verificar si la fecha ingresada es anterior a la fecha actual
                 if (fechaActual.isAfter(fechaUsuario)) {
                     throw new Exception("La fecha ingresada es anterior a la actual.");
+                } else {
+                    String diaDeFecha = fechaUsuario.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));;
+                    //System.out.println(diaDeFecha);
+                    sql = "SELECT Nombre, Apellido FROM tb_Medicos WHERE especialidad='" + especialidadIn + "' AND diasDeTrabajo LIKE '%\"" + diaDeFecha + "\"%';";
+                    System.out.println(sql);
+                        //tengo que ejecutar la query consultando nombre y apellido y si el result set != null, pasa
+                        
+                    ConexionDB conDB = new ConexionDB();
+                    conDB.conectarDB();
+                    ResultSet rs = conDB.realizaConsulta(sql);
+                    
+                    
+                    
+                    
+                    
                 }
+                
+                
 
                 fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
                 fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
@@ -252,9 +268,7 @@ class Validador {
         } while (fechaInvalida);
         
         
-        DayOfWeek dia = fechaUsuario.getDayOfWeek();
         
-        System.out.println(dia);
 
         return fecha;
     }
@@ -460,6 +474,48 @@ class Validador {
         String jsondiasDeTrabajoIn = gson.toJson(diasDeTrabajoIn);
         
         return jsondiasDeTrabajoIn;
+    }
+    
+    public ArrayList pidoColumnasAModificarYValido(ArrayList<String> columnasArr ) {
+        
+        int indiceSalir = 0;
+        ArrayList<String> columnasACambiar = new ArrayList<>();
+        
+        do {
+            limpiarBuffer = input.nextLine();
+
+            indiceSalir = columnasArr.size();
+
+            System.out.println("Elija la columna/s a modificar");
+            for (String i: columnasArr) {
+
+                if (!(columnasArr.indexOf(i) == 0)) {
+                    System.out.println((columnasArr.indexOf(i)) + "- " + i);
+                }
+
+            }
+            System.out.println(indiceSalir + "- Salir");
+
+            try {
+                indiceIn = input.nextInt();
+
+                if (indiceIn != indiceSalir) {
+                    columnasACambiar.add(columnasArr.get(indiceIn));
+                    columnasArr.remove(indiceIn);
+                }
+
+            } catch(IndexOutOfBoundsException iob) {
+                System.out.println("-IndexOutOfBoundsException: " + iob);
+                System.out.println("--Indice ingresado fuera de rango");
+            } catch (InputMismatchException ime) {
+                System.out.println("-InputMismatchException: " + ime);
+                System.out.println("--Ingrese un numero");
+            }
+
+        } while (indiceIn != indiceSalir);
+        
+        return columnasACambiar;
+        
     }
     
     public String pidoFormaDePagoYValido() {

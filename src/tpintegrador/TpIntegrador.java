@@ -42,13 +42,16 @@ public class TpIntegrador {
        //val.pidoFechaYValido("Pediatria");
         
         
+       
         /*
-        
-        
-        */
-        
+       
         Menu menus = new Menu();
         menus.menuGestionClinica();
         System.out.println("awdfasfafGAGAHEJAHFA");
+        
+        */
+        Menu menus = new Menu();
+        menus.menuGestionClinica();
+        
     }
 }
