@@ -16,7 +16,7 @@ public class TpIntegrador {
         
         si no hay medico con la especialidad disponible, se queda preguntando el dia eternamente
         
-        
+        VOLVIO EL BUCLE EN EL MISMO LUGAR DE ANTES
         
         Pagar
        

@@ -15,14 +15,13 @@ public class Menu {
     public void menuGestionClinica() {
 
         conDB.conectarDB();
-      if (salir == false) {  
-        for (int i = 1; i < 6; i++) {
-            indices.add(i);
-        }
-        //System.out.println(indices);
-        
-        
-        menu = """
+        if (salir == false) {
+            for (int i = 1; i < 6; i++) {
+                indices.add(i);
+            }
+            System.out.println(indices);
+
+            menu = """
                
                *******************************
                     GESTION DE CLINICA
@@ -34,31 +33,32 @@ public class Menu {
                5. Salir
                *******************************
                Seleccione una opcion:""";
-        opcionElegida = validador1.pidoEnteroYValido(menu, indices);
-        indices.clear();
-       
-        switch (opcionElegida) {
-            case 1:
-                menuGestionMedico();
-                break;
-            case 2:
-                menuGestionPacientes();
-                break;
-            case 3:
-                menuGestionCitas();
-                break;
-            case 4:
-                menuHistoriaClinica();
-                break;
-            case 5:
-                salir = true;
-                System.out.println("Sesion Cerrada"); 
-                break;
-            
+            opcionElegida = validador1.pidoEnteroYValido(menu, indices);
+            indices.clear();
+
+            switch (opcionElegida) {
+                case 1:
+                    menuGestionMedico();
+                    break;
+                case 2:
+                    menuGestionPacientes();
+                    break;
+                case 3:
+                    menuGestionCitas();
+                    break;
+                case 4:
+                    menuHistoriaClinica();
+                    break;
+                case 5:
+                    salir = true;
+                    System.out.println("Sesion Cerrada");
+                    break;
+
+            }
+
+        } else {
+            System.out.println("adios");
         }
-        
-      }else {
-          System.out.println("adios");}
     }
 
     public void menuGestionMedico() {
@@ -145,7 +145,7 @@ public class Menu {
     }
 
     public void menuGestionCitas() {
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < 7; i++) {
             indices.add(i);
         }
 
@@ -163,7 +163,7 @@ public class Menu {
                   *******************************
                   Seleccione una opcion:""";
 
-        while (opcionElegida != 5) {
+        while (opcionElegida != 6) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
                 case 1:
