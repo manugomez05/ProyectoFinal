@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package tpintegrador;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author Estudiante
@@ -19,15 +20,40 @@ public class Turno {
     private Factura factura1;
     
     Validador pideYValida = new Validador();
+    ConexionDB conDB = new ConexionDB();
+    ResultSet rs;
+        
         
     public Turno(boolean inicializar) {
         
         if (inicializar) {
-            this.setDniPaciente(pideYValida.pidoDniYValido());
+            
+            conDB.conectarDB();
+            
+            try {
+                
+                do {
+                    this.setDniPaciente(pideYValida.pidoDniYValido());
+                    rs = conDB.realizaConsulta("SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente());
+                    conDB.desconectarDB();
+                    if (rs.getString(1) == null) {
+                        
+                        System.out.println("-Error: No existe ningun paciente con el DNI: " + this.getDniPaciente() + ", tiene que crear un nuevo paciente para poder asignarle un turno");
+                        
+                        conDB.agregarRegistro("tb_Pacientes");
+                    }
+                    
+                } while (rs.getString(1) == null);
+                
+            } catch(SQLException ex) {
+                System.out.println("-SQLException: " +ex);
+            }
+            
+
+            this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
             this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
             this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
             this.setObraSocial(pideYValida.pidoObraSocialYValido());
-            this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
             this.setAsistenciaPaciente(0);
         }
         

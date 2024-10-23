@@ -211,6 +211,9 @@ class Validador {
         LocalDate fechaUsuario = null;
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
         
+        ConexionDB conDB = new ConexionDB();
+        conDB.conectarDB();
+        
         do {
             try {
                 System.out.println("Ingrese el día:");
@@ -241,14 +244,22 @@ class Validador {
                     String diaDeFecha = fechaUsuario.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));;
                     //System.out.println(diaDeFecha);
                     sql = "SELECT Nombre, Apellido FROM tb_Medicos WHERE especialidad='" + especialidadIn + "' AND diasDeTrabajo LIKE '%\"" + diaDeFecha + "\"%';";
-                    System.out.println(sql);
+                    //System.out.println(sql);
                         //tengo que ejecutar la query consultando nombre y apellido y si el result set != null, pasa
                         
-                    ConexionDB conDB = new ConexionDB();
-                    conDB.conectarDB();
+                    
                     ResultSet rs = conDB.realizaConsulta(sql);
                     
+                    //System.out.println(rs.getString(1));
                     
+                    if (rs.getString(1) != null) {
+                        fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
+                        fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
+                        conDB.desconectarDB();
+                    } else {
+                        System.out.println("-Error: No hay medico disponible para " + especialidadIn + " para la fecha " + fechaUsuario);
+                        
+                    }
                     
                     
                     
@@ -256,8 +267,7 @@ class Validador {
                 
                 
 
-                fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
-                fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
+                
 
             } catch (InputMismatchException ime) {
                 System.out.println("-Error: Ingrese un número válido.");

@@ -2,9 +2,8 @@ package tpintegrador;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.nio.charset.StandardCharsets;                
+
 public class TpIntegrador {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
@@ -12,7 +11,13 @@ public class TpIntegrador {
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         /*
         
-        Dias de turno segun la especialidad
+        Dias de turno segun la especialidad, cuando se intenta sacar un turno que tiene que 
+        verificar si el DNI existe en la base de datos Pacientes
+        
+        si no hay medico con la especialidad disponible, se queda preguntando el dia eternamente
+        
+        
+        
         Pagar
        
                 
@@ -24,8 +29,6 @@ public class TpIntegrador {
         ConexionDB conDB = new ConexionDB();
         
         conDB.conectarDB();
-        
-        
         
         /*
         Get day of week devuelve el dia (Lunes, Martes, miercoles) de una fecha
