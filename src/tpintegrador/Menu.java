@@ -176,10 +176,14 @@ public class Menu {
                     conDB.eliminarRegistro("tb_Turnos");
                     break;
                 case 4:
-                    conDB.mostrarTabla("tb_Turnos");
+                    //Mostrar citas que tiene disponible para pagar
+                    //Mostrar factura con los datos
                     break;
                 case 5:
-                    indices.clear();
+                     conDB.mostrarTabla("tb_Turnos");
+                    break;
+                case 6: 
+                     indices.clear();
                     menuGestionClinica();
                     break;
             }
