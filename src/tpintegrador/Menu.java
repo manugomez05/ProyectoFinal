@@ -14,7 +14,7 @@ public class Menu {
     
     public void menuGestionClinica() {
 
-        conDB.conectarDB();
+        //conDB.conectarDB();
         if (salir == false) {
             for (int i = 1; i < 6; i++) {
                 indices.add(i);
@@ -79,6 +79,8 @@ public class Menu {
                   *******************************
                    Seleccione una opcion:""";
 
+        conDB.conectarDB();
+        
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
@@ -120,6 +122,10 @@ public class Menu {
                   5. Regresar al Menu Principal
                   *******************************
                   Seleccione una opcion:""";
+        
+        
+        conDB.conectarDB();
+        
         while (opcionElegida != 5) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
@@ -163,6 +169,8 @@ public class Menu {
                   *******************************
                   Seleccione una opcion:""";
 
+        conDB.conectarDB();
+        
         while (opcionElegida != 6) {
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
@@ -185,7 +193,7 @@ public class Menu {
                      conDB.mostrarTabla("tb_Turnos");
                     break;
                 case 6: 
-                     indices.clear();
+                    indices.clear();
                     menuGestionClinica();
                     break;
             }
@@ -209,20 +217,27 @@ public class Menu {
                   *******************************
                   Seleccione una opcion:""";
          
-         opcionElegida = validador1.pidoEnteroYValido(menu, indices);
-         switch (opcionElegida){
-             case 1:
-                    conDB.mostrarHistoriaClinicaPorPaciente();
-                 break;
-                 
-             case 2:
-                    conDB.mostrarTabla("tb_Turnos");
+         conDB.conectarDB();
+         
+         
+         while (opcionElegida != 3) {
+            opcionElegida = validador1.pidoEnteroYValido(menu, indices);
+            switch (opcionElegida){
+                case 1:
+                       conDB.mostrarHistoriaClinicaPorPaciente();
                     break;
-             case 3:
-                    indices.clear();
-                    menuGestionClinica();
-                
-                
-        }
+
+                case 2:
+                       conDB.mostrarTabla("tb_Turnos");
+                       break;
+                case 3:
+                       indices.clear();
+                       menuGestionClinica();
+                       break;
+            }
+         }
+         
+         
+         
     }
 }

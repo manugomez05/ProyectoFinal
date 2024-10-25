@@ -4,7 +4,12 @@ import com.google.gson.Gson;
 import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Locale;
 
 
 public class ConexionDB implements AtencionMedica {
@@ -37,6 +42,7 @@ public class ConexionDB implements AtencionMedica {
             db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), fechaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
             
             
+            
             if (db != null) {
                 System.out.println("Conexion Exitosa!");
             } else {
@@ -59,10 +65,12 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("SQLException: " + ex);
         }
         
+        System.out.println("Se ha desconectado la base de datos!");
     }
     
 
     //agrega un registro a alguna tabla     
+    @Override
     public void agregarRegistro(String tablaIn) {
         
         //conectarDB();
@@ -105,7 +113,8 @@ public class ConexionDB implements AtencionMedica {
                 case "tb_Turnos":
                     
                     Turno newTurno = new Turno(true);
-                    
+                    //desconectarDB();
+                    conectarDB();
                     ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,fechaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
                     
                     ps.setInt(1, newTurno.getDniPaciente());
@@ -120,15 +129,18 @@ public class ConexionDB implements AtencionMedica {
                     ps.setString(5, newTurno.getEspecialidad());
                     ps.setInt(6,0);
                     
-                    
+                    //conectarDB();
                     
                     System.out.println("Se ha registrado correctamente un turno para " + newTurno.getDniPaciente());
                     break;
             }
-            ps.execute();
+            //ps.execute();
+            ps.executeUpdate();
             
         }catch(SQLException ex) {
             System.out.println("SQLException: " +ex);
+            //ex.printStackTrace();
+                    
         }
        
         //desconectarDB();
@@ -255,23 +267,125 @@ public class ConexionDB implements AtencionMedica {
         return consultaSql;
     }
     
+    public String pidoFechaYValido(String especialidadIn) {
+        Scanner input = new Scanner(System.in);
+        String fecha = "";
+        boolean fechaInvalida = true;
+        int diaIn = 0, mesIn = 0, anioIn = 0;
+        
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaUsuario = null;
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
+        
+
+        
+        do {
+            try {
+                System.out.println("Ingrese el día:");
+                diaIn = input.nextInt();
+                if (diaIn < 1 || diaIn > 31) {
+                    throw new Exception("Día fuera de rango");
+                }
+
+                System.out.println("Ingrese el mes:");
+                mesIn = input.nextInt();
+                if (mesIn < 1 || mesIn > 12) {
+                    throw new Exception("Mes fuera de rango");
+                }
+
+                System.out.println("Ingrese el anio:");
+                anioIn = input.nextInt();
+                if (anioIn < 2005) {
+                    throw new Exception("Anio fuera de rango");
+                }
+
+                // Construir la fecha ingresada como un LocalDate 
+                fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
+                
+                // Verificar si la fecha ingresada es anterior a la fecha actual
+                if (fechaActual.isAfter(fechaUsuario)) {
+                    throw new Exception("La fecha ingresada es anterior a la actual.");
+                } else {
+                    String diaDeFecha = fechaUsuario.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));;
+                    //System.out.println(diaDeFecha);
+                    sql = "SELECT Nombre, Apellido FROM tb_Medicos WHERE especialidad='" + especialidadIn + "' AND diasDeTrabajo LIKE '%\"" + diaDeFecha + "\"%';";
+                    System.out.println(sql);
+                        //tengo que ejecutar la query consultando nombre y apellido y si el result set != null, pasa
+                        
+                        
+                        
+                    try  {
+                        realizaConsulta(sql);
+                        //desconectarDB();
+                        //conectarDB();
+                        System.out.println(rs.getString(1));
+                        
+                        
+                        if (rs.getString(1) != null) {
+                            fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
+                            fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
+                            //conDB.desconectarDB();
+                        } else {
+                            System.out.println("-Error: No hay medico disponible para " + especialidadIn + " para la fecha " + fechaUsuario);
+
+                        }
+                
+                    } catch (SQLException ex) {
+                        System.out.println("SQL Exception: " + ex.getMessage());
+                    }
+                        
+                        
+                    desconectarDB();
+                    
+                    //System.out.println(rs.getString(1));
+                    
+                    
+                    
+                    
+                    
+                }
+                
+                
+
+                
+
+            } catch (InputMismatchException ime) {
+                System.out.println("-Error: Ingrese un número válido.");
+                input.next();  // Limpiar el buffer para evitar el loop
+            } catch (Exception e) {
+                System.out.println("-Error: " + e.getMessage());
+            }
+        } while (fechaInvalida);
+        
+        
+        
+
+        return fecha;
+    }
+    
     
     public ResultSet realizaConsulta(String consulta) {
         
+        conectarDB();
         try {
                 
             stmt = db.createStatement();
             rs = stmt.executeQuery(consulta);
             
-            //System.out.println(rs);
+            System.out.println(rs.getString(1));
+            //db.commit();
 
         } catch(SQLException ex) {
             System.out.println("SQLException: " +ex);
         }
-        
+         
+        //desconectarDB();
+       
         return rs;
     }
     
+    @Override
     public void modificarRegistro(String tablaIn) {
         //dependiendo de la tabla 
         //  pregunto que campos va a querer modificar
@@ -521,6 +635,7 @@ public class ConexionDB implements AtencionMedica {
     }
     
     
+    @Override
     public void eliminarRegistro(String tablaIn) {
         
         /*

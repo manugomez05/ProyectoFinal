@@ -5,8 +5,12 @@
 package tpintegrador;
 
 import com.google.gson.Gson;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -99,10 +103,12 @@ import java.util.Locale;
 
 class Validador {
     
-    String limpiarBuffer;
+    String limpiarBuffer, fecha = "", sql = "";;
     Scanner input = new Scanner(System.in);
     int indiceIn = 0;
     boolean indiceInvalido = true;
+    ConexionDB conDB;
+    ResultSet rs;
     
     
     public String pidoStringYValida(String campo) {
@@ -141,7 +147,6 @@ class Validador {
     
     public String pidoFechaNacimientoYValido() {
         
-        String fecha = "";
         boolean fechaInvalida = true;
         int diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0;
         
@@ -202,7 +207,6 @@ class Validador {
 
     public String pidoFechaYValido(String especialidadIn) {
         Scanner input = new Scanner(System.in);
-        String fecha = "", sql = "";
         boolean fechaInvalida = true;
         int diaIn = 0, mesIn = 0, anioIn = 0;
         
@@ -211,8 +215,8 @@ class Validador {
         LocalDate fechaUsuario = null;
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
         
-        ConexionDB conDB = new ConexionDB();
-        conDB.conectarDB();
+        conDB = new ConexionDB();
+        //conDB.conectarDB();
         
         do {
             try {
@@ -247,19 +251,31 @@ class Validador {
                     //System.out.println(sql);
                         //tengo que ejecutar la query consultando nombre y apellido y si el result set != null, pasa
                         
+                        
+                        
+                    try (Connection conn = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite")) {
+                        rs = conDB.realizaConsulta(sql);
+                        System.out.println(rs.getString(1));
+                        //conDB.conectarDB();
+                        if (rs.getString(1) != null) {
+                            fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
+                            fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
+                            //conDB.desconectarDB();
+                        } else {
+                            System.out.println("-Error: No hay medico disponible para " + especialidadIn + " para la fecha " + fechaUsuario);
+
+                        }
+                
+                    } catch (SQLException ex) {
+                        System.out.println("SQL Exception: " + ex.getMessage());
+                    }
+                        
+                        
                     
-                    ResultSet rs = conDB.realizaConsulta(sql);
                     
                     //System.out.println(rs.getString(1));
                     
-                    if (rs.getString(1) != null) {
-                        fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
-                        fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
-                        conDB.desconectarDB();
-                    } else {
-                        System.out.println("-Error: No hay medico disponible para " + especialidadIn + " para la fecha " + fechaUsuario);
-                        
-                    }
+                    
                     
                     
                     
@@ -291,6 +307,7 @@ class Validador {
         int dni = 0;
         boolean dniInvalido = true;
         
+        
         while (dniInvalido) {
 
             try {
@@ -305,6 +322,7 @@ class Validador {
                     throw new Exception();
                 }
 
+                
                 dniInvalido = false;
 
             } catch(InputMismatchException ime) {

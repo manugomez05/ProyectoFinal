@@ -20,7 +20,8 @@ public class TpIntegrador {
         
         Pagar
        
-                
+        ERROR en agregar turno database locked        
+        
         Creo que hay que conectar y desconectar la base de datos  en cada funcion
         
         */
@@ -28,8 +29,8 @@ public class TpIntegrador {
         // Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
         
-        conDB.conectarDB();
-        
+        //conDB.conectarDB();
+        //conDB.pidoFechaYValido("Pediatria");
         /*
         Get day of week devuelve el dia (Lunes, Martes, miercoles) de una fecha
         se puede usar para lo del turno

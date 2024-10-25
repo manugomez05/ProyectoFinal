@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package tpintegrador;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.*;
 /**
  *
  * @author Estudiante
@@ -22,42 +25,108 @@ public class Turno {
     Validador pideYValida = new Validador();
     ConexionDB conDB = new ConexionDB();
     ResultSet rs;
+    boolean dniInexsistente = true;
         
         
     public Turno(boolean inicializar) {
         
         if (inicializar) {
             
-            conDB.conectarDB();
             
-            try {
+            
+            
+            while (dniInexsistente) {
                 
-                do {
-                    this.setDniPaciente(pideYValida.pidoDniYValido());
-                    rs = conDB.realizaConsulta("SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente());
-                    conDB.desconectarDB();
-                    if (rs.getString(1) == null) {
+                this.setDniPaciente(pideYValida.pidoDniYValido());
+                String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
+                
+                //conDB.conectarDB();
+                rs = conDB.realizaConsulta(sql);
+                //conDB.desconectarDB();
+                //conDB.conectarDB();
+                try {
+                    
+                    if (rs.getString(1) != null) {
+                        System.out.println("Paciente encontrado : " + rs.getString(1));
+                    } else {
+                        System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente());
                         
-                        System.out.println("-Error: No existe ningun paciente con el DNI: " + this.getDniPaciente() + ", tiene que crear un nuevo paciente para poder asignarle un turno");
-                        
+                        conDB.conectarDB();
                         conDB.agregarRegistro("tb_Pacientes");
+                        conDB.desconectarDB();
                     }
                     
-                } while (rs.getString(1) == null);
+                    dniInexsistente = false;
+                } catch (SQLException ex) {
+                    System.out.println("SQL Exception: " + ex.getMessage());
+                }
                 
-            } catch(SQLException ex) {
-                System.out.println("-SQLException: " +ex);
-            }
-            
+                /*
+                try (Connection conn = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite")) {
 
+                this.setDniPaciente(pideYValida.pidoDniYValido());
+                String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
+                
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    
+
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        if (rs != null && rs.next()) {  // Verifica que rs no es null y luego llama a next()
+                            // Procesar el resultado
+                            System.out.println("Paciente encontrado: " + rs.getString("Nombre"));
+                            dniInexsistente = false;
+                        } else {
+                            System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente());
+                            conDB.agregarRegistro("tb_Pacientes");
+                        }
+                    }
+                }
+                } catch (SQLException ex) {
+                    System.out.println("SQL Exception: " + ex.getMessage());
+                }
+                */
+            }
+
+            /*
+            while (dniInexsistente) {
+                try (Connection conn = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite")) {
+
+                this.setDniPaciente(pideYValida.pidoDniYValido());
+                String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
+                
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    
+
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        if (rs != null && rs.next()) {  // Verifica que rs no es null y luego llama a next()
+                            // Procesar el resultado
+                            System.out.println("Paciente encontrado: " + rs.getString("Nombre"));
+                            dniInexsistente = false;
+                        } else {
+                            System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente());
+                            conDB.agregarRegistro("tb_Pacientes");
+                        }
+                    }
+                }
+                } catch (SQLException ex) {
+                    System.out.println("SQL Exception: " + ex.getMessage());
+                }
+            }
+            */
+                
+            
+            
+            
             this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
-            this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
+            //this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
+            conDB.desconectarDB();
+            this.setDia(conDB.pidoFechaYValido(this.especialidad));
+            
             this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
             this.setObraSocial(pideYValida.pidoObraSocialYValido());
             this.setAsistenciaPaciente(0);
+            //conDB.conectarDB();
         }
-        
-        
         
     }
 
