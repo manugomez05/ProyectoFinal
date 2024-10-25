@@ -36,10 +36,9 @@ public class ConexionDB implements AtencionMedica {
     
             Class.forName("org.sqlite.JDBC");
             db = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite");
-            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Pacientes(idPaciente INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, PRIMARY KEY(idPaciente AUTOINCREMENT) ) ").execute();
-            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Medicos(idMedico INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento TEXT, cuentaBancaria INTEGER(10), salario DOUBLE, diasDeTrabajo TEXT, especialidad TEXT, PRIMARY KEY(idMedico AUTOINCREMENT) ) ").execute();
-            //db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), diaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
-            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), fechaTurno TEXT, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
+            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Pacientes(idPaciente INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento date, PRIMARY KEY(idPaciente AUTOINCREMENT) ) ").execute();
+            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Medicos(idMedico INTEGER NOT NULL, Nombre TEXT, Apellido TEXT, DNI INTEGER(8), fechaNacimiento date, cuentaBancaria INTEGER(10), salario DOUBLE, diasDeTrabajo TEXT, especialidad TEXT, PRIMARY KEY(idMedico AUTOINCREMENT) ) ").execute();
+            db.prepareStatement("CREATE TABLE IF NOT EXISTS tb_Turnos(idTurno INTEGER NOT NULL, dniPaciente INTERGER(8), fechaTurno datetime, formaDePago TEXT, obraSocial TEXT, especialidad TEXT, asistenciaPaciente INTEGER,PRIMARY KEY(idTurno AUTOINCREMENT)) ").execute();
             
             
             
@@ -276,7 +275,7 @@ public class ConexionDB implements AtencionMedica {
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaUsuario = null;
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
+        //DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
         
 
         
@@ -288,6 +287,8 @@ public class ConexionDB implements AtencionMedica {
                     throw new Exception("Día fuera de rango");
                 }
 
+                
+                
                 System.out.println("Ingrese el mes:");
                 mesIn = input.nextInt();
                 if (mesIn < 1 || mesIn > 12) {
@@ -302,6 +303,14 @@ public class ConexionDB implements AtencionMedica {
 
                 // Construir la fecha ingresada como un LocalDate 
                 fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
+                
+                if (diaIn >= 1 && diaIn <= 9) {
+                    fecha = anioIn + "" + mesIn + "" + "0" + diaIn;
+                } else {
+                    fecha = anioIn + "" + mesIn + "" + diaIn;
+                }
+                
+                
                 
                 // Verificar si la fecha ingresada es anterior a la fecha actual
                 if (fechaActual.isAfter(fechaUsuario)) {
@@ -324,7 +333,6 @@ public class ConexionDB implements AtencionMedica {
                         
                         if (rs.getString(1) != null) {
                             fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
-                            fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
                             //conDB.desconectarDB();
                         } else {
                             System.out.println("-Error: No hay medico disponible para " + especialidadIn + " para la fecha " + fechaUsuario);
@@ -358,9 +366,6 @@ public class ConexionDB implements AtencionMedica {
             }
         } while (fechaInvalida);
         
-        
-        
-
         return fecha;
     }
     

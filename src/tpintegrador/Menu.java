@@ -16,7 +16,7 @@ public class Menu {
         for (int i = 1; i < 6; i++) {
             indices.add(i);
         }
-        System.out.println(indices);  
+        //System.out.println(indices);  
         
         menu = """
                *******************************

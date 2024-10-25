@@ -11,6 +11,8 @@ public class TpIntegrador {
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         /*
         
+        CAMBIAR A TIPO DATE LAS FECHAS, TURNOS DATE TIME
+        
         Dias de turno segun la especialidad, cuando se intenta sacar un turno que tiene que 
         verificar si el DNI existe en la base de datos Pacientes
         

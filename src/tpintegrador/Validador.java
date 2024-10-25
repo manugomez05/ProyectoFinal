@@ -187,7 +187,7 @@ class Validador {
                 }
 
                 fechaInvalida = false;
-                fecha = diaNacimientoIn + "/" + mesNacimientoIn + "/" + anioNacimientoIn;
+                fecha = anioNacimientoIn + "" + mesNacimientoIn + "" + diaNacimientoIn;
 
             } catch(InputMismatchException ime) {
                 System.out.println("-InputMismatchException: " + ime);
@@ -213,7 +213,7 @@ class Validador {
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaUsuario = null;
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
+        //DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyyMMdd"); //Formato que queremos
         
         conDB = new ConexionDB();
         //conDB.conectarDB();
@@ -259,7 +259,7 @@ class Validador {
                         //conDB.conectarDB();
                         if (rs.getString(1) != null) {
                             fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
-                            fecha = fechaUsuario.format(formato);  // Formatear la fecha en una cadena
+                            fecha = fechaUsuario.toString();  // Formatear la fecha en una cadena
                             //conDB.desconectarDB();
                         } else {
                             System.out.println("-Error: No hay medico disponible para " + especialidadIn + " para la fecha " + fechaUsuario);
@@ -292,9 +292,6 @@ class Validador {
                 System.out.println("-Error: " + e.getMessage());
             }
         } while (fechaInvalida);
-        
-        
-        
 
         return fecha;
     }
