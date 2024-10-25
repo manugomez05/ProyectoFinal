@@ -22,7 +22,7 @@ public class TpIntegrador {
        
         Preguntar si vamos bien al profe
         
-        
+        mejorar los souts de agregar registros
         
         Creo que hay que conectar y desconectar la base de datos  en cada funcion
         
