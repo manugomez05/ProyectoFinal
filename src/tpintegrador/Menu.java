@@ -9,20 +9,16 @@ public class Menu {
     Validador validador1 = new Validador();
     ArrayList<Integer> indices = new ArrayList<>();
     ConexionDB conDB = new ConexionDB();
-    boolean salir = false;
-    
     
     public void menuGestionClinica() {
 
-        //conDB.conectarDB();
-        if (salir == false) {
-            for (int i = 1; i < 6; i++) {
-                indices.add(i);
-            }
-            System.out.println(indices);
-
-            menu = """
-               
+        indices.clear();
+        for (int i = 1; i < 6; i++) {
+            indices.add(i);
+        }
+        System.out.println(indices);  
+        
+        menu = """
                *******************************
                     GESTION DE CLINICA
                *******************************
@@ -33,55 +29,50 @@ public class Menu {
                5. Salir
                *******************************
                Seleccione una opcion:""";
-            opcionElegida = validador1.pidoEnteroYValido(menu, indices);
-            indices.clear();
+        
+        opcionElegida = validador1.pidoEnteroYValido(menu, indices);
+        indices.clear();
 
-            switch (opcionElegida) {
-                case 1:
-                    menuGestionMedico();
-                    break;
-                case 2:
-                    menuGestionPacientes();
-                    break;
-                case 3:
-                    menuGestionCitas();
-                    break;
-                case 4:
-                    menuHistoriaClinica();
-                    break;
-                case 5:
-                    salir = true;
-                    System.out.println("Sesion Cerrada");
-                    break;
-
-            }
-
-        } else {
-            System.out.println("adios");
+        switch (opcionElegida) {
+            case 1:
+                menuGestionMedico();
+                break;
+            case 2:
+                menuGestionPacientes();
+                break;
+            case 3:
+                menuGestionCitas();
+                break;
+            case 4:
+                menuHistoriaClinica();
+                break;
+            case 5:
+                System.out.println("Sesion Cerrada");
+                break;
         }
     }
 
     public void menuGestionMedico() {
+        indices.clear();  
         for (int i = 1; i < 6; i++) {
             indices.add(i);
         }
 
-        menu
-                = """
-                  *******************************
-                       GESTIONAR MEDICOS
-                  *******************************
-                  1. Agregar Nuevo Medico
-                  2. Modificar Informacion de Medico
-                  3. Eliminar Medico
-                  4. Listar Todos los Medicos
-                  5. Regresar al Menu Principal
-                  *******************************
-                   Seleccione una opcion:""";
+        menu = """
+               *******************************
+                    GESTIONAR MEDICOS
+               *******************************
+               1. Agregar Nuevo Medico
+               2. Modificar Informacion de Medico
+               3. Eliminar Medico
+               4. Listar Todos los Medicos
+               5. Regresar al Menu Principal
+               *******************************
+               Seleccione una opcion:""";
 
         conDB.conectarDB();
         
-        while (opcionElegida != 5) {
+        while (true) { 
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
                 case 1:
@@ -98,35 +89,33 @@ public class Menu {
                     break;
                 case 5:
                     indices.clear();
-                    menuGestionClinica();
-                    break;
+                    menuGestionClinica();  
+                    return;  
             }
         }
-
     }
 
     public void menuGestionPacientes() {
+        indices.clear();
         for (int i = 1; i < 6; i++) {
             indices.add(i);
         }
 
-        menu
-                = """
-                  *******************************
-                       GESTIONAR PACIENTES
-                  *******************************
-                  1. Agregar Nuevo Paciente
-                  2. Modificar Informacion de Paciente
-                  3. Eliminar Paciente
-                  4. Listar Todos los Pacientes
-                  5. Regresar al Menu Principal
-                  *******************************
-                  Seleccione una opcion:""";
-        
+        menu = """
+               *******************************
+                    GESTIONAR PACIENTES
+               *******************************
+               1. Agregar Nuevo Paciente
+               2. Modificar Informacion de Paciente
+               3. Eliminar Paciente
+               4. Listar Todos los Pacientes
+               5. Regresar al Menu Principal
+               *******************************
+               Seleccione una opcion:""";
         
         conDB.conectarDB();
         
-        while (opcionElegida != 5) {
+        while (true) {  
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
                 case 1:
@@ -143,35 +132,34 @@ public class Menu {
                     break;
                 case 5:
                     indices.clear();
-                    menuGestionClinica();
-                    break;
+                    menuGestionClinica(); 
+                    return;  
             }
         }
-
     }
 
     public void menuGestionCitas() {
+        indices.clear();
         for (int i = 1; i < 7; i++) {
             indices.add(i);
         }
 
-        menu
-                = """
-                  *******************************
-                       GESTIONAR CITAS
-                  *******************************
-                  1. Agendar Nueva Cita
-                  2. Modificar Cita
-                  3. Cancelar Cita
-                  4. Pagar Cita
-                  5. Listar Todas las Citas
-                  6. Regresar al Menu Principal
-                  *******************************
-                  Seleccione una opcion:""";
+        menu = """
+               *******************************
+                    GESTIONAR CITAS
+               *******************************
+               1. Agendar Nueva Cita
+               2. Modificar Cita
+               3. Cancelar Cita
+               4. Pagar Cita
+               5. Listar Todas las Citas
+               6. Regresar al Menu Principal
+               *******************************
+               Seleccione una opcion:""";
 
         conDB.conectarDB();
         
-        while (opcionElegida != 6) {
+        while (true) {  
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
                 case 1:
@@ -184,60 +172,52 @@ public class Menu {
                     conDB.eliminarRegistro("tb_Turnos");
                     break;
                 case 4:
-                    //Mostrar citas que tiene disponible para pagar
-                    
-                    //Mostrar factura con los datos
-                    
+                    // Mostrar citas disponibles para pagar
+                    // Mostrar factura con los datos
                     break;
                 case 5:
-                     conDB.mostrarTabla("tb_Turnos");
+                    conDB.mostrarTabla("tb_Turnos");
                     break;
-                case 6: 
+                case 6:
                     indices.clear();
-                    menuGestionClinica();
-                    break;
+                    menuGestionClinica();  
+                    return;  
             }
         }
-
     }
 
-    
     public void menuHistoriaClinica() {
-        opcionElegida = 0;
+        indices.clear();
         for (int i = 1; i < 4; i++) {
-            indices.add(i);}
-         menu
-                = """
-                  ************************************
-                       CONSULTAR HISTORIA CLINICA
-                  ************************************
-                  1. Buscar Historia Clinica por Paciente
-                  2. Listar Todas las Historias Clinicas
-                  3. Regresar al Menu Principal
-                  *******************************
-                  Seleccione una opcion:""";
-         
-         conDB.conectarDB();
-         
-         
-         while (opcionElegida != 3) {
-            opcionElegida = validador1.pidoEnteroYValido(menu, indices);
-            switch (opcionElegida){
-                case 1:
-                       conDB.mostrarHistoriaClinicaPorPaciente();
-                    break;
+            indices.add(i);
+        }
 
+        menu = """
+               ************************************
+                    CONSULTAR HISTORIA CLINICA
+               ************************************
+               1. Buscar Historia Clinica por Paciente
+               2. Listar Todas las Historias Clinicas
+               3. Regresar al Menu Principal
+               *******************************
+               Seleccione una opcion:""";
+        
+        conDB.conectarDB();
+        
+        while (true) {  
+            opcionElegida = validador1.pidoEnteroYValido(menu, indices);
+            switch (opcionElegida) {
+                case 1:
+                    conDB.mostrarHistoriaClinicaPorPaciente();
+                    break;
                 case 2:
-                       conDB.mostrarTabla("tb_Turnos");
-                       break;
+                    conDB.mostrarTabla("tb_Turnos");
+                    break;
                 case 3:
-                       indices.clear();
-                       menuGestionClinica();
-                       break;
+                    indices.clear();
+                    menuGestionClinica();  
+                    return;  
             }
-         }
-         
-         
-         
+        }
     }
 }
