@@ -32,6 +32,7 @@ public class Paciente extends Persona{
     }
     
     public Paciente(boolean inicializar) {
+        
         super(inicializar);
     }
     

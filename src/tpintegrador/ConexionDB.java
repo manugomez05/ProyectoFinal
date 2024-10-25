@@ -385,6 +385,8 @@ public class ConexionDB implements AtencionMedica {
         return rs;
     }
     
+    
+    
     @Override
     public void modificarRegistro(String tablaIn) {
         //dependiendo de la tabla 

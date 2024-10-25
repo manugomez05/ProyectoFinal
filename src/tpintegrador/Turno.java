@@ -46,7 +46,7 @@ public class Turno {
                     if (rs.getString(1) != null) {
                         System.out.println("Paciente encontrado : " + rs.getString(1));
                     } else {
-                        System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente());
+                        System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente() + ", primero tiene que crear uno nuevo");
                         
                         conDB.conectarDB();
                         conDB.agregarRegistro("tb_Pacientes");

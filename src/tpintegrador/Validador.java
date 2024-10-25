@@ -654,7 +654,8 @@ class Validador {
             while (enteroInvalido) {
             
                 try {
-
+                    
+                    
                     limpiarBuffer = input.nextLine();
 
                     System.out.println(mensaje);
@@ -662,6 +663,7 @@ class Validador {
 
                     if (arrayIndice.contains(entero)) {
                         enteroInvalido = false;
+                        
                     } else {
                         throw new Exception();
                     }
@@ -674,6 +676,8 @@ class Validador {
                 }
             
             }
+        } else {
+            return -00;
         }
         
         return entero;

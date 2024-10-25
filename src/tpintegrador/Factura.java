@@ -5,19 +5,31 @@
 package tpintegrador;
 
 import java.util.Random;
+import java.sql.ResultSet;
 
-/**
- *
- * @author Fernanda
- */
+
 public class Factura {
     private static String tipoFactura;
     private double montoTotal;
-    
+    ResultSet rs;
+    Validador pideYValida = new Validador();
+    ConexionDB conDB = new ConexionDB();
     
     public void mostrarFactura(){
         
+        
+        
         System.out.println (this.getTipoFactura());
+        int dniIn = pideYValida.pidoDniYValido();
+        
+        //String sql = "";
+        
+        rs = conDB.realizaConsulta("");
+        
+        
+        
+        
+        
         System.out.println("Obra social: "  );
         System.out.println("DNI: ");
         System.out.println("Monto a pagar: ");
