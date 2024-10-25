@@ -40,10 +40,7 @@ public class Turno {
                 this.setDniPaciente(pideYValida.pidoDniYValido());
                 String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
                 
-                //conDB.conectarDB();
                 rs = conDB.realizaConsulta(sql);
-                //conDB.desconectarDB();
-                //conDB.conectarDB();
                 try {
                     
                     if (rs.getString(1) != null) {
@@ -60,74 +57,19 @@ public class Turno {
                 } catch (SQLException ex) {
                     System.out.println("SQL Exception: " + ex.getMessage());
                 }
-                
-                /*
-                try (Connection conn = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite")) {
+            
+                this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
+                //this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
+                conDB.desconectarDB();
+                this.setDia(conDB.pidoFechaYValido(this.especialidad));
 
-                this.setDniPaciente(pideYValida.pidoDniYValido());
-                String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
-                
-                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                    
-
-                    try (ResultSet rs = pstmt.executeQuery()) {
-                        if (rs != null && rs.next()) {  // Verifica que rs no es null y luego llama a next()
-                            // Procesar el resultado
-                            System.out.println("Paciente encontrado: " + rs.getString("Nombre"));
-                            dniInexsistente = false;
-                        } else {
-                            System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente());
-                            conDB.agregarRegistro("tb_Pacientes");
-                        }
-                    }
-                }
-                } catch (SQLException ex) {
-                    System.out.println("SQL Exception: " + ex.getMessage());
-                }
-                */
+                this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
+                this.setObraSocial(pideYValida.pidoObraSocialYValido());
+                this.setAsistenciaPaciente(0);
+                //conDB.conectarDB();
             }
-
-            /*
-            while (dniInexsistente) {
-                try (Connection conn = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite")) {
-
-                this.setDniPaciente(pideYValida.pidoDniYValido());
-                String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
-                
-                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                    
-
-                    try (ResultSet rs = pstmt.executeQuery()) {
-                        if (rs != null && rs.next()) {  // Verifica que rs no es null y luego llama a next()
-                            // Procesar el resultado
-                            System.out.println("Paciente encontrado: " + rs.getString("Nombre"));
-                            dniInexsistente = false;
-                        } else {
-                            System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente());
-                            conDB.agregarRegistro("tb_Pacientes");
-                        }
-                    }
-                }
-                } catch (SQLException ex) {
-                    System.out.println("SQL Exception: " + ex.getMessage());
-                }
-            }
-            */
-                
-            
-            
-            
-            this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
-            //this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
-            conDB.desconectarDB();
-            this.setDia(conDB.pidoFechaYValido(this.especialidad));
-            
-            this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
-            this.setObraSocial(pideYValida.pidoObraSocialYValido());
-            this.setAsistenciaPaciente(0);
-            //conDB.conectarDB();
-        }
         
+        }
     }
 
    
