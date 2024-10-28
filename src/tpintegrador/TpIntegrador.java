@@ -11,8 +11,6 @@ public class TpIntegrador {
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         /*
         
-        CAMBIAR A TIPO DATE LAS FECHAS, TURNOS DATE TIME
-        
         Dias de turno segun la especialidad, cuando se intenta sacar un turno que tiene que 
         verificar si el DNI existe en la base de datos Pacientes
         
@@ -32,9 +30,12 @@ public class TpIntegrador {
         
         // Conecto a la base de datos 
         ConexionDB conDB = new ConexionDB();
-        
+        //conDB.pidoFechaTurnoYValido("Pediatria");
         //conDB.conectarDB();
-        //conDB.pidoFechaYValido("Pediatria");
+      
+        Factura f = new Factura();
+        f.mostrarFactura();
+        
         
         //Validador val = new Validador();
         //val.pidoFechaYValido("Pediatria");

@@ -3,6 +3,8 @@ package tpintegrador;
 
 import java.util.Random;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.json.JSONObject;
 
 
 public class Factura {
@@ -16,21 +18,38 @@ public class Factura {
         
         
         
-        System.out.println (this.getTipoFactura());
         int dniIn = pideYValida.pidoDniYValido();
         
-        //String sql = "";
+        /*
+        mostramos para pagar el turno mas proximo a la fecha actual
         
-        rs = conDB.realizaConsulta("");
+        */
+        String sql = "SELECT * FROM tb_Turnos WHERE fechaTurno>=date() AND dniPaciente=" + dniIn + " LIMIT 1;";
+        
+        rs = conDB.realizaConsulta(sql);
         
         
         
         
+        try {
+            
+            String obraSocialJson = rs.getString(5);
+            JSONObject obraSocialObj = new JSONObject(obraSocialJson);
+            
+            System.out.println("------------ FACTURA ------------");
+            System.out.println("Tipo de Factura: " + this.getTipoFactura());
+            System.out.println("Fecha: " + rs.getString(3));
+            System.out.println("Cliente: ");
+            System.out.println("DNI: " + rs.getInt(2));
+            System.out.println("Especialidad: " + rs.getString(6));
+            System.out.println("Obra Social: " + obraSocialObj.getString("nombre"));
+            System.out.println("Monto a Pagar: $" );
+            System.out.println("----------------------------------");
+        }catch(SQLException ex) {
+            System.out.println("SQLException: " + ex);
+        }
         
-        System.out.println("Obra social: "  );
-        System.out.println("DNI: ");
-        System.out.println("Monto a pagar: ");
-        System.out.println("");
+        
     }
     
     public double calcularMonto(){

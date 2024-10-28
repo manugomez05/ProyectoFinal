@@ -113,7 +113,7 @@ public class Menu {
                *******************************
                Seleccione una opcion:""";
         
-        conDB.conectarDB();
+        //conDB.conectarDB();
         
         while (true) {  
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);

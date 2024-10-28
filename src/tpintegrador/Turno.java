@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package tpintegrador;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -32,9 +31,6 @@ public class Turno {
         
         if (inicializar) {
             
-            
-            
-            
             while (dniInexsistente) {
                 
                 this.setDniPaciente(pideYValida.pidoDniYValido());
@@ -61,7 +57,7 @@ public class Turno {
                 this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
                 //this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
                 conDB.desconectarDB();
-                this.setDia(conDB.pidoFechaYValido(this.especialidad));
+                this.setDia(conDB.pidoFechaTurnoYValido(this.especialidad));
 
                 this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
                 this.setObraSocial(pideYValida.pidoObraSocialYValido());

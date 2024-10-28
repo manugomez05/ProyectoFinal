@@ -146,8 +146,6 @@ public class ConexionDB implements AtencionMedica {
         
     }
         
-        
-    
     public ArrayList consultaIdsDeTabla(String tablaIn) {
         
         
@@ -216,7 +214,7 @@ public class ConexionDB implements AtencionMedica {
             while (rs.next()) {
                 columna = rs.getString("name");
                 
-                if (!columna.equals("dniPaciente") && !columna.equals("especialidad")) {
+                if (!columna.equals("dniPaciente") && !columna.equals("especialidad") && !columna.equals("fechaTurno")) {
                     columnasDeTabla.add(rs.getString("name")); 
                 }
                 
@@ -231,7 +229,6 @@ public class ConexionDB implements AtencionMedica {
         return columnasDeTabla;
         
     }
-    
     
     public String armaStringConsultaSql(ArrayList columnasACambiar, String columna, String nuevoValor) {
         
@@ -266,8 +263,7 @@ public class ConexionDB implements AtencionMedica {
         return consultaSql;
     }
     
-    public String pidoFechaYValido(String especialidadIn) {
-        Scanner input = new Scanner(System.in);
+    public String pidoFechaTurnoYValido(String especialidadIn) {
         String fecha = "";
         boolean fechaInvalida = true;
         int diaIn = 0, mesIn = 0, anioIn = 0;
@@ -275,20 +271,16 @@ public class ConexionDB implements AtencionMedica {
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaUsuario = null;
-        //DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy"); //Formato que queremos
-        
-
         
         do {
             try {
+                
                 System.out.println("Ingrese el día:");
                 diaIn = input.nextInt();
                 if (diaIn < 1 || diaIn > 31) {
                     throw new Exception("Día fuera de rango");
                 }
 
-                
-                
                 System.out.println("Ingrese el mes:");
                 mesIn = input.nextInt();
                 if (mesIn < 1 || mesIn > 12) {
@@ -301,16 +293,27 @@ public class ConexionDB implements AtencionMedica {
                     throw new Exception("Anio fuera de rango");
                 }
 
-                // Construir la fecha ingresada como un LocalDate 
-                fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
                 
+                // SALIDA SIN FORMATO
+                /*
                 if (diaIn >= 1 && diaIn <= 9) {
                     fecha = anioIn + "" + mesIn + "" + "0" + diaIn;
                 } else {
                     fecha = anioIn + "" + mesIn + "" + diaIn;
                 }
+                */
                 
-                
+                //SALIDA CON FORMATO YYYY-MM-DD
+                if (diaIn >= 1 && diaIn <= 9) {
+                    fecha = anioIn + "-" + mesIn + "-" + "0" + diaIn;
+                } else {
+                    fecha = anioIn + "-" + mesIn + "-" + diaIn;
+                }
+
+                // Construir la fecha ingresada como un LocalDate 
+                // necesito repetir codigo por que la funcion LocalDate.of() toma int, no Strings | intente con String[]
+                fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
+                                
                 
                 // Verificar si la fecha ingresada es anterior a la fecha actual
                 if (fechaActual.isAfter(fechaUsuario)) {
@@ -320,16 +323,10 @@ public class ConexionDB implements AtencionMedica {
                     //System.out.println(diaDeFecha);
                     sql = "SELECT Nombre, Apellido FROM tb_Medicos WHERE especialidad='" + especialidadIn + "' AND diasDeTrabajo LIKE '%\"" + diaDeFecha + "\"%';";
                     System.out.println(sql);
-                        //tengo que ejecutar la query consultando nombre y apellido y si el result set != null, pasa
-                        
-                        
-                        
+                    
                     try  {
                         realizaConsulta(sql);
-                        //desconectarDB();
-                        //conectarDB();
                         System.out.println(rs.getString(1));
-                        
                         
                         if (rs.getString(1) != null) {
                             fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
@@ -347,16 +344,8 @@ public class ConexionDB implements AtencionMedica {
                     desconectarDB();
                     
                     //System.out.println(rs.getString(1));
-                    
-                    
-                    
-                    
-                    
+                                        
                 }
-                
-                
-
-                
 
             } catch (InputMismatchException ime) {
                 System.out.println("-Error: Ingrese un número válido.");
@@ -368,7 +357,6 @@ public class ConexionDB implements AtencionMedica {
         
         return fecha;
     }
-    
     
     public ResultSet realizaConsulta(String consulta) {
         
@@ -389,8 +377,6 @@ public class ConexionDB implements AtencionMedica {
        
         return rs;
     }
-    
-    
     
     @Override
     public void modificarRegistro(String tablaIn) {
@@ -480,7 +466,6 @@ public class ConexionDB implements AtencionMedica {
 
                             System.out.println("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idPaciente=" + idIn);
                             ps = db.prepareStatement("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idPaciente=" + idIn + ";");
-                            ps.execute();
 
 
 
@@ -526,7 +511,7 @@ public class ConexionDB implements AtencionMedica {
                                         break;
                                     case "salario":
                                         medicoExistente.setSalario(pideYValida.pidoSalarioYValido());
-                                        salarioString = String.valueOf(medicoExistente.getCuentaBancaria());
+                                        salarioString = String.valueOf(medicoExistente.getSalario());
 
                                         columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, salarioString);
 
@@ -546,13 +531,16 @@ public class ConexionDB implements AtencionMedica {
 
                             System.out.println("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idTurno=" + idIn);
                             ps = db.prepareStatement("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idMedico=" + idIn + ";");
-                            ps.execute();
 
                             break;
                         case "tb_Turnos":
 
                             Turno turnoExistente = new Turno(false);
 
+                            //desconectarDB();
+                            
+                            
+                            
                             for (String i : columnasACambiar) {
 
                                 //limpiarBuffer = input.nextLine();
@@ -571,14 +559,18 @@ public class ConexionDB implements AtencionMedica {
                                         
                                         break;
                                     */
+                                    /*
                                     case "fechaTurno":
                                         
                                         ResultSet especialidadDelTurno = realizaConsulta("SELECT especialidad FROM tb_Turnos WHERE idTurno=" + idIn);
                                         
-                                        turnoExistente.setDia(pideYValida.pidoFechaYValido(especialidadDelTurno.getString(1)));
+                                        turnoExistente.setDia(pidoFechaTurnoYValido(especialidadDelTurno.getString(1)));
                                         columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getDia());
-
+                                        
+                                        //desconectarDB();
+                                        //conectarDB();
                                         break;
+                                    */
                                     case "formaDePago":
                                         turnoExistente.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
                                         columnasACambiarString = columnasACambiarString + armaStringConsultaSql(columnasACambiar, i, turnoExistente.getFormaDePago());
@@ -617,14 +609,18 @@ public class ConexionDB implements AtencionMedica {
                                         break;    
 
                                 }
+                                
                             }
 
+                            desconectarDB();
+                            conectarDB();
                             System.out.println("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idPaciente=" + idIn);
                             ps = db.prepareStatement("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idTurno=" + idIn + ";");
-                            ps.execute();
+
 
                             break;
                     }
+                    ps.executeUpdate();
                 }
                 
 
@@ -640,7 +636,6 @@ public class ConexionDB implements AtencionMedica {
         //desconectarDB();
         
     }
-    
     
     @Override
     public void eliminarRegistro(String tablaIn) {
@@ -691,7 +686,6 @@ public class ConexionDB implements AtencionMedica {
         //desconectarDB();
     }
     
-    
     public void vaciarTabla(String tablaIn) {
         /*
         DELETE FROM tablaIn;
@@ -717,6 +711,7 @@ public class ConexionDB implements AtencionMedica {
         //desconectarDB();
     }
     
+    @Override
     public void mostrarTabla(String tablaIn) {
         
         /*

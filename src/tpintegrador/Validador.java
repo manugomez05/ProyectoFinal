@@ -7,15 +7,12 @@ package tpintegrador;
 import com.google.gson.Gson;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
@@ -146,77 +143,83 @@ class Validador {
     }
     
     public String pidoFechaNacimientoYValido() {
-        
+
         boolean fechaInvalida = true;
-        int diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0;
+        int diaIn = 0, mesIn = 0, anioIn = 0;
+        String fechaNacimiento = "";
         
-        //Pido la fecha de Nacimiento y la valido
-        while (fechaInvalida) {
+        
+        do {
             try {
-
+                
                 limpiarBuffer = input.nextLine();
+                
+                System.out.println("Ingrese el día de Nacimiento:");
+                diaIn = input.nextInt();
+                if (diaIn < 1 || diaIn > 31) {
+                    throw new Exception("Día fuera de rango");
+                }
 
-                while (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
-                    System.out.println("Ingrese el dia de nacimiento:");
-                    diaNacimientoIn = input.nextInt();
+                System.out.println("Ingrese el mes de Nacimiento:");
+                mesIn = input.nextInt();
+                if (mesIn < 1 || mesIn > 12) {
+                    throw new Exception("Mes fuera de rango");
+                }
+
+                
+                while (anioIn < 1930 || anioIn > 2005) {
+                    System.out.println("Ingrese el año de Nacimiento:");
+                    anioIn = input.nextInt();
 
                     //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
+                    if (anioIn < 1) {
                         throw new Exception();
                     }
                 }
 
-                while (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
-                    System.out.println("Ingrese el mes de nacimiento:");
-                    mesNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
-                        throw new Exception();
-                    }
+                
+                // SALIDA SIN FORMATO
+                /*
+                if (diaIn >= 1 && diaIn <= 9) {
+                    fecha = anioIn + "" + mesIn + "" + "0" + diaIn;
+                } else {
+                    fecha = anioIn + "" + mesIn + "" + diaIn;
                 }
-
-                while (anioNacimientoIn < 1930 || anioNacimientoIn > 2005) {
-                    System.out.println("Ingrese el anio de nacimiento:");
-                    anioNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (anioNacimientoIn < 1) {
-                        throw new Exception();
-                    }
+                */
+                
+                
+                //SALIDA CON FORMATO YYYY-MM-DD
+                if (diaIn >= 1 && diaIn <= 9) {
+                    fechaNacimiento = anioIn + "-" + mesIn + "-" + "0" + diaIn;
+                } else {
+                    fechaNacimiento = anioIn + "-" + mesIn + "-" + diaIn;
                 }
-
+                
+                
                 fechaInvalida = false;
-                fecha = anioNacimientoIn + "" + mesNacimientoIn + "" + diaNacimientoIn;
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un numero");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--Rango invalido");
+                
+            } catch (InputMismatchException ime) {
+                System.out.println("-Error: Ingrese un número válido.");
+                input.next();  // Limpiar el buffer para evitar el loop
+            } catch (Exception e) {
+                System.out.println("-Error: " + e.getMessage());
             }
-
-        }
+        } while (fechaInvalida);
         
-        return fecha;
+        
+        
+        return fechaNacimiento;
+        
     }
     
 
 
 
-    public String pidoFechaYValido(String especialidadIn) {
+    public String pidoFechaYValido() {
         Scanner input = new Scanner(System.in);
         boolean fechaInvalida = true;
         int diaIn = 0, mesIn = 0, anioIn = 0;
-        
-        // Obtener la fecha actual
-        LocalDate fechaActual = LocalDate.now();
-        LocalDate fechaUsuario = null;
-        //DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyyMMdd"); //Formato que queremos
-        
-        conDB = new ConexionDB();
-        //conDB.conectarDB();
+        String fecha = "";
         
         do {
             try {
@@ -238,53 +241,27 @@ class Validador {
                     throw new Exception("Anio fuera de rango");
                 }
 
-                // Construir la fecha ingresada como un LocalDate 
-                fechaUsuario = LocalDate.of(anioIn, mesIn, diaIn);
                 
-                // Verificar si la fecha ingresada es anterior a la fecha actual
-                if (fechaActual.isAfter(fechaUsuario)) {
-                    throw new Exception("La fecha ingresada es anterior a la actual.");
+                // SALIDA SIN FORMATO
+                /*
+                if (diaIn >= 1 && diaIn <= 9) {
+                    fecha = anioIn + "" + mesIn + "" + "0" + diaIn;
                 } else {
-                    String diaDeFecha = fechaUsuario.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));;
-                    //System.out.println(diaDeFecha);
-                    sql = "SELECT Nombre, Apellido FROM tb_Medicos WHERE especialidad='" + especialidadIn + "' AND diasDeTrabajo LIKE '%\"" + diaDeFecha + "\"%';";
-                    //System.out.println(sql);
-                        //tengo que ejecutar la query consultando nombre y apellido y si el result set != null, pasa
-                        
-                        
-                        
-                    try (Connection conn = DriverManager.getConnection("jdbc:sqlite:ClinicaVitalityDB.sqlite")) {
-                        rs = conDB.realizaConsulta(sql);
-                        System.out.println(rs.getString(1));
-                        //conDB.conectarDB();
-                        if (rs.getString(1) != null) {
-                            fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
-                            fecha = fechaUsuario.toString();  // Formatear la fecha en una cadena
-                            //conDB.desconectarDB();
-                        } else {
-                            System.out.println("-Error: No hay medico disponible para " + especialidadIn + " para la fecha " + fechaUsuario);
-
-                        }
+                    fecha = anioIn + "" + mesIn + "" + diaIn;
+                }
+                */
                 
-                    } catch (SQLException ex) {
-                        System.out.println("SQL Exception: " + ex.getMessage());
-                    }
-                        
-                        
-                    
-                    
-                    //System.out.println(rs.getString(1));
-                    
-                    
-                    
-                    
-                    
+                
+                //SALIDA CON FORMATO YYYY-MM-DD
+                if (diaIn >= 1 && diaIn <= 9) {
+                    fecha = anioIn + "-" + mesIn + "-" + "0" + diaIn;
+                } else {
+                    fecha = anioIn + "-" + mesIn + "-" + diaIn;
                 }
                 
                 
-
+                fechaInvalida = false;
                 
-
             } catch (InputMismatchException ime) {
                 System.out.println("-Error: Ingrese un número válido.");
                 input.next();  // Limpiar el buffer para evitar el loop
