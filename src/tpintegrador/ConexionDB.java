@@ -723,6 +723,7 @@ public class ConexionDB implements AtencionMedica {
         sql = "SELECT * FROM " + tablaIn;
         
         try {
+            conectarDB();
             stmt = db.createStatement();
             rs = stmt.executeQuery(sql);
             
