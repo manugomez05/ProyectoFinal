@@ -36,6 +36,9 @@ public class Factura {
             String obraSocialJson = rs.getString(5);
             JSONObject obraSocialObj = new JSONObject(obraSocialJson);
             
+            float montoSinDescuento = (float) calcularMonto();
+            float montoConDescuento = montoSinDescuento * (1 - (float)obraSocialObj.getInt("descuento")/100);
+            
             System.out.println("------------ FACTURA ------------");
             System.out.println("Tipo de Factura: " + this.getTipoFactura());
             System.out.println("Fecha: " + rs.getString(3));
@@ -43,8 +46,9 @@ public class Factura {
             System.out.println("DNI: " + rs.getInt(2));
             System.out.println("Especialidad: " + rs.getString(6));
             System.out.println("Obra Social: " + obraSocialObj.getString("nombre"));
-            System.out.println("Monto a Pagar: $" );
-            System.out.println("----------------------------------");
+            System.out.println("Monto a Pagar CON descuento: $" + montoConDescuento);
+            System.out.println("Monto a Pagar sin descuento: $" + montoSinDescuento);
+            System.out.println("---------------------------------");
         }catch(SQLException ex) {
             System.out.println("SQLException: " + ex);
         }
