@@ -26,6 +26,8 @@ public class TpIntegrador {
         
         Creo que hay que conectar y desconectar la base de datos  en cada funcion
         
+        Agregar columna pagado,(0,1)
+        
         */
         
         // Conecto a la base de datos 
