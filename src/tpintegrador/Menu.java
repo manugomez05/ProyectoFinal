@@ -9,7 +9,7 @@ public class Menu {
     Validador validador1 = new Validador();
     ArrayList<Integer> indices = new ArrayList<>();
     ConexionDB conDB = new ConexionDB();
-    
+    Factura factura = new Factura();
     public void menuGestionClinica() {
 
         indices.clear();
@@ -151,7 +151,7 @@ public class Menu {
                1. Agendar Nueva Cita
                2. Modificar Cita
                3. Cancelar Cita
-               4. Pagar Cita
+               4. Mostrar Factura 
                5. Listar Todas las Citas
                6. Regresar al Menu Principal
                *******************************
@@ -172,8 +172,7 @@ public class Menu {
                     conDB.eliminarRegistro("tb_Turnos");
                     break;
                 case 4:
-                    // Mostrar citas disponibles para pagar
-                    // Mostrar factura con los datos
+                    factura.mostrarFactura();
                     break;
                 case 5:
                     conDB.mostrarTabla("tb_Turnos");

@@ -140,18 +140,7 @@ public class Turno {
     }
     
     
-    public void realizarPago(){
-        
-        
-           factura1 = new Factura();
-           
-           factura1.setTipoFactura("Factura tipo B");
-           
-           double monto = factura1.calcularMonto();
-           
-           factura1.setMontoTotal(monto);
-           
-    }
+
 
     
     

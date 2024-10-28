@@ -34,7 +34,7 @@ public class TpIntegrador {
         //conDB.conectarDB();
       
         Factura f = new Factura();
-        f.mostrarFactura();
+        //f.mostrarFactura();
         
         
         //Validador val = new Validador();

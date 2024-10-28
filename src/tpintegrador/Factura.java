@@ -9,13 +9,14 @@ import java.util.logging.Logger;
 import org.json.JSONObject;
 
 
+
 public class Factura {
     private String tipoFactura =  "Tipo B";
     private double montoTotal;
     ResultSet rs;
     Validador pideYValida = new Validador();
     ConexionDB conDB = new ConexionDB();
-    
+    Random numFactura = new Random();
     public void mostrarFactura() {
         
         
@@ -37,8 +38,8 @@ public class Factura {
             String sql = "SELECT * FROM tb_Turnos WHERE fechaTurno>=date() AND dniPaciente=" + dniIn + " LIMIT 1;";
             rs = conDB.realizaConsulta(sql);
             
-            
-            try {
+            if (rs.getString(1) != null) {
+                try {
                 
                 String obraSocialJson = rs.getString(5);
                 JSONObject obraSocialObj = new JSONObject(obraSocialJson);
@@ -47,6 +48,7 @@ public class Factura {
                 float montoConDescuento = montoSinDescuento * (1 - (float)obraSocialObj.getInt("descuento")/100);
                 
                 System.out.println("------------ FACTURA ------------");
+                System.out.println("Numero de Factura: " + numFactura.nextInt(10000, 99999));
                 System.out.println("Tipo de Factura: " + this.getTipoFactura());
                 System.out.println("Fecha: " + rs.getString(3));
                 System.out.println("Cliente: " + nombreYapellido);
@@ -59,6 +61,10 @@ public class Factura {
             }catch(SQLException ex) {
                 System.out.println("SQLException: " + ex);
             }
+            } else {
+                System.out.println("No se encontro ninguna factura asociada a su DNI");
+            }
+            
             
             
         }catch(SQLException ex) {
@@ -100,5 +106,5 @@ public class Factura {
     public Factura(){
         
     }
-    
+
 }
