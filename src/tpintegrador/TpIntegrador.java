@@ -11,39 +11,20 @@ public class TpIntegrador {
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         /*
         
-        Dias de turno segun la especialidad, cuando se intenta sacar un turno que tiene que 
-        verificar si el DNI existe en la base de datos Pacientes
-        
         si no hay medico con la especialidad disponible, se queda preguntando el dia eternamente
         
-        VOLVIO EL BUCLE EN EL MISMO LUGAR DE ANTES
-        
-        Pagar
-       
-        Preguntar si vamos bien al profe
         
         mejorar los souts de agregar registros
-        
-        Creo que hay que conectar y desconectar la base de datos  en cada funcion
-        
-        Agregar columna pagado,(0,1)
+            
+        --------------------------------------------------------------------
+        solucion de conectar y desconectar DB
+            cree el metodo getConnection() que devuelve el atributo db que tiene la conexion a la DB
+                se lo paso como parametro a la funciones que necesitan realizar operaciones con la DB
+                    en los casos de Factura y Turno igualo el atributo conDB.db a la conexion que tengo por parametro
+        --------------------------------------------------------------------
         
         */
-        
-        // Conecto a la base de datos 
-        ConexionDB conDB = new ConexionDB();
-        //conDB.pidoFechaTurnoYValido("Pediatria");
-        //conDB.conectarDB();
-      
-        Factura f = new Factura();
-        //f.mostrarFactura();
-        
-        
-        //Validador val = new Validador();
-        //val.pidoFechaYValido("Pediatria");
-        
-        
-       
+
         /*
        
         Menu menus = new Menu();

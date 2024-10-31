@@ -27,15 +27,14 @@ public class Turno {
     boolean dniInexsistente = true;
         
         
-    public Turno(boolean inicializar) {
+    public Turno(boolean inicializar, Connection conn) {
         
         if (inicializar) {
             
             while (dniInexsistente) {
-                
                 this.setDniPaciente(pideYValida.pidoDniYValido());
                 String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
-                
+                conDB.db = conn;
                 rs = conDB.realizaConsulta(sql);
                 try {
                     
@@ -44,9 +43,9 @@ public class Turno {
                     } else {
                         System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente() + ", primero tiene que crear uno nuevo");
                         
-                        conDB.conectarDB();
-                        conDB.agregarRegistro("tb_Pacientes");
-                        conDB.desconectarDB();
+                        //conDB.conectarDB();
+                        conDB.agregarRegistro("tb_Pacientes", conn);
+                        //conDB.desconectarDB();
                     }
                     
                     dniInexsistente = false;
@@ -56,7 +55,7 @@ public class Turno {
             
                 this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
                 //this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
-                conDB.desconectarDB();
+                //conDB.desconectarDB();
                 this.setDia(conDB.pidoFechaTurnoYValido(this.especialidad));
 
                 this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());

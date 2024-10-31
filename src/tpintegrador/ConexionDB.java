@@ -5,7 +5,6 @@ import java.sql.*;
 import java.util.Scanner;
 import java.lang.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -14,16 +13,13 @@ import java.util.Locale;
 
 public class ConexionDB implements AtencionMedica {
     
-   
-    
-    
     Scanner input = new Scanner(System.in);
     Connection db = null;
     String limpiarBuffer;
     PreparedStatement ps = null;
     Statement stmt;
     ResultSet rs;
-    String sql;
+    String sql, mensaje;
     Validador pideYValida = new Validador();
     ArrayList<Integer> idsDeTabla = new ArrayList<>();
     Gson gson = new Gson();
@@ -43,7 +39,7 @@ public class ConexionDB implements AtencionMedica {
             
             
             if (db != null) {
-                System.out.println("Conexion Exitosa!");
+                System.out.println("------------- > Conexion Exitosa! < -------------");
             } else {
                 System.out.println("Ha fallado la conexion");
             }
@@ -55,6 +51,10 @@ public class ConexionDB implements AtencionMedica {
         }
     }
     
+    public Connection getConnection() {
+        return db;
+    }
+    
     //desconecta de la base de datos
     public void desconectarDB() {
         
@@ -64,21 +64,26 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("SQLException: " + ex);
         }
         
-        System.out.println("Se ha desconectado la base de datos!");
+        System.out.println("------------- > Se ha desconectado la base de datos! < -------------");
     }
     
 
     //agrega un registro a alguna tabla     
     @Override
-    public void agregarRegistro(String tablaIn) {
+    public void agregarRegistro(String tablaIn, Connection conn) {
         
-        //conectarDB();
+        
+        this.db = conn;
         
         //Agrego el registro a la tabla
         try {
 
             switch(tablaIn) {
                 case "tb_Pacientes":
+                    
+                    mensaje = "-----------> AGREGAR NUEVO PACIENTE <-----------";
+                    
+                    System.out.println(mensaje);
                     
                     Paciente newPaciente = new Paciente(true);
 
@@ -92,6 +97,10 @@ public class ConexionDB implements AtencionMedica {
                     System.out.println(newPaciente.getNombre() + " ha sido registrado correctamente");
                     break;
                 case "tb_Medicos":
+                    
+                    mensaje = "-----------> AGREGAR NUEVO MEDICO <-----------";
+                    
+                    System.out.println(mensaje);
                     
                     Medico newMedico = new Medico(true);
                                         
@@ -111,9 +120,11 @@ public class ConexionDB implements AtencionMedica {
                     break;
                 case "tb_Turnos":
                     
-                    Turno newTurno = new Turno(true);
-                    //desconectarDB();
-                    conectarDB();
+                    mensaje = "-----------> AGREGAR NUEVO TURNO <-----------";
+                    
+                    System.out.println(mensaje);
+
+                    Turno newTurno = new Turno(true, conn);
                     ps = db.prepareStatement("INSERT INTO tb_Turnos(dniPaciente,fechaTurno,formaDePago,obraSocial,especialidad,asistenciaPaciente) VALUES (?,?,?,?,?,?)");
                     
                     ps.setInt(1, newTurno.getDniPaciente());
@@ -128,28 +139,20 @@ public class ConexionDB implements AtencionMedica {
                     ps.setString(5, newTurno.getEspecialidad());
                     ps.setInt(6,0);
                     
-                    //conectarDB();
                     
                     System.out.println("Se ha registrado correctamente un turno para " + newTurno.getDniPaciente());
                     break;
             }
-            //ps.execute();
             ps.executeUpdate();
             
         }catch(SQLException ex) {
-            System.out.println("SQLException: " +ex);
-            //ex.printStackTrace();
-                    
+            System.out.println("SQLException: " +ex);                    
         }
-       
-        //desconectarDB();
+
         
     }
         
     public ArrayList consultaIdsDeTabla(String tablaIn) {
-        
-        
-        //conectarDB();
         
         ArrayList<Integer> arrayDeIds = new ArrayList<>();
         
@@ -192,16 +195,12 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("SQLException: " +ex);
         }
         
-        //desconectarDB();
-        
         return arrayDeIds;
         
     }
     
     public ArrayList consultoColumnasDeTabla (String tablaIn) {
     
-        //conectarDB();
-        
         ArrayList<String> columnasDeTabla = new ArrayList<>();
         String columna = "";
         try {
@@ -225,15 +224,11 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("SQLException: " +ex);
         }
         
-        //desconectarDB();
         return columnasDeTabla;
         
     }
     
     public String armaStringConsultaSql(ArrayList columnasACambiar, String columna, String nuevoValor) {
-        
-        //conectarDB();
-        
         
         String consultaSql = "";
         
@@ -258,8 +253,6 @@ public class ConexionDB implements AtencionMedica {
 
         }
         
-        
-        //desconectarDB();
         return consultaSql;
     }
     
@@ -326,7 +319,7 @@ public class ConexionDB implements AtencionMedica {
                     
                     try  {
                         realizaConsulta(sql);
-                        System.out.println(rs.getString(1));
+                        //System.out.println(rs.getString(1));
                         
                         if (rs.getString(1) != null) {
                             fechaInvalida = false;  // Si todo está bien, marcar la fecha como válida
@@ -341,7 +334,7 @@ public class ConexionDB implements AtencionMedica {
                     }
                         
                         
-                    desconectarDB();
+                    //desconectarDB();
                     
                     //System.out.println(rs.getString(1));
                                         
@@ -360,21 +353,17 @@ public class ConexionDB implements AtencionMedica {
     
     public ResultSet realizaConsulta(String consulta) {
         
-        conectarDB();
         try {
                 
             stmt = db.createStatement();
             rs = stmt.executeQuery(consulta);
             
-            System.out.println(rs.getString(1));
-            //db.commit();
+            //System.out.println(rs.getString(1));
 
         } catch(SQLException ex) {
             System.out.println("SQLException: " +ex);
         }
          
-        //desconectarDB();
-       
         return rs;
     }
     
@@ -397,7 +386,6 @@ public class ConexionDB implements AtencionMedica {
         
         */
         
-        //conectarDB();
         
         int indiceIn = 0, indiceSalir = 0;
         ArrayList<Integer> idsDeTabla = new ArrayList<>();
@@ -409,7 +397,7 @@ public class ConexionDB implements AtencionMedica {
         mostrarTabla(tablaIn); 
 
         idsDeTabla = consultaIdsDeTabla(tablaIn);
-        System.out.println(idsDeTabla);
+        //System.out.println(idsDeTabla);
         
         if (!idsDeTabla.isEmpty()) {
             
@@ -535,12 +523,8 @@ public class ConexionDB implements AtencionMedica {
                             break;
                         case "tb_Turnos":
 
-                            Turno turnoExistente = new Turno(false);
+                            Turno turnoExistente = new Turno(false, this.getConnection());
 
-                            //desconectarDB();
-                            
-                            
-                            
                             for (String i : columnasACambiar) {
 
                                 //limpiarBuffer = input.nextLine();
@@ -612,8 +596,6 @@ public class ConexionDB implements AtencionMedica {
                                 
                             }
 
-                            desconectarDB();
-                            conectarDB();
                             System.out.println("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idPaciente=" + idIn);
                             ps = db.prepareStatement("UPDATE " + tablaIn + " SET " + columnasACambiarString + " WHERE idTurno=" + idIn + ";");
 
@@ -630,11 +612,6 @@ public class ConexionDB implements AtencionMedica {
             }
         }
         
-        
-        
-        
-        //desconectarDB();
-        
     }
     
     @Override
@@ -647,8 +624,6 @@ public class ConexionDB implements AtencionMedica {
             dependiendo de la tabla se ejecuta una linea Sql
         
         */
-        
-        //conectarDB();
         
         idsDeTabla = consultaIdsDeTabla(tablaIn);
         
@@ -683,7 +658,6 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("La tabla esta vacia");
         }
         
-        //desconectarDB();
     }
     
     public void vaciarTabla(String tablaIn) {
@@ -693,7 +667,6 @@ public class ConexionDB implements AtencionMedica {
         Se vacia la tabla 
         */
         
-        //conectarDB();
         
         sql = "DELETE FROM " + tablaIn;
         
@@ -708,7 +681,6 @@ public class ConexionDB implements AtencionMedica {
         
         System.out.println("Se ha vaciado la tabla " + tablaIn);
         
-        //desconectarDB();
     }
     
     @Override
@@ -718,12 +690,11 @@ public class ConexionDB implements AtencionMedica {
         Muestra la tabla 
         */
         
-        //conectarDB();
         
         sql = "SELECT * FROM " + tablaIn;
         
         try {
-            conectarDB();
+            //conectarDB();
             stmt = db.createStatement();
             rs = stmt.executeQuery(sql);
             
@@ -771,8 +742,6 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("--La tabla " + tablaIn + " no existe");
         }
         
-        
-        //desconectarDB();
     }
     
     public void mostrarHistoriaClinicaPorPaciente() {
@@ -780,7 +749,6 @@ public class ConexionDB implements AtencionMedica {
         boolean entro = false;
         sql = "SELECT * FROM tb_turnos WHERE dniPaciente=" + dniIn;
 
-        //conectarDB();
         
         try {
             stmt = db.createStatement();
@@ -803,7 +771,6 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("El dni que ingresó no posee Historia Clinica");
         }
         
-        //desconectarDB();
         
     }
 

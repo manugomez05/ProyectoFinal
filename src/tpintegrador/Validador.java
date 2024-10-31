@@ -5,16 +5,11 @@
 package tpintegrador;
 
 import com.google.gson.Gson;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.time.*;
-import java.time.format.TextStyle;
-import java.util.Locale;
+
 
 /*
     public String pidoFechaYValido() {
@@ -622,7 +617,7 @@ class Validador {
         
         int entero = 0;
         
-        System.out.println(arrayIndice);
+        //System.out.println(arrayIndice);
         
         if (!arrayIndice.isEmpty()) {
             while (enteroInvalido) {

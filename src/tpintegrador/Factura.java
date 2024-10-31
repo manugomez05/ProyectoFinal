@@ -2,11 +2,11 @@
 package tpintegrador;
 
 import java.util.Random;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONObject;
+
 
 
 
@@ -17,13 +17,13 @@ public class Factura {
     Validador pideYValida = new Validador();
     ConexionDB conDB = new ConexionDB();
     Random numFactura = new Random();
-    public void mostrarFactura() {
-        
-        
+    
+    
+    public void mostrarFactura(Connection conn) {
         
         try {
             
-            
+            conDB.db = conn;
             
             int dniIn = pideYValida.pidoDniYValido();
             
@@ -50,7 +50,7 @@ public class Factura {
                 System.out.println("------------ FACTURA ------------");
                 System.out.println("Numero de Factura: " + numFactura.nextInt(10000, 99999));
                 System.out.println("Tipo de Factura: " + this.getTipoFactura());
-                System.out.println("Fecha: " + rs.getString(3));
+                System.out.println("Fecha de turno: " + rs.getString(3));
                 System.out.println("Cliente: " + nombreYapellido);
                 System.out.println("DNI: " + rs.getInt(2));
                 System.out.println("Especialidad: " + rs.getString(6));
