@@ -8,10 +8,9 @@ public class TpIntegrador {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
 
+        //
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         /*
-
-        mejorar los souts de agregar registros
 
         --------------------------------------------------------------------
         solucion de conectar y desconectar DB
@@ -22,13 +21,6 @@ public class TpIntegrador {
         
         */
 
-        /*
-       
-        Menu menus = new Menu();
-        menus.menuGestionClinica();
-        System.out.println("awdfasfafGAGAHEJAHFA");
-        
-        */
         Menu menus = new Menu();
         menus.menuGestionClinica();
         
