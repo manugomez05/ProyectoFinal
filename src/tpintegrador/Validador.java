@@ -10,89 +10,6 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
-/*
-    public String pidoFechaYValido() {
-        
-        String fecha = "";
-        boolean fechaInvalida = true;
-        int diaNacimientoIn = 0, mesNacimientoIn = 0, anioNacimientoIn = 0;
-        LocalDateTime fechaActual = LocalDateTime.now();
-        
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Aplicar el formato a la fecha actual
-        String fechaFormateada = fechaActual.format(formato);        
-        System.out.println(fechaFormateada);
-        
-        LocalDate fechaUsuario;
-        
-        
-        
-        //Pido la fecha de Nacimiento y la valido
-        
-        do {
-        
-            try {
-
-                limpiarBuffer = input.nextLine();
-
-                while (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
-                    System.out.println("Ingrese el dia de nacimiento:");
-                    diaNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (diaNacimientoIn > 31 || diaNacimientoIn < 1) {
-                        throw new Exception();
-                    }
-                }
-
-                while (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
-                    System.out.println("Ingrese el mes de nacimiento:");
-                    mesNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (mesNacimientoIn > 12 || mesNacimientoIn < 1) {
-                        throw new Exception();
-                    }
-                }
-
-                while (anioNacimientoIn < 1930 && anioNacimientoIn > 2005) {
-                    System.out.println("Ingrese el anio de nacimiento:");
-                    anioNacimientoIn = input.nextInt();
-
-                    //si el numero ingresado esta fuera de rango, se emite una exception
-                    if (anioNacimientoIn < 1) {
-                        throw new Exception();
-                    }
-                }
-
-                fechaInvalida = false;
-                fecha = diaNacimientoIn + "-" + mesNacimientoIn + "-" + anioNacimientoIn;
-                
-                fechaUsuario = LocalDate.parse(fecha, formato);
-                
-                
-
-            } catch(InputMismatchException ime) {
-                System.out.println("-InputMismatchException: " + ime);
-                System.out.println("--Error: Ingrese un numero");
-            } catch(Exception e) {
-                System.out.println("-Exception: " + e);
-                System.out.println("--Rango invalido");
-            }
-            
-            return fecha;
-            
-        } while (fechaUsuario.isAfter(fechaActual));
-        
-       
-        
-    }
-    
-    */
-
-
 class Validador {
     
     String limpiarBuffer, fecha = "", sql = "";;
@@ -184,9 +101,15 @@ class Validador {
                 
                 
                 //SALIDA CON FORMATO YYYY-MM-DD
-                if (diaIn >= 1 && diaIn <= 9) {
+                if ((diaIn >= 1 && diaIn <= 9) && (mesIn >= 1 && mesIn <= 9)) {
+                    fechaNacimiento = anioIn + "-0" + mesIn + "-0" + diaIn;
+                } else if ((diaIn >= 1 && diaIn <= 9)) {
                     fechaNacimiento = anioIn + "-" + mesIn + "-" + "0" + diaIn;
-                } else {
+                }
+                else if ((mesIn >= 1 && mesIn <= 9)) {
+                    fechaNacimiento = anioIn + "-0" + mesIn + "-" + diaIn;
+                }
+                else {
                     fechaNacimiento = anioIn + "-" + mesIn + "-" + diaIn;
                 }
                 

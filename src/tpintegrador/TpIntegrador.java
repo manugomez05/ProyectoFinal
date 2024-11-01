@@ -10,12 +10,9 @@ public class TpIntegrador {
 
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         /*
-        
-        si no hay medico con la especialidad disponible, se queda preguntando el dia eternamente
-        
-        
+
         mejorar los souts de agregar registros
-            
+
         --------------------------------------------------------------------
         solucion de conectar y desconectar DB
             cree el metodo getConnection() que devuelve el atributo db que tiene la conexion a la DB

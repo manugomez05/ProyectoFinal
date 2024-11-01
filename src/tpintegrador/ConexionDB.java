@@ -24,8 +24,11 @@ public class ConexionDB implements AtencionMedica {
     ArrayList<Integer> idsDeTabla = new ArrayList<>();
     Gson gson = new Gson();
     int idIn, dniIn;
+
     
-    //conecta a la base de datos
+    /*
+    conecta de la base de datos
+    */
     public void conectarDB() {
     
         try {
@@ -51,11 +54,18 @@ public class ConexionDB implements AtencionMedica {
         }
     }
     
+    
+    /*
+    devuelve el atributo db que contiene la conexion a la base de datos
+    */
     public Connection getConnection() {
         return db;
     }
     
-    //desconecta de la base de datos
+    
+    /*
+    desconecta de la base de datos
+    */
     public void desconectarDB() {
         
         try {
@@ -68,7 +78,12 @@ public class ConexionDB implements AtencionMedica {
     }
     
 
-    //agrega un registro a alguna tabla     
+    
+    /*
+    -------> ARGEGAR REGISTRO <--------
+    
+    agrega un nuevo registro a una tabla especifica 
+    */
     @Override
     public void agregarRegistro(String tablaIn, Connection conn) {
         
@@ -152,6 +167,10 @@ public class ConexionDB implements AtencionMedica {
         
     }
         
+    
+    /*
+    consulta los ids que existen en una tabla especifica, los pone en un arrayList y lo devuelve
+    */
     public ArrayList consultaIdsDeTabla(String tablaIn) {
         
         ArrayList<Integer> arrayDeIds = new ArrayList<>();
@@ -199,6 +218,9 @@ public class ConexionDB implements AtencionMedica {
         
     }
     
+    /*
+    consulta las columnas que existen en una tabla especifica, los pone en un ArrayList y lo devuelve
+    */
     public ArrayList consultoColumnasDeTabla (String tablaIn) {
     
         ArrayList<String> columnasDeTabla = new ArrayList<>();
@@ -228,6 +250,9 @@ public class ConexionDB implements AtencionMedica {
         
     }
     
+    /*
+    arma un string con un formato especifico y lo devuelve
+    */
     public String armaStringConsultaSql(ArrayList columnasACambiar, String columna, String nuevoValor) {
         
         String consultaSql = "";
@@ -256,6 +281,9 @@ public class ConexionDB implements AtencionMedica {
         return consultaSql;
     }
     
+    /*
+    
+    */    
     public String pidoFechaTurnoYValido(String especialidadIn) {
         String fecha = "";
         boolean fechaInvalida = true;
@@ -297,9 +325,15 @@ public class ConexionDB implements AtencionMedica {
                 */
                 
                 //SALIDA CON FORMATO YYYY-MM-DD
-                if (diaIn >= 1 && diaIn <= 9) {
+                if ((diaIn >= 1 && diaIn <= 9) && (mesIn >= 1 && mesIn <= 9)) {
+                    fecha = anioIn + "-0" + mesIn + "-" + "0" + diaIn;
+                } else if ((diaIn >= 1 && diaIn <= 9)) {
                     fecha = anioIn + "-" + mesIn + "-" + "0" + diaIn;
-                } else {
+                }
+                else if ((mesIn >= 1 && mesIn <= 9)) {
+                    fecha = anioIn + "-0" + mesIn + "-" + diaIn;
+                }
+                else {
                     fecha = anioIn + "-" + mesIn + "-" + diaIn;
                 }
 
@@ -351,6 +385,9 @@ public class ConexionDB implements AtencionMedica {
         return fecha;
     }
     
+    /*
+    realiza una consulta especifica a la base de datos y devuelve su resultset
+    */
     public ResultSet realizaConsulta(String consulta) {
         
         try {
@@ -367,23 +404,24 @@ public class ConexionDB implements AtencionMedica {
         return rs;
     }
     
+    
+    /*
+    -------> MODIFICAR REGISTRO <--------
+    
+    modifica un nuevo registro en una tabla especifica 
+    */
+    
     @Override
     public void modificarRegistro(String tablaIn) {
-        //dependiendo de la tabla 
-        //  pregunto que campos va a querer modificar
-        //      pregunto por los nuevos valores
-        
         /*
         Para obtener solo los nombres de las columnas 
         
         PRAGMA table_info(tb_Medicos);
         SELECT name FROM pragma_table_info('tb_Medicos');
         
-        
         UPDATE nombre_tabla
         SET columna1 = valor1, columna2 = valor2, ...
         WHERE condición;
-        
         */
         
         
@@ -396,6 +434,7 @@ public class ConexionDB implements AtencionMedica {
         //Muestro la tabla, si se ingresa una tabla incorrecta, no pasa de aca
         mostrarTabla(tablaIn); 
 
+        //Consulta los ids que existen en la tabla
         idsDeTabla = consultaIdsDeTabla(tablaIn);
         //System.out.println(idsDeTabla);
         
@@ -422,8 +461,6 @@ public class ConexionDB implements AtencionMedica {
                             Paciente pacienteExistente = new Paciente(false);
 
                             for (String i : columnasACambiar) {
-
-                                //limpiarBuffer = input.nextLine();
 
                                 //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
 
@@ -463,9 +500,7 @@ public class ConexionDB implements AtencionMedica {
                             Medico medicoExistente = new Medico(false);
 
                             for (String i : columnasACambiar) {
-
-                                //limpiarBuffer = input.nextLine();
-
+                                
                                 //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
 
                                 switch (i) {
@@ -526,8 +561,6 @@ public class ConexionDB implements AtencionMedica {
                             Turno turnoExistente = new Turno(false, this.getConnection());
 
                             for (String i : columnasACambiar) {
-
-                                //limpiarBuffer = input.nextLine();
 
                                 //dependiendo del campo a modificar, lo pido y voy armando la consulta SQL
 
@@ -614,6 +647,12 @@ public class ConexionDB implements AtencionMedica {
         
     }
     
+    
+    /*
+    -------> ELIMINAR REGISTRO <--------
+    
+    elimina un registro en una tabla especifica 
+    */
     @Override
     public void eliminarRegistro(String tablaIn) {
         
@@ -648,7 +687,8 @@ public class ConexionDB implements AtencionMedica {
                 }
 
             } catch(SQLException ex) {
-                System.out.println("SQLException: " +ex);
+                System.out.println("-SQLException: " +ex);
+                System.out.println("--Error en la operacion con la base de datos");
             }
             
             System.out.println("Se ha eliminado el registro con Id = " + idIn);
@@ -694,7 +734,6 @@ public class ConexionDB implements AtencionMedica {
         sql = "SELECT * FROM " + tablaIn;
         
         try {
-            //conectarDB();
             stmt = db.createStatement();
             rs = stmt.executeQuery(sql);
             
@@ -744,11 +783,13 @@ public class ConexionDB implements AtencionMedica {
         
     }
     
+    
+    
+    
     public void mostrarHistoriaClinicaPorPaciente() {
         dniIn = pideYValida.pidoDniYValido();
         boolean entro = false;
         sql = "SELECT * FROM tb_turnos WHERE dniPaciente=" + dniIn;
-
         
         try {
             stmt = db.createStatement();
