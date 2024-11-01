@@ -71,14 +71,6 @@ public abstract class Persona {
 
     public void setFechaDeNacimiento(String fechaDeNacimiento) {
         this.fechaDeNacimiento = fechaDeNacimiento;
-    }
-    
-    
-    /*
-    //public void mostrarInformacion(){
-        //System.out.println("Nombre: "+getNombre()+", Apellido: "+getApellido()+", DNI: "+getDni()+", Fecha de Nacimiento: "+getFechaDeNacimiento());
-        
-}*/
-    
+    }  
    
 }

@@ -42,7 +42,7 @@ public class ConexionDB implements AtencionMedica {
             
             
             if (db != null) {
-                System.out.println("------------- > Conexion Exitosa! < -------------");
+                //System.out.println("------------- > Conexion Exitosa! < -------------");
             } else {
                 System.out.println("Ha fallado la conexion");
             }
@@ -74,7 +74,7 @@ public class ConexionDB implements AtencionMedica {
             System.out.println("SQLException: " + ex);
         }
         
-        System.out.println("------------- > Se ha desconectado la base de datos! < -------------");
+        //System.out.println("------------- > Se ha desconectado la base de datos! < -------------");
     }
     
 

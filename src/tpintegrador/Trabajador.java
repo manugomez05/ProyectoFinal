@@ -32,31 +32,7 @@ public class Trabajador extends Persona {
         this.diasDeTrabajo = diasDeTrabajo;
     }
 
-    public Trabajador(int cuentaBancaria, float salario, String diasDeTrabajo, String nombre, String apellido, int dni, String fechaDeNacimiento) {
-        super(nombre, apellido, dni, fechaDeNacimiento);
-        this.cuentaBancaria = cuentaBancaria;
-        this.salario = salario;
-        this.diasDeTrabajo = diasDeTrabajo;
-    }
-
- 
     public Trabajador(boolean inicializar) {
-        
         super(inicializar);
-
-    }
-    
-    
-    public void consultarSaldo(){
-        
-    }
-    
-    public void ingresarAsistencia(){
-        
-    }
-    
-    public void trabajar(){
-        
-    }
-    
+    } 
 }

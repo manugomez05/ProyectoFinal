@@ -117,36 +117,5 @@ public class Turno {
         this.asistenciaPaciente = asistenciaPaciente;
     }
     
-    
-    
-    public void confirmarTurno(){
-    
-    }
-    
-    
-    public void asignarMedico(){
-    
-    }
-    
-    
-    public void editarTurno(){
-    
-    }
-    
-    
-    public void eliminarTurno(){
-    
-    }
-    
-    
 
-
-    
-    
-    
-    
-    
-    
-    
-    
 }
