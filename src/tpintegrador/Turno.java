@@ -36,16 +36,14 @@ public class Turno {
                 String sql = "SELECT Nombre FROM tb_Pacientes WHERE DNI = " + this.getDniPaciente();
                 conDB.db = conn;
                 rs = conDB.realizaConsulta(sql);
+                
                 try {
                     
                     if (rs.getString(1) != null) {
                         System.out.println("Paciente encontrado : " + rs.getString(1));
                     } else {
                         System.out.println("Error: No existe ningún paciente con el DNI: " + this.getDniPaciente() + ", primero tiene que crear uno nuevo");
-                        
-                        //conDB.conectarDB();
                         conDB.agregarRegistro("tb_Pacientes", conn);
-                        //conDB.desconectarDB();
                     }
                     
                     dniInexsistente = false;
@@ -54,14 +52,11 @@ public class Turno {
                 }
             
                 this.setEspecialidad(pideYValida.pidoEspecialidadYValido());
-                //this.setDia(pideYValida.pidoFechaYValido(this.especialidad));
-                //conDB.desconectarDB();
                 this.setDia(conDB.pidoFechaTurnoYValido(this.especialidad));
 
                 this.setFormaDePago(pideYValida.pidoFormaDePagoYValido());
                 this.setObraSocial(pideYValida.pidoObraSocialYValido());
                 this.setAsistenciaPaciente(0);
-                //conDB.conectarDB();
             }
         
         }

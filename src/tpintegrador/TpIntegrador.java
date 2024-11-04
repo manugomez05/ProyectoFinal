@@ -8,8 +8,7 @@ public class TpIntegrador {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
 
-        //
-        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name())); //permite usar acentos
         /*
 
         --------------------------------------------------------------------

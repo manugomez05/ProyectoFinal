@@ -1,7 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
+
 package tpintegrador;
 
 import com.google.gson.Gson;
@@ -12,7 +10,7 @@ import java.util.Scanner;
 
 class Validador {
     
-    String limpiarBuffer, fecha = "", sql = "";;
+    String limpiarBuffer;
     Scanner input = new Scanner(System.in);
     int indiceIn = 0;
     boolean indiceInvalido = true;
@@ -88,17 +86,6 @@ class Validador {
                         throw new Exception();
                     }
                 }
-
-                
-                // SALIDA SIN FORMATO
-                /*
-                if (diaIn >= 1 && diaIn <= 9) {
-                    fecha = anioIn + "" + mesIn + "" + "0" + diaIn;
-                } else {
-                    fecha = anioIn + "" + mesIn + "" + diaIn;
-                }
-                */
-                
                 
                 //SALIDA CON FORMATO YYYY-MM-DD
                 if ((diaIn >= 1 && diaIn <= 9) && (mesIn >= 1 && mesIn <= 9)) {
@@ -129,71 +116,7 @@ class Validador {
         return fechaNacimiento;
         
     }
-    
-
-
-
-    public String pidoFechaYValido() {
-        Scanner input = new Scanner(System.in);
-        boolean fechaInvalida = true;
-        int diaIn = 0, mesIn = 0, anioIn = 0;
-        String fecha = "";
         
-        do {
-            try {
-                System.out.println("Ingrese el día:");
-                diaIn = input.nextInt();
-                if (diaIn < 1 || diaIn > 31) {
-                    throw new Exception("Día fuera de rango");
-                }
-
-                System.out.println("Ingrese el mes:");
-                mesIn = input.nextInt();
-                if (mesIn < 1 || mesIn > 12) {
-                    throw new Exception("Mes fuera de rango");
-                }
-
-                System.out.println("Ingrese el anio:");
-                anioIn = input.nextInt();
-                if (anioIn < 2005) {
-                    throw new Exception("Anio fuera de rango");
-                }
-
-                
-                // SALIDA SIN FORMATO
-                /*
-                if (diaIn >= 1 && diaIn <= 9) {
-                    fecha = anioIn + "" + mesIn + "" + "0" + diaIn;
-                } else {
-                    fecha = anioIn + "" + mesIn + "" + diaIn;
-                }
-                */
-                
-                
-                //SALIDA CON FORMATO YYYY-MM-DD
-                if (diaIn >= 1 && diaIn <= 9) {
-                    fecha = anioIn + "-" + mesIn + "-" + "0" + diaIn;
-                } else {
-                    fecha = anioIn + "-" + mesIn + "-" + diaIn;
-                }
-                
-                
-                fechaInvalida = false;
-                
-            } catch (InputMismatchException ime) {
-                System.out.println("-Error: Ingrese un número válido.");
-                input.next();  // Limpiar el buffer para evitar el loop
-            } catch (Exception e) {
-                System.out.println("-Error: " + e.getMessage());
-            }
-        } while (fechaInvalida);
-
-        return fecha;
-    }
-    
-    
-    
-    
     public int pidoDniYValido() {
         
         int dni = 0;
@@ -528,9 +451,7 @@ class Validador {
             }
 
         }
-        
 
-        
         return obraSocialPaciente;
     }
  

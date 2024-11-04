@@ -10,12 +10,25 @@ public class Menu {
     ArrayList<Integer> indices = new ArrayList<>();
     ConexionDB conDB = new ConexionDB();
     Factura factura = new Factura();
+    
+    public void rellenarArray(int ultimoIndice) {
+        indices.clear();
+        for (int i = 1; i < ultimoIndice; i++) {
+            indices.add(i);
+        }
+    }
+
     public void menuGestionClinica() {
 
+        
+        rellenarArray(6);
+        
+        /*
         indices.clear();
         for (int i = 1; i < 6; i++) {
             indices.add(i);
         }
+        */
         //System.out.println(indices);  
         
         menu = """
@@ -56,11 +69,15 @@ public class Menu {
     }
 
     public void menuGestionMedico() {
+        
+        rellenarArray(6);
+        
+        /*
         indices.clear();  
         for (int i = 1; i < 6; i++) {
             indices.add(i);
         }
-
+        */
         menu = """
                ****************************************
                          GESTIONAR MEDICOS
@@ -74,8 +91,6 @@ public class Menu {
                Seleccione una opcion:
                """;
 
-        //conDB.conectarDB();
-        
         while (true) { 
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
             switch (opcionElegida) {
@@ -101,11 +116,18 @@ public class Menu {
     }
 
     public void menuGestionPacientes() {
+        
+        
+        rellenarArray(6);
+        
+        /*
         indices.clear();
         for (int i = 1; i < 6; i++) {
             indices.add(i);
         }
-
+        */
+        
+        
         menu = """
                ******************************************
                          GESTIONAR PACIENTES
@@ -118,8 +140,6 @@ public class Menu {
                ******************************************
                Seleccione una opcion:
                """;
-        
-        //conDB.conectarDB();
         
         while (true) {  
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
@@ -146,11 +166,16 @@ public class Menu {
     }
 
     public void menuGestionCitas() {
+        
+        rellenarArray(7);
+        
+        /*
         indices.clear();
         for (int i = 1; i < 7; i++) {
             indices.add(i);
         }
-
+        */
+        
         menu = """
                ************************************
                          GESTIONAR CITAS
@@ -164,8 +189,6 @@ public class Menu {
                ************************************
                Seleccione una opcion:
                """;
-
-        //conDB.conectarDB();
         
         while (true) {  
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
@@ -195,11 +218,16 @@ public class Menu {
     }
 
     public void menuHistoriaClinica() {
+        
+        rellenarArray(4);
+        
+        /*
         indices.clear();
         for (int i = 1; i < 4; i++) {
             indices.add(i);
         }
-
+        */
+        
         menu = """
                *********************************************
                          CONSULTAR HISTORIA CLINICA
@@ -210,8 +238,6 @@ public class Menu {
                *********************************************
                Seleccione una opcion:
                """;
-        
-        //conDB.conectarDB();
         
         while (true) {  
             opcionElegida = validador1.pidoEnteroYValido(menu, indices);
