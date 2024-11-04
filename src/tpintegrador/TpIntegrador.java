@@ -3,7 +3,8 @@ package tpintegrador;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;                
-
+//INTEGRANTES: TOMÁS DE FAVERI; JUAN MANUEL GOMEZ MONTERO; VALENTIN MOTOS; MAXIMO PEREZ BELTRAMONE; LIAM ANGULO
+//LINK DEL UML: https://drive.google.com/file/d/19CnqUFNxfax6eNL_UYxIQ8Vkvqzbd-Y6/view
 public class TpIntegrador {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
