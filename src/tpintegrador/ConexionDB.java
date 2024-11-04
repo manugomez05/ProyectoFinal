@@ -349,7 +349,7 @@ public class ConexionDB implements AtencionMedica {
                     String diaDeFecha = fechaUsuario.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));;
                     //System.out.println(diaDeFecha);
                     sql = "SELECT Nombre, Apellido FROM tb_Medicos WHERE especialidad='" + especialidadIn + "' AND diasDeTrabajo LIKE '%\"" + diaDeFecha + "\"%';";
-                    System.out.println(sql);
+                   // System.out.println(sql);
                     
                     try  {
                         realizaConsulta(sql);
@@ -368,7 +368,6 @@ public class ConexionDB implements AtencionMedica {
                     }
                         
                         
-                    //desconectarDB();
                     
                     //System.out.println(rs.getString(1));
                                         
